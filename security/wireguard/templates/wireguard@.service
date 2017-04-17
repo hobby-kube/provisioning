@@ -1,0 +1,14 @@
+[Unit]
+Description=WireGuard interface %i
+PartOf=wireguard.service
+ReloadPropagatedFrom=wireguard.service
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/wg-quick up %i
+ExecStop=/usr/bin/wg-quick down %i
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

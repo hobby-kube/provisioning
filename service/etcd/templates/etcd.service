@@ -1,0 +1,22 @@
+[Unit]
+Description=etcd
+After=network.target ${vpn_unit}
+
+[Service]
+Type=notify
+ExecStart=/opt/etcd/etcd --name ${hostname} \
+  --data-dir /var/lib/etcd \
+  --listen-client-urls "${listen_client_urls},http://localhost:2379" \
+  --advertise-client-urls "${advertise_client_urls}" \
+  --listen-peer-urls "${listen_peer_urls}" \
+  --initial-cluster "${intial_cluster}" \
+  --initial-advertise-peer-urls "${listen_peer_urls}" \
+  --heartbeat-interval 200 \
+  --election-timeout 5000
+Restart=always
+RestartSec=5
+TimeoutStartSec=0
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
