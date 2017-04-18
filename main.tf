@@ -36,7 +36,7 @@ module "wireguard" {
 }
 
 module "firewall" {
-  source = "./security/firewall"
+  source = "./security/ufw"
 
   count                = "${var.hosts}"
   connections          = "${module.provider.public_ips}"
