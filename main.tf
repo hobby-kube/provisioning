@@ -6,6 +6,7 @@ module "provider" {
   hosts           = "${var.hosts}"
   hostname_format = "${var.hostname_format}"
   region          = "${var.scaleway_region}"
+  ssh_keys        = "${var.digitalocean_ssh_keys}"
 }
 
 module "dns" {
