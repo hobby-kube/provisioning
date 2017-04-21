@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 
+# Install kernel headers with apt
 if apt-cache show -q linux-headers-$(uname -r) > /dev/null 2>&1 /dev/null; then
   echo "Installing Linux headers using apt"
   apt-get -yq install linux-headers-$(uname -r)

@@ -44,7 +44,6 @@ resource "scaleway_server" "host" {
     inline = [
       "apt-get update",
       "apt-get install -yq apt-transport-https ufw nfs-common",
-      "modprobe br_netfilter && echo br_netfilter >> /etc/modules"
     ]
   }
 }

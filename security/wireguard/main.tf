@@ -51,7 +51,7 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
-      "apt-get install -yq wireguard-dkms wireguard-tools",
+      "DEBIAN_FRONTEND=noninteractive apt-get install -yq wireguard-dkms wireguard-tools",
     ]
   }
 
