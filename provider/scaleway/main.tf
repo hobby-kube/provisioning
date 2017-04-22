@@ -55,7 +55,7 @@ data "scaleway_image" "image" {
 
 data "scaleway_bootscript" "bootscript" {
   architecture = "x86_64"
-  name_filter  = "4.10.8 std #1"
+  name_filter  = "4.10.8 docker #1"
 }
 
 output "hostnames" {
