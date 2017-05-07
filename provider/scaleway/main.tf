@@ -22,7 +22,7 @@ variable "type" {
 
 variable "image" {
   type    = "string"
-  default = "Ubuntu Xenial"
+  default = "Ubuntu_Xenial"
 }
 
 provider "scaleway" {
