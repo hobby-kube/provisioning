@@ -45,3 +45,11 @@ variable "cloudflare_email" {
 variable "cloudflare_token" {
   default = ""
 }
+
+variable "digitalocean_token" {
+  default = ""
+}
+
+variable "digitalocean_ssh_keys" {
+  default = []
+}
