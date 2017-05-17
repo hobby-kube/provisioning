@@ -29,6 +29,21 @@ module "dns" {
   hostnames  = "${module.provider.hostnames}"
 }
 
+/*
+module "dns" {
+  source = "./dns/google"
+
+  count        = "${var.hosts}"
+  project      = "${var.google_project}"
+  region       = "${var.google_region}"
+  creds_file   = "${var.google_credentials_file}"
+  managed_zone = "${var.google_managed_zone}"
+  domain       = "${var.domain}"
+  public_ips   = "${module.provider.public_ips}"
+  hostnames    = "${module.provider.hostnames}"
+}
+*/
+
 module "swap" {
   source = "./service/swap"
 

@@ -37,11 +37,28 @@ variable "digitalocean_region" {
   default = "nyc1"
 }
 
-/* dns */
+/* cloudflare */
 variable "cloudflare_email" {
   default = ""
 }
 
 variable "cloudflare_token" {
+  default = ""
+}
+
+/* google dns */
+variable "google_project" {
+  default = ""
+}
+
+variable "google_region" {
+  default = ""
+}
+
+variable "google_managed_zone" {
+  default = ""
+}
+
+variable "google_credentials_file" {
   default = ""
 }
