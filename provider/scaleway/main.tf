@@ -17,12 +17,16 @@ variable "region" {
 
 variable "type" {
   type    = "string"
-  default = "VC1S"
+  default = "VC1M"
 }
 
 variable "image" {
   type    = "string"
   default = "Ubuntu_Xenial"
+}
+
+variable "storage_size" {
+  default = 50
 }
 
 provider "scaleway" {
@@ -39,6 +43,11 @@ resource "scaleway_server" "host" {
   dynamic_ip_required = true
 
   count = "${var.hosts}"
+
+  volume = {
+    size_in_gb = "${var.storage_size}"
+    type       = "l_ssd"
+  }
 
   provisioner "remote-exec" {
     inline = [
