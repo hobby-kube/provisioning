@@ -56,11 +56,6 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "file" {
-    source      = "${path.module}/templates/wireguard@.service"
-    destination = "/etc/systemd/system/wireguard@.service"
-  }
-
-  provisioner "file" {
     content     = "${element(data.template_file.interface-conf.*.rendered, count.index)}"
     destination = "/etc/wireguard/${var.vpn_interface}.conf"
   }
@@ -74,8 +69,8 @@ resource "null_resource" "wireguard" {
   provisioner "remote-exec" {
     inline = [
       "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", data.template_file.vpn_ips.*.rendered, var.hostnames))}",
-      "systemctl is-enabled wireguard@${var.vpn_interface}.service || systemctl enable wireguard@${var.vpn_interface}.service",
-      "systemctl restart wireguard@${var.vpn_interface}.service",
+      "systemctl is-enabled wg-quick@${var.vpn_interface} || systemctl enable wg-quick@${var.vpn_interface}",
+      "systemctl restart wg-quick@${var.vpn_interface}",
     ]
   }
 }
@@ -126,7 +121,7 @@ output "vpn_ips" {
 
 output "vpn_unit" {
   depends_on = ["null_resource.wireguard"]
-  value      = "wireguard@${var.vpn_interface}.service"
+  value      = "wg-quick@${var.vpn_interface}.service"
 }
 
 output "vpn_interface" {
