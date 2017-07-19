@@ -18,6 +18,7 @@ module "provider" {
   region          = "${var.digitalocean_region}"
 }*/
 
+/*
 module "dns" {
   source = "./dns/aws"
 
@@ -29,8 +30,8 @@ module "dns" {
   public_ips = "${module.provider.public_ips}"
   hostnames  = "${module.provider.hostnames}"
 }
+*/
 
-/*
 module "dns" {
   source = "./dns/cloudflare"
 
@@ -41,7 +42,6 @@ module "dns" {
   public_ips = "${module.provider.public_ips}"
   hostnames  = "${module.provider.hostnames}"
 }
-*/
 
 /*
 module "dns" {
