@@ -7,4 +7,4 @@ deb http://apt.kubernetes.io/ kubernetes-xenial-unstable main
 EOF
 apt-get update
 apt-get install -y docker.io
-apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+apt-get install -y kubelet kubeadm=1.7.0-00 kubectl kubernetes-cni
