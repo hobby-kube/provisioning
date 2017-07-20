@@ -42,7 +42,7 @@ export TF_VAR_cloudflare_email=<email>
 export TF_VAR_cloudflare_token=<token>
 ```
 
-#### Using AWS Route53 for DNS entries
+#### Using Amazon Route 53 for DNS entries
 
 ```sh
 export TF_VAR_domain=<domain> # e.g. example.org shall be already added to hosted zones.
