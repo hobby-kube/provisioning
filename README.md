@@ -42,6 +42,15 @@ export TF_VAR_cloudflare_email=<email>
 export TF_VAR_cloudflare_token=<token>
 ```
 
+#### Using AWS Route53 for DNS entries
+
+```sh
+export TF_VAR_domain=<domain> # e.g. example.org shall be already added to hosted zones.
+export TF_VAR_aws_access_key=<ACCESS_KEY>
+export TF_VAR_aws_secret_key=<SECRET_KEY>
+export TF_VAR_aws_region=<region> # e.g. eu-west-1
+```
+
 ### Usage
 
 ```sh

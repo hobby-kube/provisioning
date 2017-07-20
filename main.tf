@@ -18,6 +18,20 @@ module "provider" {
   region          = "${var.digitalocean_region}"
 }*/
 
+/*
+module "dns" {
+  source = "./dns/aws"
+
+  count      = "${var.hosts}"
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
+  region     = "${var.aws_region}"
+  domain     = "${var.domain}"
+  public_ips = "${module.provider.public_ips}"
+  hostnames  = "${module.provider.hostnames}"
+}
+*/
+
 module "dns" {
   source = "./dns/cloudflare"
 
