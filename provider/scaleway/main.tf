@@ -22,7 +22,7 @@ variable "type" {
 
 variable "image" {
   type    = "string"
-  default = "Ubuntu_Xenial"
+  default = "Ubuntu Xenial"
 }
 
 variable "storage_size" {
@@ -64,7 +64,7 @@ data "scaleway_image" "image" {
 
 data "scaleway_bootscript" "bootscript" {
   architecture = "x86_64"
-  name_filter  = "4.9.20 std #1"
+  name_filter  = "4.10.8 std #1"
 }
 
 output "hostnames" {
