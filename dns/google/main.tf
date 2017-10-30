@@ -43,7 +43,7 @@ resource "google_dns_record_set" "domain" {
 }
 
 resource "google_dns_record_set" "wildcard" {
-  depends_on   = ["google_dns_record_set.domain"]
+  depends_on = ["google_dns_record_set.domain"]
 
   name         = "*.${var.domain}."
   type         = "CNAME"
