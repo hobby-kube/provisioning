@@ -78,11 +78,11 @@ data "template_file" "install" {
 data "null_data_source" "endpoints" {
   depends_on = ["null_resource.etcd"]
 
-  inputs {
+  inputs = {
     list = "${join(",", formatlist("http://%s:2379", var.vpn_ips))}"
   }
 }
 
 output "endpoints" {
-  value = ["${split(",", data.null_data_source.endpoints.outputs.list)}"]
+  value = ["${split(",", data.null_data_source.endpoints.outputs["list"])}"]
 }
