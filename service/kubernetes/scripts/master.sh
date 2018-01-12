@@ -13,7 +13,7 @@ until $(curl --output /dev/null --silent --head --fail http://localhost:6443); d
   sleep 5
 done
 
-kubectl apply -f https://git.io/weave-kube-1.6
+kubectl apply -f https://cloud.weave.works/k8s/v1.7/net
 
 kubectl -n kube-system get ds -l 'k8s-app=kube-proxy' -o json \
   | jq '.items[0].spec.template.spec.containers[0].command |= .+ ["--proxy-mode=userspace"]' \
