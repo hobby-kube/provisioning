@@ -55,7 +55,7 @@ export TF_VAR_aws_region=<region> # e.g. eu-west-1
 
 ```sh
 # fetch the required modules
-$ terraform get
+$ terraform init
 
 # see what `terraform apply` will do
 $ terraform plan
