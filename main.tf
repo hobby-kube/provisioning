@@ -58,6 +58,12 @@ module "dns" {
 }
 */
 
+module "swap" {
+  source = "./service/swap"
+
+  count       = "${var.hosts}"
+  connections = "${module.provider.public_ips}"
+}
 
 module "wireguard" {
   source = "./security/wireguard"
