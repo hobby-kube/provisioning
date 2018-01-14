@@ -8,6 +8,10 @@ variable "vpn_ips" {
   type = "list"
 }
 
+variable "vpn_interface" {
+  type = "string"
+}
+
 variable "etcd_endpoints" {
   type = "list"
 }
@@ -43,7 +47,9 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "remote-exec" {
-    script = "${path.module}/scripts/install.sh"
+      inline = <<EOF
+  ${element(data.template_file.install.*.rendered, count.index)}
+  EOF
   }
 
   provisioner "remote-exec" {
@@ -77,6 +83,16 @@ data "template_file" "slave" {
   vars {
     master_ip = "${element(var.vpn_ips, 0)}"
     token     = "${data.external.cluster_token.result.token}"
+  }
+}
+
+data "template_file" "install" {
+  count    = "${var.count}"
+  template = "${file("${path.module}/scripts/install.sh")}"
+
+  vars {
+    vpn_interface = "${var.vpn_interface}"
+    vpn_ip        = "${element(var.vpn_ips, count.index)}"
   }
 }
 
