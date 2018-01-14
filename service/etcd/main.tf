@@ -17,7 +17,7 @@ variable "vpn_ips" {
 }
 
 variable "version" {
-  default = "v3.2.9"
+  default = "v3.2.13"
 }
 
 resource "null_resource" "etcd" {

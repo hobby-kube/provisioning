@@ -46,7 +46,7 @@ resource "digitalocean_droplet" "host" {
     inline = [
       "until [ -f /var/lib/cloud/instance/boot-finished ]; do sleep 1; done",
       "apt-get update",
-      "apt-get install -yq nfs-common",
+      "apt-get install -yq nfs-common ceph-common",
     ]
   }
 }
