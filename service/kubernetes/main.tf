@@ -55,7 +55,7 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "remote-exec" {
-      inline = <<EOF
+    inline = <<EOF
   ${element(data.template_file.install.*.rendered, count.index)}
   EOF
   }

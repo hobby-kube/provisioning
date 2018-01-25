@@ -37,6 +37,23 @@ variable "digitalocean_region" {
   default = "nyc1"
 }
 
+/* hcloud */
+variable "hcloud_token" {
+  default = ""
+}
+
+variable "hcloud_ssh_keys" {
+  default = []
+}
+
+variable "hcloud_location" {
+  default = "nbg1"
+}
+
+variable "hcloud_type" {
+  default = "cx11"
+}
+
 /* aws */
 variable "aws_access_key" {
   default = ""

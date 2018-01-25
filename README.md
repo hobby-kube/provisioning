@@ -2,7 +2,7 @@
 
 > This is part of the Hobby Kube project. Functionality of the modules is described in the [guide](https://github.com/hobby-kube/guide).
 
-Deploy a secure Kubernetes cluster on [Scaleway](https://www.scaleway.com/) or [DigitalOcean](https://www.digitalocean.com/) using [Terraform](https://www.terraform.io/).
+Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/) or [DigitalOcean](https://www.digitalocean.com/) using [Terraform](https://www.terraform.io/).
 
 ## Setup
 
@@ -20,11 +20,18 @@ Modules are using ssh-agent for remote operations. Add your SSH key with `ssh-ad
 
 Export the following environment variables depending on the modules you're using.
 
+#### Using Hetzner as provider
+
+```sh
+export TF_VAR_hcloud_token=<token>
+export TF_VAR_hcloud_ssh_keys=<keys> # e.g. '["12548","17593"]'
+```
+
 #### Using Scaleway as provider
 
 ```sh
-export TF_VAR_scaleway_organization=<ACCESS_KEY>
-export TF_VAR_scaleway_token=<TOKEN>
+export TF_VAR_scaleway_organization=<access_key>
+export TF_VAR_scaleway_token=<token>
 ```
 
 #### Using DigitalOcean as provider
