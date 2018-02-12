@@ -16,6 +16,14 @@ variable "etcd_endpoints" {
   type = "list"
 }
 
+variable "overlay_interface" {
+  default = "weave"
+}
+
+variable "overlay_cidr" {
+  default = "10.96.0.0/16"
+}
+
 resource "null_resource" "kubernetes" {
   count = "${var.count}"
 
@@ -93,6 +101,7 @@ data "template_file" "install" {
   vars {
     vpn_interface = "${var.vpn_interface}"
     vpn_ip        = "${element(var.vpn_ips, count.index)}"
+    overlay_cidr  = "${var.overlay_cidr}"
   }
 }
 
@@ -101,5 +110,9 @@ data "external" "cluster_token" {
 }
 
 output "overlay_interface" {
-  value = "weave"
+  value = "${var.overlay_interface}"
+}
+
+output "overlay_cidr" {
+  value = "${var.overlay_cidr}"
 }

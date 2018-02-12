@@ -1,0 +1,11 @@
+[Unit]
+Description=Overlay network route for Wireguard
+After=wg-quick@wg0.service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/sbin/ip route add ${overlay_cidr} dev wg0 src ${address}
+
+[Install]
+WantedBy=multi-user.target

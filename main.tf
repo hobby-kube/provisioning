@@ -68,10 +68,11 @@ module "swap" {
 module "wireguard" {
   source = "./security/wireguard"
 
-  count       = "${var.hosts}"
-  connections = "${module.provider.public_ips}"
-  private_ips = "${module.provider.private_ips}"
-  hostnames   = "${module.provider.hostnames}"
+  count        = "${var.hosts}"
+  connections  = "${module.provider.public_ips}"
+  private_ips  = "${module.provider.private_ips}"
+  hostnames    = "${module.provider.hostnames}"
+  overlay_cidr = "${module.kubernetes.overlay_cidr}"
 }
 
 module "firewall" {

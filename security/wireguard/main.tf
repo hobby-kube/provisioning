@@ -20,6 +20,10 @@ variable "hostnames" {
   type = "list"
 }
 
+variable "overlay_cidr" {
+  type = "string"
+}
+
 variable "vpn_iprange" {
   default = "10.0.1.0/24"
 }
@@ -73,6 +77,18 @@ resource "null_resource" "wireguard" {
       "systemctl restart wg-quick@${var.vpn_interface}",
     ]
   }
+
+  provisioner "file" {
+    content     = "${element(data.template_file.overlay-route-service.*.rendered, count.index)}"
+    destination = "/etc/systemd/system/overlay-route.service"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "systemctl start overlay-route.service",
+      "systemctl is-enabled overlay-route.service || systemctl enable overlay-route.service",
+    ]
+  }
 }
 
 data "template_file" "interface-conf" {
@@ -96,6 +112,16 @@ data "template_file" "peer-conf" {
     port        = "${var.vpn_port}"
     public_key  = "${element(data.external.keys.*.result.public_key, count.index)}"
     allowed_ips = "${element(data.template_file.vpn_ips.*.rendered, count.index)}/32"
+  }
+}
+
+data "template_file" "overlay-route-service" {
+  count    = "${var.count}"
+  template = "${file("${path.module}/templates/overlay-route.service")}"
+
+  vars {
+    address      = "${element(data.template_file.vpn_ips.*.rendered, count.index)}"
+    overlay_cidr = "${var.overlay_cidr}"
   }
 }
 
@@ -130,4 +156,8 @@ output "vpn_interface" {
 
 output "vpn_port" {
   value = "${var.vpn_port}"
+}
+
+output "overlay_cidr" {
+  value = "${var.overlay_cidr}"
 }

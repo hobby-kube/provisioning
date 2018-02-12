@@ -8,6 +8,3 @@ EOF
 apt-get update
 apt-get install -y docker.io
 apt-get install -y kubelet kubeadm kubectl kubernetes-cni
-
-# See: https://github.com/hobby-kube/guide/issues/11
-ip route add 10.96.0.0/16 dev ${vpn_interface} src ${vpn_ip}
