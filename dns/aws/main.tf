@@ -57,5 +57,5 @@ resource "aws_route53_record" "wildcard" {
 }
 
 output "domains" {
-  value = ["${aws_route53_record.hosts.*.hostname}"]
+  value = ["${aws_route53_record.hosts.*.name}"]
 }
