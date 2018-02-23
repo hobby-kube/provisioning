@@ -120,3 +120,13 @@ module "kubernetes" {
   vpn_ips        = "${module.wireguard.vpn_ips}"
   etcd_endpoints = "${module.etcd.endpoints}"
 }
+
+module "zsh" {
+  source = "./service/zsh"
+
+  count       = "${var.hosts}"
+  connections = "${module.provider.public_ips}"
+  dependency  = "${module.etcd.endpoints}"
+  plugins     = "${var.zsh_plugins}"
+  theme       = "${var.zsh_theme}"
+}

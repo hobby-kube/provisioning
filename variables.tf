@@ -12,7 +12,7 @@ variable "hostname_format" {
 }
 
 variable "apt_packages" {
-  default = "nfs-common ceph-common"
+  default = "nfs-common ceph-common git zsh"
 }
 
 /* scaleway */
@@ -83,4 +83,13 @@ variable "google_managed_zone" {
 
 variable "google_credentials_file" {
   default = ""
+}
+
+/* Oh My ZSH */
+variable "zsh_plugins" {
+  default = ["kops", "kubectl"]
+}
+
+variable "zsh_theme" {
+  default = "ys"
 }
