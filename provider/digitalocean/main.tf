@@ -8,6 +8,10 @@ variable "ssh_keys" {
   type = "list"
 }
 
+variable "apt_packages" {
+  type = "string"
+}
+
 variable "hostname_format" {
   type = "string"
 }
@@ -46,7 +50,7 @@ resource "digitalocean_droplet" "host" {
     inline = [
       "until [ -f /var/lib/cloud/instance/boot-finished ]; do sleep 1; done",
       "apt-get update",
-      "apt-get install -yq nfs-common ceph-common",
+      "apt-get install -yq ${var.apt_packages}",
     ]
   }
 }

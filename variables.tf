@@ -11,6 +11,10 @@ variable "hostname_format" {
   default = "kube%d"
 }
 
+variable "apt_packages" {
+  default = "nfs-common ceph-common git zsh"
+}
+
 /* scaleway */
 variable "scaleway_organization" {
   default = ""
@@ -22,6 +26,11 @@ variable "scaleway_token" {
 
 variable "scaleway_region" {
   default = "ams1"
+}
+
+/* Gandi DNS */
+variable "gandi_api_key" {
+  default = ""
 }
 
 /* digitalocean */
@@ -74,4 +83,13 @@ variable "google_managed_zone" {
 
 variable "google_credentials_file" {
   default = ""
+}
+
+/* Oh My ZSH */
+variable "zsh_plugins" {
+  default = ["kops", "kubectl"]
+}
+
+variable "zsh_theme" {
+  default = "ys"
 }

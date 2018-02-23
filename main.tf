@@ -6,6 +6,7 @@ module "provider" {
   hosts           = "${var.hosts}"
   hostname_format = "${var.hostname_format}"
   region          = "${var.scaleway_region}"
+  apt_packages    = "${var.apt_packages}"
 }
 
 /*module "provider" {
@@ -16,7 +17,20 @@ module "provider" {
   hosts           = "${var.hosts}"
   hostname_format = "${var.hostname_format}"
   region          = "${var.digitalocean_region}"
+  apt_packages    = "${var.apt_packages}"
 }*/
+
+/*
+module "dns" {
+  source = "./dns/gandi"
+
+  count      = "${var.hosts}"
+  domain     = "${var.domain}"
+  api_key    = "${var.gandi_api_key}"
+  public_ips = "${module.provider.public_ips}"
+  hostnames  = "${module.provider.hostnames}"
+}
+*/
 
 /*
 module "dns" {
@@ -105,4 +119,14 @@ module "kubernetes" {
   vpn_interface  = "${module.wireguard.vpn_interface}"
   vpn_ips        = "${module.wireguard.vpn_ips}"
   etcd_endpoints = "${module.etcd.endpoints}"
+}
+
+module "zsh" {
+  source = "./service/zsh"
+
+  count       = "${var.hosts}"
+  connections = "${module.provider.public_ips}"
+  dependency  = "${module.etcd.endpoints}"
+  plugins     = "${var.zsh_plugins}"
+  theme       = "${var.zsh_theme}"
 }
