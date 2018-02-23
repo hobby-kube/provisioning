@@ -11,6 +11,10 @@ variable "hostname_format" {
   default = "kube%d"
 }
 
+variable "apt_packages" {
+  default = "nfs-common ceph-common"
+}
+
 /* scaleway */
 variable "scaleway_organization" {
   default = ""
@@ -22,6 +26,11 @@ variable "scaleway_token" {
 
 variable "scaleway_region" {
   default = "ams1"
+}
+
+/* Gandi DNS */
+variable "gandi_api_key" {
+  default = ""
 }
 
 /* digitalocean */

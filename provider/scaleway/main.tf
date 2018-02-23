@@ -6,6 +6,10 @@ variable "hosts" {
   default = 0
 }
 
+variable "apt_packages" {
+  type = "string"
+}
+
 variable "hostname_format" {
   type = "string"
 }
@@ -52,7 +56,7 @@ resource "scaleway_server" "host" {
   provisioner "remote-exec" {
     inline = [
       "apt-get update",
-      "apt-get install -yq apt-transport-https ufw nfs-common ceph-common",
+      "apt-get install -yq apt-transport-https ufw ${var.apt_packages}",
     ]
   }
 }
