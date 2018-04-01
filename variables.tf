@@ -34,7 +34,7 @@ variable "digitalocean_ssh_keys" {
 }
 
 variable "digitalocean_region" {
-  default = "nyc1"
+  default = "fra1"
 }
 
 /* hcloud */
