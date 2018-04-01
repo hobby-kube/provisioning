@@ -27,6 +27,11 @@ variable "size" {
   default = "1gb"
 }
 
+variable "apt_packages" {
+  type    = "list"
+  default = []
+}
+
 provider "digitalocean" {
   token = "${var.token}"
 }
@@ -46,7 +51,7 @@ resource "digitalocean_droplet" "host" {
     inline = [
       "until [ -f /var/lib/cloud/instance/boot-finished ]; do sleep 1; done",
       "apt-get update",
-      "apt-get install -yq nfs-common ceph-common",
+      "apt-get install -yq ufw ${join(" ", var.apt_packages)}",
     ]
   }
 }

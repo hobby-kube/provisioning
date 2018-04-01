@@ -43,7 +43,14 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
-      "apt-get install -yq software-properties-common python-software-properties build-essential",
+      "echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf",
+      "sysctl -p",
+    ]
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "apt-get install -yq software-properties-common build-essential",
       "add-apt-repository -y ppa:wireguard/wireguard",
       "apt-get update",
     ]

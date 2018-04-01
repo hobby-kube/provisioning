@@ -11,6 +11,23 @@ variable "hostname_format" {
   default = "kube%d"
 }
 
+/* hcloud */
+variable "hcloud_token" {
+  default = ""
+}
+
+variable "hcloud_ssh_keys" {
+  default = []
+}
+
+variable "hcloud_location" {
+  default = "nbg1"
+}
+
+variable "hcloud_type" {
+  default = "cx11"
+}
+
 /* scaleway */
 variable "scaleway_organization" {
   default = ""
@@ -34,10 +51,10 @@ variable "digitalocean_ssh_keys" {
 }
 
 variable "digitalocean_region" {
-  default = "nyc1"
+  default = "fra1"
 }
 
-/* aws */
+/* aws dns */
 variable "aws_access_key" {
   default = ""
 }
@@ -50,7 +67,7 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
-/* cloudflare */
+/* cloudflare dns */
 variable "cloudflare_email" {
   default = ""
 }

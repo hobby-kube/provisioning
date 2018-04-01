@@ -1,11 +1,22 @@
-module "provider" {
-  source = "./provider/scaleway"
+# module "provider" {
+#   source = "./provider/scaleway"
 
-  organization    = "${var.scaleway_organization}"
-  token           = "${var.scaleway_token}"
+#   organization    = "${var.scaleway_organization}"
+#   token           = "${var.scaleway_token}"
+#   hosts           = "${var.hosts}"
+#   hostname_format = "${var.hostname_format}"
+#   region          = "${var.scaleway_region}"
+# }
+
+module "provider" {
+  source = "./provider/hcloud"
+
   hosts           = "${var.hosts}"
+  token           = "${var.hcloud_token}"
+  type            = "${var.hcloud_type}"
+  ssh_keys        = "${var.hcloud_ssh_keys}"
+  location        = "${var.hcloud_location}"
   hostname_format = "${var.hostname_format}"
-  region          = "${var.scaleway_region}"
 }
 
 /*module "provider" {
@@ -17,6 +28,17 @@ module "provider" {
   hostname_format = "${var.hostname_format}"
   region          = "${var.digitalocean_region}"
 }*/
+
+module "dns" {
+  source = "./dns/cloudflare"
+
+  count      = "${var.hosts}"
+  email      = "${var.cloudflare_email}"
+  token      = "${var.cloudflare_token}"
+  domain     = "${var.domain}"
+  public_ips = "${module.provider.public_ips}"
+  hostnames  = "${module.provider.hostnames}"
+}
 
 /*
 module "dns" {
@@ -31,17 +53,6 @@ module "dns" {
   hostnames  = "${module.provider.hostnames}"
 }
 */
-
-module "dns" {
-  source = "./dns/cloudflare"
-
-  count      = "${var.hosts}"
-  email      = "${var.cloudflare_email}"
-  token      = "${var.cloudflare_token}"
-  domain     = "${var.domain}"
-  public_ips = "${module.provider.public_ips}"
-  hostnames  = "${module.provider.hostnames}"
-}
 
 /*
 module "dns" {

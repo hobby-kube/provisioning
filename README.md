@@ -2,7 +2,7 @@
 
 > This is part of the Hobby Kube project. Functionality of the modules is described in the [guide](https://github.com/hobby-kube/guide).
 
-Deploy a secure Kubernetes cluster on [Scaleway](https://www.scaleway.com/) or [DigitalOcean](https://www.digitalocean.com/) using [Terraform](https://www.terraform.io/).
+Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/) or [DigitalOcean](https://www.digitalocean.com/) using [Terraform](https://www.terraform.io/).
 
 ## Setup
 
@@ -20,11 +20,21 @@ Modules are using ssh-agent for remote operations. Add your SSH key with `ssh-ad
 
 Export the following environment variables depending on the modules you're using.
 
+#### Using Hetzner Cloud as provider
+
+At the time of writing the Hetzner Cloud provider requires manual installation.
+Follow the instructions here: [hetznercloud/terraform-provider-hcloud](https://github.com/hetznercloud/terraform-provider-hcloud/blob/master/README.md#installing-the-provider).
+
+```sh
+export TF_VAR_hcloud_token=<token>
+export TF_VAR_hcloud_ssh_keys=<keys> # e.g. '["12548","17593"]'
+```
+
 #### Using Scaleway as provider
 
 ```sh
-export TF_VAR_scaleway_organization=<ACCESS_KEY>
-export TF_VAR_scaleway_token=<TOKEN>
+export TF_VAR_scaleway_organization=<access_key>
+export TF_VAR_scaleway_token=<token>
 ```
 
 #### Using DigitalOcean as provider
@@ -49,6 +59,17 @@ export TF_VAR_domain=<domain> # e.g. example.org shall be already added to hoste
 export TF_VAR_aws_access_key=<ACCESS_KEY>
 export TF_VAR_aws_secret_key=<SECRET_KEY>
 export TF_VAR_aws_region=<region> # e.g. eu-west-1
+```
+
+#### Install additional APT packages
+
+Each provider takes an optional variable to install further packages during provisioning:
+
+```
+module "provider" {
+  # ...
+  apt_packages = ["ceph-common", "nfs-common"]
+}
 ```
 
 ### Usage
