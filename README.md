@@ -58,6 +58,17 @@ export TF_VAR_aws_secret_key=<SECRET_KEY>
 export TF_VAR_aws_region=<region> # e.g. eu-west-1
 ```
 
+#### Install additional APT packages
+
+Each provider takes an optional variable to install further packages during provisioning:
+
+```
+module "provider" {
+  # ...
+  apt_packages = ["ceph-common", "nfs-common"]
+}
+```
+
 ### Usage
 
 ```sh
