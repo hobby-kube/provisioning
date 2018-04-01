@@ -29,6 +29,11 @@ provider "hcloud" {
   token = "${var.token}"
 }
 
+variable "apt_packages" {
+  type    = "list"
+  default = []
+}
+
 resource "hcloud_server" "host" {
   name        = "${format(var.hostname_format, count.index + 1)}"
   location    = "${var.location}"
@@ -42,7 +47,7 @@ resource "hcloud_server" "host" {
     inline = [
       "while fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do sleep 1; done",
       "apt-get update",
-      "apt-get install -yq nfs-common ceph-common",
+      "apt-get install -yq ufw ${join(" ", var.apt_packages)}",
     ]
   }
 }

@@ -25,6 +25,11 @@ variable "image" {
   default = "Ubuntu Xenial"
 }
 
+variable "apt_packages" {
+  type    = "list"
+  default = []
+}
+
 # variable "storage_size" {
 #   default = 50
 # }
@@ -52,7 +57,7 @@ resource "scaleway_server" "host" {
   provisioner "remote-exec" {
     inline = [
       "apt-get update",
-      "apt-get install -yq apt-transport-https ufw nfs-common ceph-common",
+      "apt-get install -yq apt-transport-https ufw ${join(" ", var.apt_packages)}",
     ]
   }
 }
