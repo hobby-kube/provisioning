@@ -22,9 +22,6 @@ Export the following environment variables depending on the modules you're using
 
 #### Using Hetzner Cloud as provider
 
-At the time of writing the Hetzner Cloud provider requires manual installation.
-Follow the instructions here: [hetznercloud/terraform-provider-hcloud](https://github.com/hetznercloud/terraform-provider-hcloud/blob/master/README.md#installing-the-provider).
-
 ```sh
 export TF_VAR_hcloud_token=<token>
 export TF_VAR_hcloud_ssh_keys=<keys> # e.g. '["12548","17593"]'
