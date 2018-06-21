@@ -69,6 +69,18 @@ module "dns" {
 }
 */
 
+/*
+module "dns" {
+  source     = "./dns/digitalocean"
+  
+  count      = "${var.hosts}"
+  token      = "${var.digitalocean_token}"
+  domain     = "${var.domain}"
+  public_ips = "${module.provider.public_ips}"
+  hostnames  = "${module.provider.hostnames}"
+}
+*/
+
 module "swap" {
   source = "./service/swap"
 
