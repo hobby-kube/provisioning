@@ -40,7 +40,8 @@ export TF_VAR_node_count=5 # Defaults to 3
 export TF_VAR_hcloud_token=<token>
 export TF_VAR_hcloud_ssh_keys=<keys>
 # e.g.
-# export TF_VAR_hcloud_ssh_keys='["~/.ssh/id_rsa1.pub", "~/.ssh/id_rsa2.pub"]'
+# export TF_VAR_hcloud_ssh_keys='["My Desktop", "My Laptop"]'
+# These are the names you give your key after uploading it to the provider.
 ```
 
 
@@ -58,7 +59,8 @@ export TF_VAR_scaleway_token=<token>
 export TF_VAR_digitalocean_token=<token>
 export TF_VAR_digitalocean_ssh_keys=<keys>
 # e.g.
-# export TF_VAR_digitalocean_ssh_keys='["~/.ssh/id_rsa1.pub", "~/.ssh/id_rsa2.pub"]'
+# export TF_VAR_digitalocean_ssh_keys='["My Desktop", "My Laptop"]'
+# These are the names you give your key after uploading it to the provider.
 ```
 
 

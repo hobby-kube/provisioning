@@ -24,7 +24,8 @@ variable "hcloud_token" {
   default = ""
 }
 
-# export TF_VAR_hcloud_ssh_keys='["$(cat ~/.ssh/id_rsa_key1.pub)", "$(cat ~/.ssh/id_rsa_key2.pub)"]'
+# These are the names you give your key after uploading it to the provider.
+# export TF_VAR_hcloud_ssh_keys='["My Desktop", "My Laptop"]'
 variable "hcloud_ssh_keys" {
   default = []
 }
@@ -63,7 +64,8 @@ variable "digitalocean_token" {
   default = ""
 }
 
-# export TF_VAR_digitalocean_ssh_keys='["$(cat ~/.ssh/id_rsa_key1.pub)", "$(cat ~/.ssh/id_rsa_key2.pub)"]'
+# These are the names you give your key after uploading it to the provider.
+# export TF_VAR_digitalocean_ssh_keys='["My Desktop", "My Laptop"]'
 variable "digitalocean_ssh_keys" {
   default = []
 }
