@@ -95,6 +95,8 @@ module "provider" {
 
 ### Execute
 
+From the root of this project...
+
 ```sh
 # fetch the required modules
 $ terraform init
