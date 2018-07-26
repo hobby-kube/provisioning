@@ -1,5 +1,9 @@
-/* general */
-variable "hosts" {
+
+/* GENERAL */
+
+# number of machines to provision
+# export TF_VAR_node_count=5
+variable "node_count" {
   default = 3
 }
 
@@ -11,11 +15,15 @@ variable "hostname_format" {
   default = "kube%d"
 }
 
-/* hcloud */
+
+/* HCLOUD */
+
+# export TF_VAR_hcloud_token=$(cat /my/secret/tokens/hcloud_token.txt)
 variable "hcloud_token" {
   default = ""
 }
 
+# export TF_VAR_hcloud_ssh_keys='["$(cat ~/.ssh/id_rsa_key1.pub)", "$(cat ~/.ssh/id_rsa_key2.pub)"]'
 variable "hcloud_ssh_keys" {
   default = []
 }
@@ -28,11 +36,14 @@ variable "hcloud_type" {
   default = "cx11"
 }
 
-/* scaleway */
+
+/* SCALEWAY */
+
 variable "scaleway_organization" {
   default = ""
 }
 
+# export TF_VAR_scaleway_token=$(cat /my/secret/tokens/scaleway_token.txt)
 variable "scaleway_token" {
   default = ""
 }
@@ -41,11 +52,15 @@ variable "scaleway_region" {
   default = "ams1"
 }
 
-/* digitalocean */
+
+/* DIGITALOCEAN */
+
+# export TF_VAR_digitalocean_token=$(cat /my/secret/tokens/digitalocean_token.txt)
 variable "digitalocean_token" {
   default = ""
 }
 
+# export TF_VAR_digitalocean_ssh_keys='["$(cat ~/.ssh/id_rsa_key1.pub)", "$(cat ~/.ssh/id_rsa_key2.pub)"]'
 variable "digitalocean_ssh_keys" {
   default = []
 }
@@ -54,7 +69,9 @@ variable "digitalocean_region" {
   default = "fra1"
 }
 
-/* aws dns */
+
+/* AWS DNS */
+
 variable "aws_access_key" {
   default = ""
 }
@@ -67,16 +84,21 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
-/* cloudflare dns */
+
+/* CLOUDFLARE DNS */
+
 variable "cloudflare_email" {
   default = ""
 }
 
+# export TF_VAR_cloudflare_token=$(cat /my/secret/tokens/cloudflare_token.txt)
 variable "cloudflare_token" {
   default = ""
 }
 
-/* google dns */
+
+/* GOOGLE DNS */
+
 variable "google_project" {
   default = ""
 }

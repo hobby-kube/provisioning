@@ -4,7 +4,9 @@
 
 Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/) or [DigitalOcean](https://www.digitalocean.com/) using [Terraform](https://www.terraform.io/).
 
+
 ## Setup
+
 
 ### Requirements
 
@@ -16,16 +18,31 @@ brew install terraform kubectl jq wireguard-tools
 
 Modules are using ssh-agent for remote operations. Add your SSH key with `ssh-add -K` if Terraform repeatedly fails to connect to remote hosts.
 
+
 ### Configuration
 
+**Important:** Modify only `/main.tf` in project root, comment or uncomment sections as needed. All variables in `/variables.tf` can be set
+either directly or by exporting evironment variables following the form `TF_VAR_<var_name>` (see `/variables.tf` for examples).
+
 Export the following environment variables depending on the modules you're using.
+
+
+#### Set Number of Machines (Nodes)
+
+```sh
+export TF_VAR_node_count=5 # Defaults to 3
+```
+
 
 #### Using Hetzner Cloud as provider
 
 ```sh
 export TF_VAR_hcloud_token=<token>
-export TF_VAR_hcloud_ssh_keys=<keys> # e.g. '["12548","17593"]'
+export TF_VAR_hcloud_ssh_keys=<keys>
+# e.g.
+# export TF_VAR_hcloud_ssh_keys='["~/.ssh/id_rsa1.pub", "~/.ssh/id_rsa2.pub"]'
 ```
+
 
 #### Using Scaleway as provider
 
@@ -34,12 +51,16 @@ export TF_VAR_scaleway_organization=<access_key>
 export TF_VAR_scaleway_token=<token>
 ```
 
+
 #### Using DigitalOcean as provider
 
 ```sh
 export TF_VAR_digitalocean_token=<token>
-export TF_VAR_digitalocean_ssh_keys=<keys> # e.g. '["121671", "1714133"]'
+export TF_VAR_digitalocean_ssh_keys=<keys>
+# e.g.
+# export TF_VAR_digitalocean_ssh_keys='["~/.ssh/id_rsa1.pub", "~/.ssh/id_rsa2.pub"]'
 ```
+
 
 #### Using Cloudflare for DNS entries
 
@@ -49,6 +70,7 @@ export TF_VAR_cloudflare_email=<email>
 export TF_VAR_cloudflare_token=<token>
 ```
 
+
 #### Using Amazon Route 53 for DNS entries
 
 ```sh
@@ -57,6 +79,7 @@ export TF_VAR_aws_access_key=<ACCESS_KEY>
 export TF_VAR_aws_secret_key=<SECRET_KEY>
 export TF_VAR_aws_region=<region> # e.g. eu-west-1
 ```
+
 
 #### Install additional APT packages
 
@@ -69,7 +92,8 @@ module "provider" {
 }
 ```
 
-### Usage
+
+### Execute
 
 ```sh
 # fetch the required modules
@@ -81,6 +105,7 @@ $ terraform plan
 # execute it
 $ terraform apply
 ```
+
 
 ## Using modules independently
 
