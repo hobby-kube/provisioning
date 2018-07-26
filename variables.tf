@@ -17,6 +17,7 @@ variable "hostname_format" {
 
 
 /* HCLOUD */
+# see API docs for possible inputs: https://docs.hetzner.cloud/
 
 # export TF_VAR_hcloud_token=$(cat /my/secret/tokens/hcloud_token.txt)
 variable "hcloud_token" {
@@ -38,6 +39,7 @@ variable "hcloud_type" {
 
 
 /* SCALEWAY */
+# see API docs for possible inputs: https://developer.scaleway.com/
 
 variable "scaleway_organization" {
   default = ""
@@ -53,7 +55,8 @@ variable "scaleway_region" {
 }
 
 
-/* DIGITALOCEAN */
+/* DIGITALOCEAN  */
+# see API docs for possible inputs: https://developers.digitalocean.com/documentation/v2/
 
 # export TF_VAR_digitalocean_token=$(cat /my/secret/tokens/digitalocean_token.txt)
 variable "digitalocean_token" {
