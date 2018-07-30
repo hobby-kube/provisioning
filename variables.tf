@@ -18,7 +18,7 @@ variable "hcloud_token" {
 }
 
 variable "hcloud_ssh_keys" {
-  default = ["home_imac"]
+  default = []
 }
 
 variable "hcloud_location" {
