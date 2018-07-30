@@ -21,8 +21,8 @@ Modules are using ssh-agent for remote operations. Add your SSH key with `ssh-ad
 
 ### Configuration
 
-**Important:** Modify only `/main.tf` in project root, comment or uncomment sections as needed. All variables in `/variables.tf` can be set
-either directly or by exporting evironment variables following the form `TF_VAR_<var_name>` (see `/variables.tf` for examples).
+**Important:** Modify only [main.tf](main.tf) in project root, comment or uncomment sections as needed. All variables in [variables.tf](variables.tf) can be set
+either directly or from evironment variable.
 
 Export the following environment variables depending on the modules you're using.
 
@@ -30,7 +30,7 @@ Export the following environment variables depending on the modules you're using
 #### Set Number of Machines (Nodes)
 
 ```sh
-export TF_VAR_node_count=5 # Defaults to 3
+export TF_VAR_node_count=3
 ```
 
 

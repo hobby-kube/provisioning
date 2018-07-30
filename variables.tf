@@ -1,33 +1,24 @@
 
-/* GENERAL */
-
-# number of machines to provision
-# export TF_VAR_node_count=5
+/* general */
 variable "node_count" {
   default = 3
 }
 
 variable "domain" {
-  default = "example.com"
+  default = "stokebrain.com"
 }
 
 variable "hostname_format" {
   default = "kube%d"
 }
 
-
-/* HCLOUD */
-# see API docs for possible inputs: https://docs.hetzner.cloud/
-
-# export TF_VAR_hcloud_token=$(cat /my/secret/tokens/hcloud_token.txt)
+/* hcloud */
 variable "hcloud_token" {
   default = ""
 }
 
-# These are the names you give your key after uploading it to the provider.
-# export TF_VAR_hcloud_ssh_keys='["My Desktop", "My Laptop"]'
 variable "hcloud_ssh_keys" {
-  default = []
+  default = ["home_imac"]
 }
 
 variable "hcloud_location" {
@@ -38,15 +29,11 @@ variable "hcloud_type" {
   default = "cx11"
 }
 
-
-/* SCALEWAY */
-# see API docs for possible inputs: https://developer.scaleway.com/
-
+/* scaleway */
 variable "scaleway_organization" {
   default = ""
 }
 
-# export TF_VAR_scaleway_token=$(cat /my/secret/tokens/scaleway_token.txt)
 variable "scaleway_token" {
   default = ""
 }
@@ -55,17 +42,11 @@ variable "scaleway_region" {
   default = "ams1"
 }
 
-
-/* DIGITALOCEAN  */
-# see API docs for possible inputs: https://developers.digitalocean.com/documentation/v2/
-
-# export TF_VAR_digitalocean_token=$(cat /my/secret/tokens/digitalocean_token.txt)
+/* digitalocean  */
 variable "digitalocean_token" {
   default = ""
 }
 
-# These are the names you give your key after uploading it to the provider.
-# export TF_VAR_digitalocean_ssh_keys='["My Desktop", "My Laptop"]'
 variable "digitalocean_ssh_keys" {
   default = []
 }
@@ -74,9 +55,7 @@ variable "digitalocean_region" {
   default = "fra1"
 }
 
-
-/* AWS DNS */
-
+/* aws dns */
 variable "aws_access_key" {
   default = ""
 }
@@ -89,21 +68,16 @@ variable "aws_region" {
   default = "eu-west-1"
 }
 
-
-/* CLOUDFLARE DNS */
-
+/* cloudflare dns */
 variable "cloudflare_email" {
   default = ""
 }
 
-# export TF_VAR_cloudflare_token=$(cat /my/secret/tokens/cloudflare_token.txt)
 variable "cloudflare_token" {
   default = ""
 }
 
-
-/* GOOGLE DNS */
-
+/* google dns */
 variable "google_project" {
   default = ""
 }

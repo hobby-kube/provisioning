@@ -1,7 +1,7 @@
 
 # module "provider" {
 #   source = "./provider/scaleway"
-
+#
 #   organization    = "${var.scaleway_organization}"
 #   token           = "${var.scaleway_token}"
 #   hosts           = "${var.node_count}"
@@ -22,7 +22,7 @@ module "provider" {
 
 # module "provider" {
 #   source = "./provider/digitalocean"
-
+#
 #   token           = "${var.digitalocean_token}"
 #   ssh_keys        = "${var.digitalocean_ssh_keys}"
 #   hosts           = "${var.node_count}"
@@ -30,20 +30,20 @@ module "provider" {
 #   region          = "${var.digitalocean_region}"
 # }
 
-# module "dns" {
-#   source = "./dns/cloudflare"
+module "dns" {
+  source = "./dns/cloudflare"
 
-#   count      = "${var.node_count}"
-#   email      = "${var.cloudflare_email}"
-#   token      = "${var.cloudflare_token}"
-#   domain     = "${var.domain}"
-#   public_ips = "${module.provider.public_ips}"
-#   hostnames  = "${module.provider.hostnames}"
-# }
+  count      = "${var.node_count}"
+  email      = "${var.cloudflare_email}"
+  token      = "${var.cloudflare_token}"
+  domain     = "${var.domain}"
+  public_ips = "${module.provider.public_ips}"
+  hostnames  = "${module.provider.hostnames}"
+}
 
 # module "dns" {
 #   source = "./dns/aws"
-
+#
 #   count      = "${var.node_count}"
 #   access_key = "${var.aws_access_key}"
 #   secret_key = "${var.aws_secret_key}"
@@ -55,7 +55,7 @@ module "provider" {
 
 # module "dns" {
 #   source = "./dns/google"
-
+#
 #   count        = "${var.node_count}"
 #   project      = "${var.google_project}"
 #   region       = "${var.google_region}"
@@ -68,7 +68,7 @@ module "provider" {
 
 # module "dns" {
 #   source     = "./dns/digitalocean"
-
+#
 #   count      = "${var.node_count}"
 #   token      = "${var.digitalocean_token}"
 #   domain     = "${var.domain}"
@@ -79,7 +79,7 @@ module "provider" {
 module "swap" {
   source = "./service/swap"
 
-  count       = "${var.node_count}"
+  count       = "${var.hosts}"
   connections = "${module.provider.public_ips}"
 }
 
