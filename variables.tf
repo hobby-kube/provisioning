@@ -5,7 +5,7 @@ variable "node_count" {
 }
 
 variable "domain" {
-  default = "stokebrain.com"
+  default = "example.com"
 }
 
 variable "hostname_format" {
@@ -42,7 +42,7 @@ variable "scaleway_region" {
   default = "ams1"
 }
 
-/* digitalocean  */
+/* digitalocean */
 variable "digitalocean_token" {
   default = ""
 }
