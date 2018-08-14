@@ -72,7 +72,7 @@ module "dns" {
 /*
 module "dns" {
   source     = "./dns/digitalocean"
-  
+
   count      = "${var.hosts}"
   token      = "${var.digitalocean_token}"
   domain     = "${var.domain}"
@@ -80,13 +80,6 @@ module "dns" {
   hostnames  = "${module.provider.hostnames}"
 }
 */
-
-module "swap" {
-  source = "./service/swap"
-
-  count       = "${var.hosts}"
-  connections = "${module.provider.public_ips}"
-}
 
 module "wireguard" {
   source = "./security/wireguard"
