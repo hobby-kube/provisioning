@@ -1,5 +1,6 @@
+
 /* general */
-variable "hosts" {
+variable "node_count" {
   default = 3
 }
 
