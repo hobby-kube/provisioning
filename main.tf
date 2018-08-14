@@ -1,14 +1,3 @@
-
-# module "provider" {
-#   source = "./provider/scaleway"
-#
-#   organization    = "${var.scaleway_organization}"
-#   token           = "${var.scaleway_token}"
-#   hosts           = "${var.node_count}"
-#   hostname_format = "${var.hostname_format}"
-#   region          = "${var.scaleway_region}"
-# }
-
 module "provider" {
   source = "./provider/hcloud"
 
@@ -19,6 +8,16 @@ module "provider" {
   location        = "${var.hcloud_location}"
   hostname_format = "${var.hostname_format}"
 }
+  
+# module "provider" {
+#   source = "./provider/scaleway"
+#
+#   organization    = "${var.scaleway_organization}"
+#   token           = "${var.scaleway_token}"
+#   hosts           = "${var.node_count}"
+#   hostname_format = "${var.hostname_format}"
+#   region          = "${var.scaleway_region}"
+# }
 
 # module "provider" {
 #   source = "./provider/digitalocean"
@@ -75,13 +74,6 @@ module "dns" {
 #   public_ips = "${module.provider.public_ips}"
 #   hostnames  = "${module.provider.hostnames}"
 # }
-
-module "swap" {
-  source = "./service/swap"
-
-  count       = "${var.hosts}"
-  connections = "${module.provider.public_ips}"
-}
 
 module "wireguard" {
   source = "./security/wireguard"
