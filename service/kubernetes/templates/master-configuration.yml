@@ -7,3 +7,6 @@ etcd:
   ${etcd_endpoints}
 apiServerCertSANs:
   ${cert_sans}
+kubeletConfiguration:
+  baseConfig:
+    failSwapOn: false

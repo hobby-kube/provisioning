@@ -8,13 +8,13 @@ module "provider" {
   location        = "${var.hcloud_location}"
   hostname_format = "${var.hostname_format}"
 }
-  
+
 # module "provider" {
 #   source = "./provider/scaleway"
 #
+#   hosts           = "${var.node_count}"
 #   organization    = "${var.scaleway_organization}"
 #   token           = "${var.scaleway_token}"
-#   hosts           = "${var.node_count}"
 #   hostname_format = "${var.hostname_format}"
 #   region          = "${var.scaleway_region}"
 # }
@@ -22,12 +22,19 @@ module "provider" {
 # module "provider" {
 #   source = "./provider/digitalocean"
 #
+#   hosts           = "${var.node_count}"
 #   token           = "${var.digitalocean_token}"
 #   ssh_keys        = "${var.digitalocean_ssh_keys}"
-#   hosts           = "${var.node_count}"
 #   hostname_format = "${var.hostname_format}"
 #   region          = "${var.digitalocean_region}"
 # }
+
+module "swap" {
+  source = "./service/swap"
+
+  count       = "${var.node_count}"
+  connections = "${module.provider.public_ips}"
+}
 
 module "dns" {
   source = "./dns/cloudflare"
