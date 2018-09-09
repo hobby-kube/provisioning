@@ -52,9 +52,10 @@ export TF_VAR_scaleway_token=<token>
 export TF_VAR_digitalocean_token=<token>
 export TF_VAR_digitalocean_ssh_keys=<keys>
 # e.g.
-# export TF_VAR_digitalocean_ssh_keys='["My Desktop", "My Laptop"]'
-# These are the names you give your key after uploading it to the provider.
+# export TF_VAR_digitalocean_ssh_keys='["1234567", "2468013"]'
 ```
+You can get your SSH keys' ID using [the API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
+
 
 #### Using Cloudflare for DNS entries
 
