@@ -19,7 +19,7 @@ Modules are using ssh-agent for remote operations. Add your SSH key with `ssh-ad
 ### Configuration
 
 **Important:** Modify only [main.tf](main.tf) in project root, comment or uncomment sections as needed. All variables in [variables.tf](variables.tf) can be set
-either directly or from evironment variable.
+either directly or from environment variable.
 
 Export the following environment variables depending on the modules you're using:
 
