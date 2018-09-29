@@ -72,7 +72,7 @@ data "template_file" "master-configuration" {
 
   vars {
     api_advertise_addresses = "${element(var.vpn_ips, 0)}"
-    etcd_endpoints          = "- ${join("\n  - ", var.etcd_endpoints)}"
+    etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
     cert_sans               = "- ${element(var.connections, 0)}"
   }
 }

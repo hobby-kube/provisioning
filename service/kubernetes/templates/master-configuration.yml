@@ -3,8 +3,9 @@ kind: MasterConfiguration
 api:
   advertiseAddress: ${api_advertise_addresses}
 etcd:
-  endpoints:
-  ${etcd_endpoints}
+  external:
+    endpoints:
+    ${etcd_endpoints}
 apiServerCertSANs:
   ${cert_sans}
 kubeletConfiguration:
