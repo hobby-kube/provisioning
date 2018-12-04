@@ -41,6 +41,14 @@ variable "scaleway_region" {
   default = "ams1"
 }
 
+variable "scaleway_type" {
+  default = ""
+}
+
+variable "scaleway_image" {
+  default = ""
+}
+
 /* digitalocean */
 variable "digitalocean_token" {
   default = ""

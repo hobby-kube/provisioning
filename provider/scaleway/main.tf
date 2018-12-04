@@ -46,6 +46,7 @@ resource "scaleway_server" "host" {
   image               = "${data.scaleway_image.image.id}"
   bootscript          = "${data.scaleway_bootscript.bootscript.id}"
   dynamic_ip_required = true
+#  enable_ipv6         = true
 
   count = "${var.hosts}"
 
@@ -85,5 +86,5 @@ output "private_ips" {
 }
 
 output "private_network_interface" {
-  value = "eth0"
+  value = "enp0s2"
 }

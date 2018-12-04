@@ -2,7 +2,7 @@
 set -e
 
 kubeadm init --config /tmp/master-configuration.yml \
-  --ignore-preflight-errors=Swap
+  --ignore-preflight-errors=Swap,NumCPU
 
 kubeadm token create ${token}
 

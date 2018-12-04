@@ -44,6 +44,10 @@ export TF_VAR_hcloud_ssh_keys=<keys>
 ```sh
 export TF_VAR_scaleway_organization=<access_key>
 export TF_VAR_scaleway_token=<token>
+# e.g.
+# export TF_VAR_scaleway_type=START1-XS
+# export TF_VAR_scaleway_image="Ubuntu Mini Xenial 25G"
+
 ```
 
 #### Using DigitalOcean as provider
