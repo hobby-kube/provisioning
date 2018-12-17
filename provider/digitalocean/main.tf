@@ -13,18 +13,15 @@ variable "hostname_format" {
 }
 
 variable "region" {
-  type    = "string"
-  default = "fra1"
+  type = "string"
 }
 
 variable "image" {
-  type    = "string"
-  default = "ubuntu-16-04-x64"
+  type = "string"
 }
 
 variable "size" {
-  type    = "string"
-  default = "1gb"
+  type = "string"
 }
 
 variable "apt_packages" {

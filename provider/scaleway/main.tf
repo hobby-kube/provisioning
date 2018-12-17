@@ -11,18 +11,15 @@ variable "hostname_format" {
 }
 
 variable "region" {
-  type    = "string"
-  default = "ams1"
+  type = "string"
 }
 
 variable "type" {
-  type    = "string"
-  default = "VC1S"
+  type = "string"
 }
 
 variable "image" {
-  type    = "string"
-  default = "Ubuntu Xenial"
+  type = "string"
 }
 
 variable "apt_packages" {
@@ -46,7 +43,6 @@ resource "scaleway_server" "host" {
   image               = "${data.scaleway_image.image.id}"
   bootscript          = "${data.scaleway_bootscript.bootscript.id}"
   dynamic_ip_required = true
-#  enable_ipv6         = true
 
   count = "${var.hosts}"
 

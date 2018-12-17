@@ -28,6 +28,10 @@ variable "hcloud_type" {
   default = "cx11"
 }
 
+variable "hcloud_image" {
+  default = "ubuntu-16.04"
+}
+
 /* scaleway */
 variable "scaleway_organization" {
   default = ""
@@ -42,11 +46,11 @@ variable "scaleway_region" {
 }
 
 variable "scaleway_type" {
-  default = ""
+  default = "VC1S"
 }
 
 variable "scaleway_image" {
-  default = ""
+  default = "Ubuntu Xenial"
 }
 
 /* digitalocean */
@@ -60,6 +64,14 @@ variable "digitalocean_ssh_keys" {
 
 variable "digitalocean_region" {
   default = "fra1"
+}
+
+variable "digitalocean_size" {
+  default = "1gb"
+}
+
+variable "digitalocean_image" {
+  default = "ubuntu-16-04-x64"
 }
 
 /* aws dns */

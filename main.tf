@@ -1,34 +1,37 @@
 module "provider" {
   source = "./provider/hcloud"
 
-  hosts           = "${var.node_count}"
   token           = "${var.hcloud_token}"
-  type            = "${var.hcloud_type}"
   ssh_keys        = "${var.hcloud_ssh_keys}"
   location        = "${var.hcloud_location}"
+  type            = "${var.hcloud_type}"
+  image           = "${var.hcloud_image}"
+  hosts           = "${var.node_count}"
   hostname_format = "${var.hostname_format}"
 }
 
 # module "provider" {
 #   source = "./provider/scaleway"
 #
-#   hosts           = "${var.node_count}"
 #   organization    = "${var.scaleway_organization}"
 #   token           = "${var.scaleway_token}"
-#   hostname_format = "${var.hostname_format}"
 #   region          = "${var.scaleway_region}"
-#   image           = "${var.scaleway_image}"
 #   type            = "${var.scaleway_type}"
+#   image           = "${var.scaleway_image}"
+#   hosts           = "${var.node_count}"
+#   hostname_format = "${var.hostname_format}"
 # }
 
 # module "provider" {
 #   source = "./provider/digitalocean"
 #
-#   hosts           = "${var.node_count}"
 #   token           = "${var.digitalocean_token}"
 #   ssh_keys        = "${var.digitalocean_ssh_keys}"
-#   hostname_format = "${var.hostname_format}"
 #   region          = "${var.digitalocean_region}"
+#   size            = "${var.digitalocean_size}"
+#   image           = "${var.digitalocean_image}"
+#   hosts           = "${var.node_count}"
+#   hostname_format = "${var.hostname_format}"
 # }
 
 module "swap" {

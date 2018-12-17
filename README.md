@@ -36,7 +36,9 @@ export TF_VAR_hcloud_token=<token>
 export TF_VAR_hcloud_ssh_keys=<keys>
 # e.g.
 # export TF_VAR_hcloud_ssh_keys='["My Desktop", "My Laptop"]'
-# These are the names you give your key after uploading it to the provider.
+# export TF_VAR_hcloud_location="nbg1"
+# export TF_VAR_hcloud_type="cx11"
+# export TF_VAR_hcloud_image="ubuntu-16.04"
 ```
 
 #### Using Scaleway as provider
@@ -45,8 +47,9 @@ export TF_VAR_hcloud_ssh_keys=<keys>
 export TF_VAR_scaleway_organization=<access_key>
 export TF_VAR_scaleway_token=<token>
 # e.g.
-# export TF_VAR_scaleway_type=START1-XS
-# export TF_VAR_scaleway_image="Ubuntu Mini Xenial 25G"
+# export TF_VAR_scaleway_region="ams1"
+# export TF_VAR_scaleway_type="VC1S"
+# export TF_VAR_scaleway_image="Ubuntu Xenial"
 
 ```
 
@@ -56,10 +59,13 @@ export TF_VAR_scaleway_token=<token>
 export TF_VAR_digitalocean_token=<token>
 export TF_VAR_digitalocean_ssh_keys=<keys>
 # e.g.
-# export TF_VAR_digitalocean_ssh_keys='["1234567", "2468013"]'
+# export TF_VAR_digitalocean_ssh_keys='["1234567", "2345678"]'
+# export TF_VAR_digitalocean_region="fra1"
+# export TF_VAR_digitalocean_size="1gb"
+# export TF_VAR_digitalocean_image="ubuntu-16-04-x64"
 ```
-You can get your SSH keys' ID using [the API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
 
+You can get SSH key IDs using [this API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
 
 #### Using Cloudflare for DNS entries
 

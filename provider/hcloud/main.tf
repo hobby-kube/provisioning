@@ -17,8 +17,7 @@ variable "type" {
 }
 
 variable "image" {
-  type    = "string"
-  default = "ubuntu-16.04"
+  type = "string"
 }
 
 variable "ssh_keys" {
