@@ -34,19 +34,22 @@ export TF_VAR_node_count=3
 ```sh
 export TF_VAR_hcloud_token=<token>
 export TF_VAR_hcloud_ssh_keys=<keys>
-# e.g.
-# export TF_VAR_hcloud_ssh_keys='["My Desktop", "My Laptop"]'
+export TF_VAR_hcloud_ssh_keys='["<description-key1>", "<description-key2>"]'
+# Defaults:
 # export TF_VAR_hcloud_location="nbg1"
 # export TF_VAR_hcloud_type="cx11"
 # export TF_VAR_hcloud_image="ubuntu-16.04"
 ```
+
+SSH keys are referenced by their description. Visit the Hetzner Cloud console at
+`https://console.hetzner.cloud/projects/<project-id>/access/sshkeys`
 
 #### Using Scaleway as provider
 
 ```sh
 export TF_VAR_scaleway_organization=<access_key>
 export TF_VAR_scaleway_token=<token>
-# e.g.
+# Defaults:
 # export TF_VAR_scaleway_region="ams1"
 # export TF_VAR_scaleway_type="VC1S"
 # export TF_VAR_scaleway_image="Ubuntu Xenial"
@@ -58,8 +61,8 @@ export TF_VAR_scaleway_token=<token>
 ```sh
 export TF_VAR_digitalocean_token=<token>
 export TF_VAR_digitalocean_ssh_keys=<keys>
-# e.g.
-# export TF_VAR_digitalocean_ssh_keys='["1234567", "2345678"]'
+export TF_VAR_digitalocean_ssh_keys='["<id-key1>", "<id-key2>"]'
+# Defaults:
 # export TF_VAR_digitalocean_region="fra1"
 # export TF_VAR_digitalocean_size="1gb"
 # export TF_VAR_digitalocean_image="ubuntu-16-04-x64"
