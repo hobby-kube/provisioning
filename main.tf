@@ -17,6 +17,8 @@ module "provider" {
 #   token           = "${var.scaleway_token}"
 #   hostname_format = "${var.hostname_format}"
 #   region          = "${var.scaleway_region}"
+#   image           = "${var.scaleway_image}"
+#   type            = "${var.scaleway_type}"
 # }
 
 # module "provider" {

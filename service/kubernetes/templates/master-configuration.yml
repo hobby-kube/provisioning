@@ -1,13 +1,19 @@
-apiVersion: kubeadm.k8s.io/v1alpha2
-kind: MasterConfiguration
-api:
+apiVersion: kubeadm.k8s.io/v1alpha3
+kind: InitConfiguration
+apiEndpoint:
   advertiseAddress: ${api_advertise_addresses}
+  bindPort: 6443
+---
+apiVersion: kubeadm.k8s.io/v1alpha3
+kind: ClusterConfiguration
+certificatesDir: /etc/kubernetes/pki
+apiServerCertSANs:
+  ${cert_sans}
 etcd:
   external:
     endpoints:
     ${etcd_endpoints}
-apiServerCertSANs:
-  ${cert_sans}
-kubeletConfiguration:
-  baseConfig:
-    failSwapOn: false
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+failSwapOn: false
