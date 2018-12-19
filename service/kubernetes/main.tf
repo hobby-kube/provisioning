@@ -16,6 +16,18 @@ variable "etcd_endpoints" {
   type = "list"
 }
 
+variable "etcd_ca_certificate" {
+  type = "string"
+}
+
+variable "etcd_client_certificate" {
+  type = "string"
+}
+
+variable "etcd_client_key" {
+  type = "string"
+}
+
 variable "overlay_interface" {
   default = "weave"
 }
@@ -72,8 +84,11 @@ data "template_file" "master-configuration" {
 
   vars {
     api_advertise_addresses = "${element(var.vpn_ips, 0)}"
-    etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
     cert_sans               = "- ${element(var.connections, 0)}"
+    etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
+    etcd_ca_certificate     = "${var.etcd_ca_certificate}"
+    etcd_client_certificate = "${var.etcd_client_certificate}"
+    etcd_client_key         = "${var.etcd_client_key}"
   }
 }
 
