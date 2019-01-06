@@ -1,0 +1,22 @@
+# terraform.tfvars for Hetzner Cloud provider
+
+### Required:
+
+# The project name
+project_name="demo"
+
+# Nr of hosts to create
+hosts=1
+
+# `hcloud datacenter list`
+location="nbg1"
+
+# `hcloud server-type list` 
+type="cx11"
+
+# `hcloud image list`
+image="ubuntu-18.04" 
+
+### Optionals:
+# labels={ foo = "bar" }
+# apt_packages=["ceph-common"]
