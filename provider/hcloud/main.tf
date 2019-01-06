@@ -24,13 +24,19 @@ variable "ssh_keys" {
   type = "list"
 }
 
-provider "hcloud" {
-  token = "${var.token}"
-}
 
 variable "apt_packages" {
   type    = "list"
   default = []
+}
+
+variable "labels" {
+  type    = "map"
+  default = {}
+}
+
+provider "hcloud" {
+  token = "${var.token}"
 }
 
 resource "hcloud_server" "host" {
@@ -39,6 +45,7 @@ resource "hcloud_server" "host" {
   image       = "${var.image}"
   server_type = "${var.type}"
   ssh_keys    = ["${var.ssh_keys}"]
+  labels      = "${merge(var.labels, map("created_by", "terraform"))}"
 
   count = "${var.hosts}"
 
