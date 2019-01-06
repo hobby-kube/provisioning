@@ -1,29 +1,37 @@
-variable "token" {}
+variable "token" {
+  type        = "string"
+  description = "Should match HCLOUD_TOKEN"
+}
 
 variable "hosts" {
   default = 0
 }
 
 variable "hostname_prefix" {
-  type = "string"
+  type        = "string"
+  description = "What hostname prefix to use. Default: demo"
+  default     = "demo"
 }
 
 variable "location" {
-  type = "string"
+  type        = "string"
+  description = "Help: `hcloud location list`"
 }
 
 variable "type" {
-  type = "string"
+  type        = "string"
+  description = "Help: `hcloud server-type list`"
 }
 
 variable "image" {
-  type = "string"
+  type        = "string"
+  description = "Help: `hcloud image list`"
 }
 
 variable "ssh_keys" {
-  type = "list"
+  type        = "list"
+  description = "Help: `hcloud ssh-key list`"
 }
-
 
 variable "apt_packages" {
   type    = "list"
