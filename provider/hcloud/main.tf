@@ -1,5 +1,6 @@
-locals {
-  project_name = "demo"
+variable "project_name" {
+  type        = "string"
+  description = "Used for tagging and host naming"
 }
 
 variable "token" {
@@ -9,12 +10,7 @@ variable "token" {
 
 variable "hosts" {
   default = 0
-}
-
-variable "hostname_prefix" {
-  type        = "string"
-  description = "What hostname prefix to use. Default: demo"
-  default     = "demo"
+  description = "Number of hosts to be created"
 }
 
 variable "location" {
@@ -47,13 +43,13 @@ provider "hcloud" {
 }
 
 resource "hcloud_ssh_key" "default" {
-  name       = "${local.project_name}"
+  name       = "${var.project_name}"
   labels     = "${merge(var.labels, map("created_by", "terraform"))}"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
 
 resource "hcloud_server" "host" {
-  name        = "${format("%s-%03d", var.hostname_prefix, count.index + 1)}"
+  name        = "${format("%s-%03d", var.project_name, count.index + 1)}"
   location    = "${var.location}"
   image       = "${var.image}"
   server_type = "${var.type}"
