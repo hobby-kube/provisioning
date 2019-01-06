@@ -1,3 +1,7 @@
+locals {
+  project_name = "demo"
+}
+
 variable "token" {
   type        = "string"
   description = "Should match HCLOUD_TOKEN"
@@ -28,11 +32,6 @@ variable "image" {
   description = "Help: `hcloud image list`"
 }
 
-variable "ssh_keys" {
-  type        = "list"
-  description = "Help: `hcloud ssh-key list`"
-}
-
 variable "apt_packages" {
   type    = "list"
   default = []
@@ -47,12 +46,18 @@ provider "hcloud" {
   token = "${var.token}"
 }
 
+resource "hcloud_ssh_key" "default" {
+  name       = "${local.project_name}"
+  labels     = "${merge(var.labels, map("created_by", "terraform"))}"
+  public_key = "${file("~/.ssh/id_rsa.pub")}"
+}
+
 resource "hcloud_server" "host" {
   name        = "${format("%s-%03d", var.hostname_prefix, count.index + 1)}"
   location    = "${var.location}"
   image       = "${var.image}"
   server_type = "${var.type}"
-  ssh_keys    = ["${var.ssh_keys}"]
+  ssh_keys    = ["${hcloud_ssh_key.default.id}"]
   labels      = "${merge(var.labels, map("created_by", "terraform"))}"
 
   count = "${var.hosts}"
