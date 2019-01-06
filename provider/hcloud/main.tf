@@ -4,7 +4,7 @@ variable "hosts" {
   default = 0
 }
 
-variable "hostname_format" {
+variable "hostname_prefix" {
   type = "string"
 }
 
@@ -34,7 +34,7 @@ variable "apt_packages" {
 }
 
 resource "hcloud_server" "host" {
-  name        = "${format(var.hostname_format, count.index + 1)}"
+  name        = "${format("%s-%03d", var.hostname_prefix, count.index + 1)}"
   location    = "${var.location}"
   image       = "${var.image}"
   server_type = "${var.type}"
