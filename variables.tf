@@ -7,17 +7,9 @@ variable "domain" {
   default = "example.com"
 }
 
-variable "hostname_format" {
-  default = "kube%d"
-}
-
 /* hcloud */
 variable "hcloud_token" {
   default = ""
-}
-
-variable "hcloud_ssh_keys" {
-  default = []
 }
 
 variable "hcloud_location" {

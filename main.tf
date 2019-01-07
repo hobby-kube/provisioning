@@ -1,13 +1,14 @@
 module "provider" {
   source = "./provider/hcloud"
 
+  project_name    = "demo"
   token           = "${var.hcloud_token}"
-  ssh_keys        = "${var.hcloud_ssh_keys}"
+  #ssh_keys        = "${var.hcloud_ssh_keys}"
   location        = "${var.hcloud_location}"
   type            = "${var.hcloud_type}"
   image           = "${var.hcloud_image}"
   hosts           = "${var.node_count}"
-  hostname_format = "${var.hostname_format}"
+  #hostname_format = "${var.hostname_format}"
 }
 
 # module "provider" {
@@ -41,16 +42,16 @@ module "swap" {
   connections = "${module.provider.public_ips}"
 }
 
-module "dns" {
-  source = "./dns/cloudflare"
+#module "dns" {
+#  source = "./dns/cloudflare"
 
-  count      = "${var.node_count}"
-  email      = "${var.cloudflare_email}"
-  token      = "${var.cloudflare_token}"
-  domain     = "${var.domain}"
-  public_ips = "${module.provider.public_ips}"
-  hostnames  = "${module.provider.hostnames}"
-}
+#  count      = "${var.node_count}"
+#  email      = "${var.cloudflare_email}"
+#  token      = "${var.cloudflare_token}"
+#  domain     = "${var.domain}"
+#  public_ips = "${module.provider.public_ips}"
+#  hostnames  = "${module.provider.hostnames}"
+#}
 
 # module "dns" {
 #   source = "./dns/aws"
