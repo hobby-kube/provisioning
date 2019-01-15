@@ -9,7 +9,7 @@ kubeadm token create ${token}
 [ -d $HOME/.kube ] || mkdir -p $HOME/.kube
 ln -s /etc/kubernetes/admin.conf $HOME/.kube/config
 
-until $(curl --output /dev/null --silent --head --fail http://localhost:6443); do
+until nc -z localhost 6443; do
   echo "Waiting for API server to respond"
   sleep 5
 done
