@@ -121,10 +121,13 @@ module "etcd" {
 module "kubernetes" {
   source = "./service/kubernetes"
 
-  count          = "${var.node_count}"
-  connections    = "${module.provider.public_ips}"
-  cluster_name   = "${var.domain}"
-  vpn_interface  = "${module.wireguard.vpn_interface}"
-  vpn_ips        = "${module.wireguard.vpn_ips}"
-  etcd_endpoints = "${module.etcd.endpoints}"
+  count                   = "${var.node_count}"
+  connections             = "${module.provider.public_ips}"
+  cluster_name            = "${var.domain}"
+  vpn_interface           = "${module.wireguard.vpn_interface}"
+  vpn_ips                 = "${module.wireguard.vpn_ips}"
+  etcd_endpoints          = "${module.etcd.endpoints}"
+  etcd_ca_certificate     = "${module.etcd.ca_certificate}"
+  etcd_client_certificate = "${module.etcd.client_certificate}"
+  etcd_client_key         = "${module.etcd.client_key}"
 }

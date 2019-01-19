@@ -13,6 +13,9 @@ etcd:
   external:
     endpoints:
     ${etcd_endpoints}
+    caFile: ${etcd_ca_certificate}
+    certFile: ${etcd_client_certificate}
+    keyFile: ${etcd_client_key}
 ---
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration

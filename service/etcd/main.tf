@@ -21,7 +21,8 @@ variable "version" {
 }
 
 resource "null_resource" "etcd" {
-  count = "${var.count}"
+  depends_on = ["null_resource.etcd-certs"]
+  count      = "${var.count}"
 
   triggers = {
     template = "${join("", data.template_file.etcd-service.*.rendered)}"
@@ -59,10 +60,15 @@ data "template_file" "etcd-service" {
 
   vars {
     hostname              = "${element(var.hostnames, count.index)}"
-    intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", var.hostnames, var.vpn_ips))}"
-    listen_client_urls    = "http://${element(var.vpn_ips, count.index)}:2379"
-    advertise_client_urls = "http://${element(var.vpn_ips, count.index)}:2379"
-    listen_peer_urls      = "http://${element(var.vpn_ips, count.index)}:2380"
+    intial_cluster        = "${join(",", formatlist("%s=https://%s:2380", var.hostnames, var.vpn_ips))}"
+    listen_client_urls    = "https://${element(var.vpn_ips, count.index)}:2379"
+    advertise_client_urls = "https://${element(var.vpn_ips, count.index)}:2379"
+    listen_peer_urls      = "https://${element(var.vpn_ips, count.index)}:2380"
+    ca_certificate        = "${local.ca_certificate}"
+    server_certificate    = "${local.server_certificate}"
+    server_key            = "${local.server_key}"
+    peer_certificate      = "${local.peer_certificate}"
+    peer_key              = "${local.peer_key}"
     vpn_unit              = "${var.vpn_unit}"
   }
 }
@@ -79,7 +85,7 @@ data "null_data_source" "endpoints" {
   depends_on = ["null_resource.etcd"]
 
   inputs = {
-    list = "${join(",", formatlist("http://%s:2379", var.vpn_ips))}"
+    list = "${join(",", formatlist("https://%s:2379", var.vpn_ips))}"
   }
 }
 
