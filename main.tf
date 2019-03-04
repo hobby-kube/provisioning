@@ -111,7 +111,7 @@ module "firewall" {
 module "etcd" {
   source = "./service/etcd"
 
-  count       = "${var.node_count}"
+  count       = "${var.etcd_node_count}"
   connections = "${module.provider.public_ips}"
   hostnames   = "${module.provider.hostnames}"
   vpn_unit    = "${module.wireguard.vpn_unit}"
