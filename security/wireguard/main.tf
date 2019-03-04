@@ -81,6 +81,7 @@ resource "null_resource" "wireguard" {
     inline = [
       "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", data.template_file.vpn_ips.*.rendered, var.hostnames))}",
       "systemctl is-enabled wg-quick@${var.vpn_interface} || systemctl enable wg-quick@${var.vpn_interface}",
+      "systemctl daemon-reload",
       "systemctl restart wg-quick@${var.vpn_interface}",
     ]
   }
@@ -92,8 +93,9 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
-      "systemctl start overlay-route.service",
       "systemctl is-enabled overlay-route.service || systemctl enable overlay-route.service",
+      "systemctl daemon-reload",
+      "systemctl start overlay-route.service",
     ]
   }
 }
