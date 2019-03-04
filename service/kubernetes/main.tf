@@ -24,6 +24,22 @@ variable "overlay_cidr" {
   default = "10.96.0.0/16"
 }
 
+resource "random_string" "token1" {
+  length  = 6
+  upper   = false
+  special = false
+}
+
+resource "random_string" "token2" {
+  length  = 16
+  upper   = false
+  special = false
+}
+
+locals {
+  cluster_token = "${random_string.token1.result}.${random_string.token2.result}"
+}
+
 resource "null_resource" "kubernetes" {
   count = "${var.count}"
 
@@ -81,7 +97,7 @@ data "template_file" "master" {
   template = "${file("${path.module}/scripts/master.sh")}"
 
   vars {
-    token = "${data.external.cluster_token.result.token}"
+    token = "${local.cluster_token}"
   }
 }
 
@@ -90,7 +106,7 @@ data "template_file" "slave" {
 
   vars {
     master_ip = "${element(var.vpn_ips, 0)}"
-    token     = "${data.external.cluster_token.result.token}"
+    token     = "${local.cluster_token}"
   }
 }
 
@@ -103,10 +119,6 @@ data "template_file" "install" {
     vpn_ip        = "${element(var.vpn_ips, count.index)}"
     overlay_cidr  = "${var.overlay_cidr}"
   }
-}
-
-data "external" "cluster_token" {
-  program = ["sh", "${path.module}/scripts/gen_token.sh"]
 }
 
 output "overlay_interface" {
