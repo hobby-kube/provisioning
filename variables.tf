@@ -3,6 +3,12 @@ variable "node_count" {
   default = 3
 }
 
+/* etcd node count, should be >= node_count and provide
+   quorum, 3 or 5 are good values. */
+variable "etcd_node_count" {
+  default = 3
+}
+
 variable "domain" {
   default = "example.com"
 }
