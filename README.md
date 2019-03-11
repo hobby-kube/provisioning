@@ -29,11 +29,10 @@ Export the following environment variables depending on the modules you're using
 export TF_VAR_node_count=3
 ```
 
-#### Set number of etcd nodes
+#### Set number of etcd members
 
-Should always be at smaller than, or equal to the node count. The first
-N nodes will part of the etcd cluster, others will be just clients.
-3 or 5 are good values, see `https://coreos.com/etcd/docs/latest/faq.html#system-requirements`.
+The first N nodes will be part of the etcd cluster.
+3 or 5 are good values, see [here](https://coreos.com/etcd/docs/latest/faq.html#system-requirements).
 
 ```sh
 export TF_VAR_etcd_node_count=3
