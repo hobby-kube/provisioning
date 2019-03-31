@@ -34,7 +34,7 @@ variable "hcloud_type" {
 }
 
 variable "hcloud_image" {
-  default = "ubuntu-16.04"
+  default = "ubuntu-18.04"
 }
 
 /* scaleway */
