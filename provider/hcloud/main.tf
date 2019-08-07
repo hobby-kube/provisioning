@@ -44,9 +44,13 @@ resource "hcloud_server" "host" {
 
   provisioner "remote-exec" {
     inline = [
-      "while fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; do sleep 1; done",
-      "apt-get update",
-      "apt-get install -yq ufw ${join(" ", var.apt_packages)}",
+      <<EOF
+while fuser /var/lib/dpkg/lock /var/lib/apt/lists/lock /var/cache/apt/archives/lock >/dev/null 2>&1; do
+   sleep 1
+done
+apt-get update
+apt-get install -yq ufw ${join(" ", var.apt_packages)}
+EOF
     ]
   }
 }
