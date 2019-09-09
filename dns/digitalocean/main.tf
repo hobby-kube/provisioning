@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "token" {}
 
@@ -17,7 +17,7 @@ provider "digitalocean" {
 }
 
 resource "digitalocean_record" "hosts" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   domain = "${var.domain}"
   name   = "${element(var.hostnames, count.index)}"

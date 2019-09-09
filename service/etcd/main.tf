@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "connections" {
   type = "list"
@@ -17,16 +17,16 @@ variable "vpn_ips" {
 }
 
 locals {
-  etcd_hostnames   = "${slice(var.hostnames, 0, var.count)}"
-  etcd_vpn_ips     = "${slice(var.vpn_ips, 0, var.count)}"
+  etcd_hostnames   = "${slice(var.hostnames, 0, var.node_count)}"
+  etcd_vpn_ips     = "${slice(var.vpn_ips, 0, var.node_count)}"
 }
 
-variable "version" {
+variable "etcd_version" {
   default = "v3.3.12"
 }
 
 resource "null_resource" "etcd" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   triggers = {
     template = "${join("", data.template_file.etcd-service.*.rendered)}"
@@ -39,9 +39,9 @@ resource "null_resource" "etcd" {
   }
 
   provisioner "remote-exec" {
-    inline = <<EOF
-${data.template_file.install.rendered}
-EOF
+    inline = [
+      "${data.template_file.install.rendered}"
+    ]
   }
 
   provisioner "file" {
@@ -59,10 +59,10 @@ EOF
 }
 
 data "template_file" "etcd-service" {
-  count    = "${var.count}"
+  count    = "${var.node_count}"
   template = "${file("${path.module}/templates/etcd.service")}"
 
-  vars {
+  vars = {
     hostname              = "${element(local.etcd_hostnames, count.index)}"
     intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
     listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
@@ -75,8 +75,8 @@ data "template_file" "etcd-service" {
 data "template_file" "install" {
   template = "${file("${path.module}/scripts/install.sh")}"
 
-  vars {
-    version = "${var.version}"
+  vars = {
+    version = "${var.etcd_version}"
   }
 }
 

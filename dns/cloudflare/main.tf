@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "email" {}
 
@@ -20,11 +20,11 @@ provider "cloudflare" {
 }
 
 resource "cloudflare_record" "hosts" {
-  count = "${var.count}"
+  node_count = "${var.node_count}"
 
   domain  = "${var.domain}"
-  name    = "${element(var.hostnames, count.index)}"
-  value   = "${element(var.public_ips, count.index)}"
+  name    = "${element(var.hostnames, node_count.index)}"
+  value   = "${element(var.public_ips, node_count.index)}"
   type    = "A"
   proxied = false
 }

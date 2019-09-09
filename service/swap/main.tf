@@ -1,11 +1,11 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "connections" {
   type = "list"
 }
 
 resource "null_resource" "swap" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   connection {
     host  = "${element(var.connections, count.index)}"

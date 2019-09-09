@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "access_key" {}
 
@@ -28,13 +28,13 @@ data "aws_route53_zone" "selected_domain" {
 }
 
 resource "aws_route53_record" "hosts" {
-  count = "${var.count}"
+  node_count = "${var.node_count}"
 
   zone_id = "${data.aws_route53_zone.selected_domain.zone_id}"
-  name    = "${element(var.hostnames, count.index)}.${data.aws_route53_zone.selected_domain.name}"
+  name    = "${element(var.hostnames, node_count.index)}.${data.aws_route53_zone.selected_domain.name}"
   type    = "A"
   ttl     = "300"
-  records = ["${element(var.public_ips, count.index)}"]
+  records = ["${element(var.public_ips, node_count.index)}"]
 }
 
 resource "aws_route53_record" "domain" {
