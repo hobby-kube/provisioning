@@ -64,7 +64,8 @@ variable "digitalocean_token" {
 }
 
 variable "digitalocean_ssh_keys" {
-  default = []
+  type = list(string)
+  default = [""]
 }
 
 variable "digitalocean_region" {
