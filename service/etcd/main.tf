@@ -89,5 +89,5 @@ data "null_data_source" "endpoints" {
 }
 
 output "endpoints" {
-  value = ["${split(",", data.null_data_source.endpoints.outputs["list"])}"]
+  value = "${split(",", data.null_data_source.endpoints.outputs["list"])}"
 }
