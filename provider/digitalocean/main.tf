@@ -44,6 +44,13 @@ resource "digitalocean_droplet" "host" {
 
   count = "${var.hosts}"
 
+  connection {
+    user = "root"
+    type = "ssh"
+    timeout = "2m"
+    host = self.ipv4_address
+  }
+
   provisioner "remote-exec" {
     inline = [
       "until [ -f /var/lib/cloud/instance/boot-finished ]; do sleep 1; done",
