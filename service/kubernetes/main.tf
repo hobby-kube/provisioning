@@ -5,7 +5,7 @@ variable "connections" {
 }
 
 variable "vpn_ips" {
-  type = list(string)
+  type = "list"
 }
 
 variable "vpn_interface" {
