@@ -151,7 +151,7 @@ data "template_file" "vpn_ips" {
 
 output "vpn_ips" {
   depends_on = ["null_resource.wireguard"]
-  value      = ["${data.template_file.vpn_ips.*.rendered}"]
+  value      = "${data.template_file.vpn_ips.*.rendered}"
 }
 
 output "vpn_unit" {
