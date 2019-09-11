@@ -62,6 +62,7 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
+      "DEBIAN_FRONTEND=noninteractive apt-get install -yq -o Dpkg::Options::=--force-confnew sudo",
       "DEBIAN_FRONTEND=noninteractive apt-get install -yq wireguard-dkms wireguard-tools",
     ]
   }
