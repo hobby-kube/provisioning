@@ -20,11 +20,11 @@ provider "cloudflare" {
 }
 
 resource "cloudflare_record" "hosts" {
-  node_count = "${var.node_count}"
+  count = "${var.node_count}"
 
   domain  = "${var.domain}"
-  name    = "${element(var.hostnames, node_count.index)}"
-  value   = "${element(var.public_ips, node_count.index)}"
+  name    = "${element(var.hostnames, count.index)}"
+  value   = "${element(var.public_ips, count.index)}"
   type    = "A"
   proxied = false
 }
@@ -48,5 +48,5 @@ resource "cloudflare_record" "wildcard" {
 }
 
 output "domains" {
-  value = ["${cloudflare_record.hosts.*.hostname}"]
+  value = "${cloudflare_record.hosts.*.hostname}"
 }

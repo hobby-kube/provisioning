@@ -45,5 +45,5 @@ resource "digitalocean_record" "wildcard" {
 }
 
 output "domains" {
-  value = ["${digitalocean_record.hosts.*.fqdn}"]
+  value = "${digitalocean_record.hosts.*.fqdn}"
 }

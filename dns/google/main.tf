@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "project" {}
 
@@ -25,7 +25,7 @@ provider "google" {
 }
 
 resource "google_dns_record_set" "hosts" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   name         = "${element(var.hostnames, count.index)}.${var.domain}."
   type         = "A"
@@ -53,5 +53,5 @@ resource "google_dns_record_set" "wildcard" {
 }
 
 output "domains" {
-  value = ["${google_dns_record_set.hosts.*.name}"]
+  value = "${google_dns_record_set.hosts.*.name}"
 }
