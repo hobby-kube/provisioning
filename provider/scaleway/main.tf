@@ -51,6 +51,14 @@ resource "scaleway_server" "host" {
   #   type       = "l_ssd"
   # }
 
+  connection {
+    user = "root"
+    type = "ssh"
+    timeout = "2m"
+    host = self.public_ip
+  }
+
+
   provisioner "remote-exec" {
     inline = [
       "apt-get update",
@@ -70,15 +78,15 @@ data "scaleway_bootscript" "bootscript" {
 }
 
 output "hostnames" {
-  value = ["${scaleway_server.host.*.name}"]
+  value = "${scaleway_server.host.*.name}"
 }
 
 output "public_ips" {
-  value = ["${scaleway_server.host.*.public_ip}"]
+  value = "${scaleway_server.host.*.public_ip}"
 }
 
 output "private_ips" {
-  value = ["${scaleway_server.host.*.private_ip}"]
+  value = "${scaleway_server.host.*.private_ip}"
 }
 
 output "private_network_interface" {
