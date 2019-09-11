@@ -69,7 +69,7 @@ data "scaleway_image" "image" {
 
 data "scaleway_bootscript" "bootscript" {
   architecture = "x86_64"
-  name_filter  = "mainline 4.15.11 rev1"
+  name_filter  = "longterm 4.14 latest"
 }
 
 output "hostnames" {
