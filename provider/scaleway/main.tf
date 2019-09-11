@@ -46,11 +46,6 @@ resource "scaleway_server" "host" {
 
   count = "${var.hosts}"
 
-  # volume = {
-  #   size_in_gb = "${var.storage_size}"
-  #   type       = "l_ssd"
-  # }
-
   connection {
     user = "root"
     type = "ssh"
