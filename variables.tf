@@ -22,7 +22,7 @@ variable "hcloud_token" {
 }
 
 variable "hcloud_ssh_keys" {
-  type = list(string)
+  type    = list(string)
   default = [""]
 }
 
@@ -56,7 +56,7 @@ variable "scaleway_type" {
 }
 
 variable "scaleway_image" {
- default = "Ubuntu Bionic"
+  default = "Ubuntu Bionic"
 }
 
 /* digitalocean */
@@ -65,7 +65,7 @@ variable "digitalocean_token" {
 }
 
 variable "digitalocean_ssh_keys" {
-  type = list(string)
+  type    = list(string)
   default = [""]
 }
 
