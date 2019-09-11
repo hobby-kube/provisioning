@@ -56,7 +56,7 @@ variable "scaleway_type" {
 }
 
 variable "scaleway_image" {
-  default = "Ubuntu Xenial"
+ default = "Ubuntu Bionic"
 }
 
 /* digitalocean */
