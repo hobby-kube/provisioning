@@ -116,7 +116,6 @@ data "template_file" "install" {
 
   vars = {
     vpn_interface = "${var.vpn_interface}"
- #   vpn_ip        = "${element(var.vpn_ips, count.index)}"
     overlay_cidr  = "${var.overlay_cidr}"
   }
 }
