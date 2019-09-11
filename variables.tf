@@ -51,7 +51,7 @@ variable "scaleway_region" {
 }
 
 variable "scaleway_type" {
-  default = "VC1S"
+  default = "DEV1-S"
 }
 
 variable "scaleway_image" {
