@@ -58,6 +58,8 @@ resource "scaleway_server" "host" {
     inline = [
       "apt-get update",
       "apt-get install -yq apt-transport-https ufw ${join(" ", var.apt_packages)}",
+      # fix a problem with later wireguard installation
+      "DEBIAN_FRONTEND=noninteractive apt-get install -yq -o Dpkg::Options::=--force-confnew sudo",
     ]
   }
 }
