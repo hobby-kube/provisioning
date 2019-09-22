@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "access_key" {}
 
@@ -28,7 +28,7 @@ data "aws_route53_zone" "selected_domain" {
 }
 
 resource "aws_route53_record" "hosts" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   zone_id = "${data.aws_route53_zone.selected_domain.zone_id}"
   name    = "${element(var.hostnames, count.index)}.${data.aws_route53_zone.selected_domain.name}"
@@ -57,5 +57,5 @@ resource "aws_route53_record" "wildcard" {
 }
 
 output "domains" {
-  value = ["${aws_route53_record.hosts.*.name}"]
+  value = "${aws_route53_record.hosts.*.name}"
 }

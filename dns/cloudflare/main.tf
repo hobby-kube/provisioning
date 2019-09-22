@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "email" {}
 
@@ -20,7 +20,7 @@ provider "cloudflare" {
 }
 
 resource "cloudflare_record" "hosts" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   domain  = "${var.domain}"
   name    = "${element(var.hostnames, count.index)}"
@@ -48,5 +48,5 @@ resource "cloudflare_record" "wildcard" {
 }
 
 output "domains" {
-  value = ["${cloudflare_record.hosts.*.hostname}"]
+  value = "${cloudflare_record.hosts.*.hostname}"
 }

@@ -46,10 +46,13 @@ resource "scaleway_server" "host" {
 
   count = "${var.hosts}"
 
-  # volume = {
-  #   size_in_gb = "${var.storage_size}"
-  #   type       = "l_ssd"
-  # }
+  connection {
+    user = "root"
+    type = "ssh"
+    timeout = "2m"
+    host = self.public_ip
+  }
+
 
   provisioner "remote-exec" {
     inline = [
@@ -66,19 +69,19 @@ data "scaleway_image" "image" {
 
 data "scaleway_bootscript" "bootscript" {
   architecture = "x86_64"
-  name_filter  = "mainline 4.15.11 rev1"
+  name_filter  = "longterm 4.14 latest"
 }
 
 output "hostnames" {
-  value = ["${scaleway_server.host.*.name}"]
+  value = "${scaleway_server.host.*.name}"
 }
 
 output "public_ips" {
-  value = ["${scaleway_server.host.*.public_ip}"]
+  value = "${scaleway_server.host.*.public_ip}"
 }
 
 output "private_ips" {
-  value = ["${scaleway_server.host.*.private_ip}"]
+  value = "${scaleway_server.host.*.private_ip}"
 }
 
 output "private_network_interface" {

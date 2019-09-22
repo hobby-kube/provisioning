@@ -1,4 +1,4 @@
-variable "count" {}
+variable "node_count" {}
 
 variable "connections" {
   type = "list"
@@ -29,10 +29,10 @@ variable "vpn_iprange" {
 }
 
 resource "null_resource" "wireguard" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
-  triggers {
-    count = "${var.count}"
+  triggers =  {
+    count = "${var.node_count}"
   }
 
   connection {
@@ -62,6 +62,7 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
+      "DEBIAN_FRONTEND=noninteractive apt-get install -yq -o Dpkg::Options::=--force-confnew sudo",
       "DEBIAN_FRONTEND=noninteractive apt-get install -yq wireguard-dkms wireguard-tools",
     ]
   }
@@ -101,10 +102,10 @@ resource "null_resource" "wireguard" {
 }
 
 data "template_file" "interface-conf" {
-  count    = "${var.count}"
+  count    = "${var.node_count}"
   template = "${file("${path.module}/templates/interface.conf")}"
 
-  vars {
+  vars = {
     address     = "${element(data.template_file.vpn_ips.*.rendered, count.index)}"
     port        = "${var.vpn_port}"
     private_key = "${element(data.external.keys.*.result.private_key, count.index)}"
@@ -113,10 +114,10 @@ data "template_file" "interface-conf" {
 }
 
 data "template_file" "peer-conf" {
-  count    = "${var.count}"
+  count    = "${var.node_count}"
   template = "${file("${path.module}/templates/peer.conf")}"
 
-  vars {
+  vars = {
     endpoint    = "${element(var.private_ips, count.index)}"
     port        = "${var.vpn_port}"
     public_key  = "${element(data.external.keys.*.result.public_key, count.index)}"
@@ -125,33 +126,33 @@ data "template_file" "peer-conf" {
 }
 
 data "template_file" "overlay-route-service" {
-  count    = "${var.count}"
+  count    = "${var.node_count}"
   template = "${file("${path.module}/templates/overlay-route.service")}"
 
-  vars {
+  vars = {
     address      = "${element(data.template_file.vpn_ips.*.rendered, count.index)}"
     overlay_cidr = "${var.overlay_cidr}"
   }
 }
 
 data "external" "keys" {
-  count = "${var.count}"
+  count = "${var.node_count}"
 
   program = ["sh", "${path.module}/scripts/gen_keys.sh"]
 }
 
 data "template_file" "vpn_ips" {
-  count    = "${var.count}"
+  count    = "${var.node_count}"
   template = "$${ip}"
 
-  vars {
+  vars = {
     ip = "${cidrhost(var.vpn_iprange, count.index + 1)}"
   }
 }
 
 output "vpn_ips" {
   depends_on = ["null_resource.wireguard"]
-  value      = ["${data.template_file.vpn_ips.*.rendered}"]
+  value      = "${data.template_file.vpn_ips.*.rendered}"
 }
 
 output "vpn_unit" {

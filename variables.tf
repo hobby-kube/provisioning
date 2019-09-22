@@ -22,7 +22,8 @@ variable "hcloud_token" {
 }
 
 variable "hcloud_ssh_keys" {
-  default = []
+  type    = list(string)
+  default = [""]
 }
 
 variable "hcloud_location" {
@@ -51,11 +52,11 @@ variable "scaleway_region" {
 }
 
 variable "scaleway_type" {
-  default = "VC1S"
+  default = "DEV1-S"
 }
 
 variable "scaleway_image" {
-  default = "Ubuntu Xenial"
+  default = "Ubuntu Bionic"
 }
 
 /* digitalocean */
@@ -64,7 +65,8 @@ variable "digitalocean_token" {
 }
 
 variable "digitalocean_ssh_keys" {
-  default = []
+  type    = list(string)
+  default = [""]
 }
 
 variable "digitalocean_region" {
@@ -76,7 +78,7 @@ variable "digitalocean_size" {
 }
 
 variable "digitalocean_image" {
-  default = "ubuntu-16-04-x64"
+  default = "ubuntu-18-04-x64"
 }
 
 /* aws dns */

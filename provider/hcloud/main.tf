@@ -38,9 +38,17 @@ resource "hcloud_server" "host" {
   location    = "${var.location}"
   image       = "${var.image}"
   server_type = "${var.type}"
-  ssh_keys    = ["${var.ssh_keys}"]
+  ssh_keys    = "${var.ssh_keys}"
 
   count = "${var.hosts}"
+
+  connection {
+    user = "root"
+    type = "ssh"
+    timeout = "2m"
+    host = self.ipv4_address
+  }
+
 
   provisioner "remote-exec" {
     inline = [
@@ -52,15 +60,15 @@ resource "hcloud_server" "host" {
 }
 
 output "hostnames" {
-  value = ["${hcloud_server.host.*.name}"]
+  value = "${hcloud_server.host.*.name}"
 }
 
 output "public_ips" {
-  value = ["${hcloud_server.host.*.ipv4_address}"]
+  value = "${hcloud_server.host.*.ipv4_address}"
 }
 
 output "private_ips" {
-  value = ["${hcloud_server.host.*.ipv4_address}"]
+  value = "${hcloud_server.host.*.ipv4_address}"
 }
 
 output "private_network_interface" {
