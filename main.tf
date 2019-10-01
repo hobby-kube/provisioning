@@ -46,7 +46,7 @@ module "dns" {
 
   node_count = "${var.node_count}"
   email      = "${var.cloudflare_email}"
-  token      = "${var.cloudflare_token}"
+  api_token  = "${var.cloudflare_api_token}"
   domain     = "${var.domain}"
   public_ips = "${module.provider.public_ips}"
   hostnames  = "${module.provider.hostnames}"
