@@ -47,7 +47,7 @@ export TF_VAR_hcloud_ssh_keys='["<description-key1>", "<description-key2>"]'
 # Defaults:
 # export TF_VAR_hcloud_location="nbg1"
 # export TF_VAR_hcloud_type="cx11"
-# export TF_VAR_hcloud_image="ubuntu-16.04"
+# export TF_VAR_hcloud_image="ubuntu-18.04"
 ```
 
 SSH keys are referenced by their description. Visit the Hetzner Cloud console at
@@ -60,8 +60,8 @@ export TF_VAR_scaleway_organization=<access_key>
 export TF_VAR_scaleway_token=<token>
 # Defaults:
 # export TF_VAR_scaleway_region="ams1"
-# export TF_VAR_scaleway_type="VC1S"
-# export TF_VAR_scaleway_image="Ubuntu Xenial"
+# export TF_VAR_scaleway_type="DEV1-S"
+# export TF_VAR_scaleway_image="Ubuntu Bionic"
 
 ```
 
@@ -74,7 +74,7 @@ export TF_VAR_digitalocean_ssh_keys='["<id-key1>", "<id-key2>"]'
 # Defaults:
 # export TF_VAR_digitalocean_region="fra1"
 # export TF_VAR_digitalocean_size="1gb"
-# export TF_VAR_digitalocean_image="ubuntu-16-04-x64"
+# export TF_VAR_digitalocean_image="ubuntu-18-04-x64"
 ```
 
 You can get SSH key IDs using [this API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
