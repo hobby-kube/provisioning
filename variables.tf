@@ -99,7 +99,7 @@ variable "cloudflare_email" {
   default = ""
 }
 
-variable "cloudflare_token" {
+variable "cloudflare_api_token" {
   default = ""
 }
 

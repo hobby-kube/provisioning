@@ -84,7 +84,7 @@ You can get SSH key IDs using [this API](https://developers.digitalocean.com/doc
 ```sh
 export TF_VAR_domain=<domain> # e.g. example.org
 export TF_VAR_cloudflare_email=<email>
-export TF_VAR_cloudflare_token=<token>
+export TF_VAR_cloudflare_api_token=<token>
 ```
 
 #### Using Amazon Route 53 for DNS entries
