@@ -49,7 +49,6 @@ resource "hcloud_server" "host" {
     host = self.ipv4_address
   }
 
-
   provisioner "remote-exec" {
     inline = [
       "while fuser /var/{lib/{dpkg,apt/lists},cache/apt/archives}/lock >/dev/null 2>&1; do sleep 1; done",
@@ -58,6 +57,15 @@ resource "hcloud_server" "host" {
     ]
   }
 }
+
+#resource "hcloud_volume" "volume" {
+#  name = "${format(var.hostname_format, count.index + 1)}"
+#  size = 10
+#  server_id =  "${element(hcloud_server.host.*.id, count.index)}"
+#  automount = false
+#
+#  count = "${var.hosts}"
+#}
 
 output "hostnames" {
   value = "${hcloud_server.host.*.name}"
