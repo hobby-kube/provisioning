@@ -81,6 +81,36 @@ variable "digitalocean_image" {
   default = "ubuntu-18-04-x64"
 }
 
+/* packet */
+
+variable "packet_auth_token" {
+  default = ""
+}
+
+variable "packet_project_id" {
+  default = ""
+}
+
+variable "packet_plan" {
+  default = "c1.small.x86"
+}
+
+variable "packet_facility" {
+  default = "sjc1"
+}
+
+variable "packet_operating_system" {
+  default = "ubuntu_18_04"
+}
+
+variable "packet_billing_cycle" {
+  default = "hourly"
+}
+
+variable "packet_user_data" {
+  default = ""
+}
+
 /* aws dns */
 variable "aws_access_key" {
   default = ""

@@ -2,7 +2,7 @@
 
 > This is part of the Hobby Kube project. Functionality of the modules is described in the [guide](https://github.com/hobby-kube/guide).
 
-Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/) or [DigitalOcean](https://www.digitalocean.com/) using [Terraform](https://www.terraform.io/).
+Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/), [DigitalOcean](https://www.digitalocean.com/) or [Packet](https://www.packet.com/) using [Terraform](https://www.terraform.io/).
 
 ## Setup
 
@@ -78,6 +78,17 @@ export TF_VAR_digitalocean_ssh_keys='["<id-key1>", "<id-key2>"]'
 ```
 
 You can get SSH key IDs using [this API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
+
+#### Using Packet as provider
+
+```sh
+export TF_VAR_packet_auth_token=<token>
+export TF_VAR_packet_project_id=<uuid>
+# Defaults:
+# export TF_VAR_packet_facility="sjc1"
+# export TF_VAR_packet_plan="c1.small.x86"
+# export TF_VAR_packet_operating_system="ubuntu_18_04"
+```
 
 #### Using Cloudflare for DNS entries
 
