@@ -11,11 +11,11 @@ variable "managed_zone" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = "list"
+  type = list
 }
 
 variable "public_ips" {
-  type = "list"
+  type = list
 }
 
 provider "google" {
@@ -25,7 +25,7 @@ provider "google" {
 }
 
 resource "google_dns_record_set" "hosts" {
-  count = "${var.node_count}"
+  count = var.node_count
 
   name         = "${element(var.hostnames, count.index)}.${var.domain}."
   type         = "A"

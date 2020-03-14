@@ -21,11 +21,11 @@ variable "billing_cycle" {
 }
 
 variable "plan" {
-  type = "string"
+  type = string
 }
 
 variable "apt_packages" {
-  type    = "list"
+  type    = list
   default = []
 }
 

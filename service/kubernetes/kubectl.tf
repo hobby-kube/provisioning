@@ -1,5 +1,5 @@
 variable "cluster_name" {
-  type = "string"
+  type = string
 }
 
 variable "api_secure_port" {
@@ -7,7 +7,7 @@ variable "api_secure_port" {
 }
 
 resource "null_resource" "kubectl" {
-  depends_on = ["null_resource.kubernetes"]
+  depends_on = [null_resource.kubernetes]
 
   triggers = {
     ip = "${element(var.vpn_ips, 0)}"

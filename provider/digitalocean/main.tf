@@ -5,27 +5,27 @@ variable "hosts" {
 }
 
 variable "ssh_keys" {
-  type = "list"
+  type = list
 }
 
 variable "hostname_format" {
-  type = "string"
+  type = string
 }
 
 variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "image" {
-  type = "string"
+  type = string
 }
 
 variable "size" {
-  type = "string"
+  type = string
 }
 
 variable "apt_packages" {
-  type    = "list"
+  type    = list
   default = []
 }
 

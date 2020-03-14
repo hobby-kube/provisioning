@@ -5,11 +5,11 @@ variable "token" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = "list"
+  type = list
 }
 
 variable "public_ips" {
-  type = "list"
+  type = list
 }
 
 provider "digitalocean" {
@@ -17,7 +17,7 @@ provider "digitalocean" {
 }
 
 resource "digitalocean_record" "hosts" {
-  count = "${var.node_count}"
+  count = var.node_count
 
   domain = "${var.domain}"
   name   = "${element(var.hostnames, count.index)}"

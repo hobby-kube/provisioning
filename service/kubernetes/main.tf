@@ -1,19 +1,19 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = "list"
+  type = list
 }
 
 variable "vpn_ips" {
-  type = "list"
+  type = list
 }
 
 variable "vpn_interface" {
-  type = "string"
+  type = string
 }
 
 variable "etcd_endpoints" {
-  type = "list"
+  type = list
 }
 
 variable "overlay_interface" {
@@ -41,10 +41,10 @@ locals {
 }
 
 resource "null_resource" "kubernetes" {
-  count = "${var.node_count}"
+  count = var.node_count
 
   connection {
-    host  = "${element(var.connections, count.index)}"
+    host  = element(var.connections, count.index)
     user  = "root"
     agent = true
   }
@@ -61,18 +61,18 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "file" {
-    content     = "${file("${path.module}/templates/10-docker-opts.conf")}"
+    content     = file("${path.module}/templates/10-docker-opts.conf")
     destination = "/etc/systemd/system/docker.service.d/10-docker-opts.conf"
   }
 
   provisioner "file" {
-    content     = "${data.template_file.master-configuration.rendered}"
+    content     = data.template_file.master-configuration.rendered
     destination = "/tmp/master-configuration.yml"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "${element(data.template_file.install.*.rendered, count.index)}"
+      element(data.template_file.install.*.rendered, count.index)
     ]
   }
 

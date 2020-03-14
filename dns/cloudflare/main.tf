@@ -1,5 +1,5 @@
 locals {
-  zone_id = "${lookup(data.cloudflare_zones.domain_zones.zones[0], "id")}"
+  zone_id = lookup(data.cloudflare_zones.domain_zones.zones[0], "id")
 }
 
 variable "node_count" {}
@@ -11,16 +11,16 @@ variable "api_token" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = "list"
+  type = list
 }
 
 variable "public_ips" {
-  type = "list"
+  type = list
 }
 
 provider "cloudflare" {
-  email     = "${var.email}"
-  api_token = "${var.api_token}"
+  email     = var.email
+  api_token = var.api_token
 }
 
 data "cloudflare_zones" "domain_zones" {
@@ -32,33 +32,33 @@ data "cloudflare_zones" "domain_zones" {
 }
 
 resource "cloudflare_record" "hosts" {
-  count = "${var.node_count}"
+  count = var.node_count
 
-  zone_id = "${local.zone_id}"
-  name    = "${element(var.hostnames, count.index)}"
-  value   = "${element(var.public_ips, count.index)}"
+  zone_id = local.zone_id
+  name    = element(var.hostnames, count.index)
+  value   = element(var.public_ips, count.index)
   type    = "A"
   proxied = false
 }
 
 resource "cloudflare_record" "domain" {
-  zone_id = "${local.zone_id}"
-  name    = "${var.domain}"
-  value   = "${element(var.public_ips, 0)}"
+  zone_id = local.zone_id
+  name    = var.domain
+  value   = element(var.public_ips, 0)
   type    = "A"
   proxied = true
 }
 
 resource "cloudflare_record" "wildcard" {
-  depends_on = ["cloudflare_record.domain"]
+  depends_on = [cloudflare_record.domain]
 
-  zone_id = "${local.zone_id}"
+  zone_id = local.zone_id
   name    = "*"
-  value   = "${var.domain}"
+  value   = var.domain
   type    = "CNAME"
   proxied = false
 }
 
 output "domains" {
-  value = "${cloudflare_record.hosts.*.hostname}"
+  value = cloudflare_record.hosts.*.hostname
 }

@@ -1,19 +1,19 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = "list"
+  type = list
 }
 
 variable "hostnames" {
-  type = "list"
+  type = list
 }
 
 variable "vpn_unit" {
-  type = "string"
+  type = string
 }
 
 variable "vpn_ips" {
-  type = "list"
+  type = list
 }
 
 locals {
@@ -26,14 +26,14 @@ variable "etcd_version" {
 }
 
 resource "null_resource" "etcd" {
-  count = "${var.node_count}"
+  count = var.node_count
 
   triggers = {
     template = "${join("", data.template_file.etcd-service.*.rendered)}"
   }
 
   connection {
-    host  = "${element(var.connections, count.index)}"
+    host  = element(var.connections, count.index)
     user  = "root"
     agent = true
   }
@@ -45,7 +45,7 @@ resource "null_resource" "etcd" {
   }
 
   provisioner "file" {
-    content     = "${element(data.template_file.etcd-service.*.rendered, count.index)}"
+    content     = element(data.template_file.etcd-service.*.rendered, count.index)
     destination = "/etc/systemd/system/etcd.service"
   }
 
@@ -63,12 +63,12 @@ data "template_file" "etcd-service" {
   template = "${file("${path.module}/templates/etcd.service")}"
 
   vars = {
-    hostname              = "${element(local.etcd_hostnames, count.index)}"
+    hostname              = element(local.etcd_hostnames, count.index)
     intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
     listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
     advertise_client_urls = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
     listen_peer_urls      = "http://${element(local.etcd_vpn_ips, count.index)}:2380"
-    vpn_unit              = "${var.vpn_unit}"
+    vpn_unit              = var.vpn_unit
   }
 }
 
@@ -81,7 +81,7 @@ data "template_file" "install" {
 }
 
 data "null_data_source" "endpoints" {
-  depends_on = ["null_resource.etcd"]
+  depends_on = [null_resource.etcd]
 
   inputs = {
     list = "${join(",", formatlist("http://%s:2379", local.etcd_vpn_ips))}"
