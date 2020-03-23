@@ -13,13 +13,14 @@ module "provider" {
 # module "provider" {
 #   source = "./provider/scaleway"
 #
-#   organization    = "${var.scaleway_organization}"
-#   token           = "${var.scaleway_token}"
-#   region          = "${var.scaleway_region}"
-#   type            = "${var.scaleway_type}"
-#   image           = "${var.scaleway_image}"
-#   hosts           = "${var.node_count}"
-#   hostname_format = "${var.hostname_format}"
+#   organization_id = var.scaleway_organization_id
+#   access_key      = var.scaleway_access_key
+#   secret_key      = var.scaleway_secret_key
+#   zone            = var.scaleway_zone
+#   type            = var.scaleway_type
+#   image           = var.scaleway_image
+#   hosts           = var.node_count
+#   hostname_format = var.hostname_format
 # }
 
 # module "provider" {

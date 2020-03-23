@@ -39,16 +39,20 @@ variable "hcloud_image" {
 }
 
 /* scaleway */
-variable "scaleway_organization" {
+variable "scaleway_organization_id" {
   default = ""
 }
 
-variable "scaleway_token" {
+variable "scaleway_access_key" {
+  default = "SCWXXXXXXXXXXXXXXXXX" // enables to specify only the secret_key
+}
+
+variable "scaleway_secret_key" {
   default = ""
 }
 
-variable "scaleway_region" {
-  default = "ams1"
+variable "scaleway_zone" {
+  default = "nl-ams-1"
 }
 
 variable "scaleway_type" {
