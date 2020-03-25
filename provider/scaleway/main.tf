@@ -1,6 +1,8 @@
-variable "organization" {}
+variable "organization_id" {}
 
-variable "token" {}
+variable "access_key" {}
+
+variable "secret_key" {}
 
 variable "hosts" {
   default = 0
@@ -10,7 +12,7 @@ variable "hostname_format" {
   type = "string"
 }
 
-variable "region" {
+variable "zone" {
   type = "string"
 }
 
@@ -27,24 +29,21 @@ variable "apt_packages" {
   default = []
 }
 
-# variable "storage_size" {
-#   default = 50
-# }
-
 provider "scaleway" {
-  organization = "${var.organization}"
-  token        = "${var.token}"
-  region       = "${var.region}"
+  organization_id = var.organization_id
+  access_key      = var.access_key
+  secret_key      = var.secret_key
+  zone            = var.zone
+  version         = ">= 1.14"
 }
 
-resource "scaleway_server" "host" {
-  name                = "${format(var.hostname_format, count.index + 1)}"
-  type                = "${var.type}"
-  image               = "${data.scaleway_image.image.id}"
-  bootscript          = "${data.scaleway_bootscript.bootscript.id}"
-  dynamic_ip_required = true
+resource "scaleway_instance_server" "host" {
+  name                = format(var.hostname_format, count.index + 1)
+  type                = var.type
+  image               = data.scaleway_instance_image.image.id
+  enable_dynamic_ip   = true
 
-  count = "${var.hosts}"
+  count = var.hosts
 
   connection {
     user = "root"
@@ -64,28 +63,23 @@ resource "scaleway_server" "host" {
   }
 }
 
-data "scaleway_image" "image" {
+data "scaleway_instance_image" "image" {
   architecture = "x86_64"
-  name         = "${var.image}"
-}
-
-data "scaleway_bootscript" "bootscript" {
-  architecture = "x86_64"
-  name_filter  = "longterm 4.14 latest"
+  name         = var.image
 }
 
 output "hostnames" {
-  value = "${scaleway_server.host.*.name}"
+  value = scaleway_instance_server.host.*.name
 }
 
 output "public_ips" {
-  value = "${scaleway_server.host.*.public_ip}"
+  value = scaleway_instance_server.host.*.public_ip
 }
 
 output "private_ips" {
-  value = "${scaleway_server.host.*.private_ip}"
+  value = scaleway_instance_server.host.*.private_ip
 }
 
 output "private_network_interface" {
-  value = "enp0s2"
+  value = "ens2"
 }

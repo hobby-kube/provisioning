@@ -56,10 +56,11 @@ SSH keys are referenced by their description. Visit the Hetzner Cloud console at
 #### Using Scaleway as provider
 
 ```sh
-export TF_VAR_scaleway_organization=<access_key>
-export TF_VAR_scaleway_token=<token>
+export TF_VAR_scaleway_organization_id=<organization_id>
+export TF_VAR_scaleway_access_key=<access_key> # can be omitted for now
+export TF_VAR_scaleway_secret_key=<secret_key>
 # Defaults:
-# export TF_VAR_scaleway_region="ams1"
+# export TF_VAR_scaleway_zone="nl-ams-1"
 # export TF_VAR_scaleway_type="DEV1-S"
 # export TF_VAR_scaleway_image="Ubuntu Bionic"
 
