@@ -5,44 +5,44 @@ variable "hosts" {
 }
 
 variable "ssh_keys" {
-  type = "list"
+  type = list
 }
 
 variable "hostname_format" {
-  type = "string"
+  type = string
 }
 
 variable "region" {
-  type = "string"
+  type = string
 }
 
 variable "image" {
-  type = "string"
+  type = string
 }
 
 variable "size" {
-  type = "string"
+  type = string
 }
 
 variable "apt_packages" {
-  type    = "list"
+  type    = list
   default = []
 }
 
 provider "digitalocean" {
-  token = "${var.token}"
+  token = var.token
 }
 
 resource "digitalocean_droplet" "host" {
-  name               = "${format(var.hostname_format, count.index + 1)}"
-  region             = "${var.region}"
-  image              = "${var.image}"
-  size               = "${var.size}"
+  name               = format(var.hostname_format, count.index + 1)
+  region             = var.region
+  image              = var.image
+  size               = var.size
   backups            = false
   private_networking = true
-  ssh_keys           = "${var.ssh_keys}"
+  ssh_keys           = var.ssh_keys
 
-  count = "${var.hosts}"
+  count = var.hosts
 
   connection {
     user = "root"

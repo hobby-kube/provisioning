@@ -9,23 +9,23 @@ variable "hosts" {
 }
 
 variable "hostname_format" {
-  type = "string"
+  type = string
 }
 
 variable "zone" {
-  type = "string"
+  type = string
 }
 
 variable "type" {
-  type = "string"
+  type = string
 }
 
 variable "image" {
-  type = "string"
+  type = string
 }
 
 variable "apt_packages" {
-  type    = "list"
+  type    = list
   default = []
 }
 
