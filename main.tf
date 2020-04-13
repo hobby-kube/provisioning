@@ -48,6 +48,24 @@ module "provider" {
 #   hostname_format  = var.hostname_format
 # }
 
+# module "provider" {
+#   source = "./provider/vsphere"
+
+#   hosts                   = var.node_count
+#   hostname_format         = var.hostname_format
+#   vsphere_server          = var.vsphere_server
+#   vsphere_datacenter      = var.vsphere_datacenter
+#   vsphere_cluster         = var.vsphere_cluster
+#   vsphere_network         = var.vsphere_network
+#   vsphere_datastore       = var.vsphere_datastore
+#   vsphere_vm_template     = var.vsphere_vm_template
+#   vsphere_vm_linked_clone = var.vsphere_vm_linked_clone
+#   vsphere_vm_num_cpus     = var.vsphere_vm_num_cpus
+#   vsphere_vm_memory       = var.vsphere_vm_memory
+#   vsphere_user            = var.vsphere_user
+#   vsphere_password        = var.vsphere_password
+# }
+
 module "swap" {
   source = "./service/swap"
 
