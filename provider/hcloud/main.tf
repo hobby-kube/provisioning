@@ -5,42 +5,42 @@ variable "hosts" {
 }
 
 variable "hostname_format" {
-  type = "string"
+  type = string
 }
 
 variable "location" {
-  type = "string"
+  type = string
 }
 
 variable "type" {
-  type = "string"
+  type = string
 }
 
 variable "image" {
-  type = "string"
+  type = string
 }
 
 variable "ssh_keys" {
-  type = "list"
+  type = list
 }
 
 provider "hcloud" {
-  token = "${var.token}"
+  token = var.token
 }
 
 variable "apt_packages" {
-  type    = "list"
+  type    = list
   default = []
 }
 
 resource "hcloud_server" "host" {
-  name        = "${format(var.hostname_format, count.index + 1)}"
-  location    = "${var.location}"
-  image       = "${var.image}"
-  server_type = "${var.type}"
-  ssh_keys    = "${var.ssh_keys}"
+  name        = format(var.hostname_format, count.index + 1)
+  location    = var.location
+  image       = var.image
+  server_type = var.type
+  ssh_keys    = var.ssh_keys
 
-  count = "${var.hosts}"
+  count = var.hosts
 
   connection {
     user = "root"

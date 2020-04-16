@@ -11,26 +11,26 @@ variable "managed_zone" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = "list"
+  type = list
 }
 
 variable "public_ips" {
-  type = "list"
+  type = list
 }
 
 provider "google" {
-  credentials = "${file(var.creds_file)}"
-  project     = "${var.project}"
-  region      = "${var.region}"
+  credentials = file(var.creds_file)
+  project     = var.project
+  region      = var.region
 }
 
 resource "google_dns_record_set" "hosts" {
-  count = "${var.node_count}"
+  count = var.node_count
 
   name         = "${element(var.hostnames, count.index)}.${var.domain}."
   type         = "A"
   ttl          = 300
-  managed_zone = "${var.managed_zone}"
+  managed_zone = var.managed_zone
   rrdatas      = ["${element(var.public_ips, count.index)}"]
 }
 
@@ -38,7 +38,7 @@ resource "google_dns_record_set" "domain" {
   name         = "${var.domain}."
   type         = "A"
   ttl          = 300
-  managed_zone = "${var.managed_zone}"
+  managed_zone = var.managed_zone
   rrdatas      = ["${element(var.public_ips, 0)}"]
 }
 
@@ -48,7 +48,7 @@ resource "google_dns_record_set" "wildcard" {
   name         = "*.${var.domain}."
   type         = "CNAME"
   ttl          = 300
-  managed_zone = "${var.managed_zone}"
+  managed_zone = var.managed_zone
   rrdatas      = ["${var.domain}."]
 }
 

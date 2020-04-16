@@ -21,11 +21,11 @@ variable "billing_cycle" {
 }
 
 variable "plan" {
-  type = "string"
+  type = string
 }
 
 variable "apt_packages" {
-  type    = "list"
+  type    = list
   default = []
 }
 
@@ -36,18 +36,18 @@ variable "hostname_format" {
 }
 
 provider "packet" {
-  auth_token = "${var.auth_token}"
+  auth_token = var.auth_token
 }
 
 resource "packet_device" "host" {
-  count            = "${var.hosts}"
-  hostname         = "${format(var.hostname_format, count.index + 1)}"
-  plan             = "${var.plan}"
-  facilities       = "${var.facility}"
-  operating_system = "${var.operating_system}"
-  billing_cycle    = "${var.billing_cycle}"
-  project_id       = "${var.project_id}"
-  user_data        = "${var.user_data}"
+  count            = var.hosts
+  hostname         = format(var.hostname_format, count.index + 1)
+  plan             = var.plan
+  facilities       = var.facility
+  operating_system = var.operating_system
+  billing_cycle    = var.billing_cycle
+  project_id       = var.project_id
+  user_data        = var.user_data
 
   connection {
     user    = "root"

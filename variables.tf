@@ -153,3 +153,60 @@ variable "google_managed_zone" {
 variable "google_credentials_file" {
   default = ""
 }
+
+/* vsphere */
+
+variable "vsphere_server" {
+  description = "vsphere server for the environment - EXAMPLE: vcenter01.hosted.local or IP address"
+  default = ""
+}
+
+variable "vsphere_datacenter" {
+  description = "vSphere Datacenter Name"
+  default = "Datacenter1"
+}
+
+variable "vsphere_cluster" {
+  description = "vSphere Cluster Name"
+  default = "Cluster1"
+}
+
+variable "vsphere_network" {
+  description = "vSphere Network Name"
+  default = "VM Network"
+}
+
+variable "vsphere_datastore" {
+  description = "vSphere Datastore Name"
+  default = "datastore1"
+}
+
+variable "vsphere_vm_template" {
+  description = "vSphere VM Template Name"
+  default = "tpl-ubuntu-1804"
+}
+
+variable "vsphere_vm_linked_clone" {
+  description = "create vsphere linked clone VM"
+  default = false
+}
+
+variable "vsphere_vm_num_cpus" {
+  description = "Number of CPUs for the VM"
+  default = "2"
+}
+
+variable "vsphere_vm_memory" {
+  description = "Amount of memory for the VM"
+  default = "2048"
+}
+
+variable "vsphere_user" {
+  description = "vSphere Admin Username"
+  default = "administrator@vsphere.local"
+}
+
+variable "vsphere_password" {
+  description = "vSphere Admin Password"
+  default = "YourSecretPassword"
+}

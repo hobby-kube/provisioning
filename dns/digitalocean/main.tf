@@ -5,31 +5,31 @@ variable "token" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = "list"
+  type = list
 }
 
 variable "public_ips" {
-  type = "list"
+  type = list
 }
 
 provider "digitalocean" {
-  token = "${var.token}"
+  token = var.token
 }
 
 resource "digitalocean_record" "hosts" {
-  count = "${var.node_count}"
+  count = var.node_count
 
-  domain = "${var.domain}"
-  name   = "${element(var.hostnames, count.index)}"
-  value  = "${element(var.public_ips, count.index)}"
+  domain = var.domain
+  name   = element(var.hostnames, count.index)
+  value  = element(var.public_ips, count.index)
   type   = "A"
   ttl    = 300
 }
 
 resource "digitalocean_record" "domain" {
-  domain = "${var.domain}"
+  domain = var.domain
   name   = "@"
-  value  = "${element(var.public_ips, 0)}"
+  value  = element(var.public_ips, 0)
   type   = "A"
   ttl    = 300
 }
@@ -37,7 +37,7 @@ resource "digitalocean_record" "domain" {
 resource "digitalocean_record" "wildcard" {
   depends_on = ["digitalocean_record.domain"]
 
-  domain = "${var.domain}"
+  domain = var.domain
   name   = "*.${var.domain}."
   value  = "@"
   type   = "CNAME"

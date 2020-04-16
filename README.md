@@ -91,6 +91,25 @@ export TF_VAR_packet_project_id=<uuid>
 # export TF_VAR_packet_operating_system="ubuntu_18_04"
 ```
 
+#### Using vSphere as provider
+
+```sh
+export TF_VAR_vsphere_server=<FQDN or IP of vCenter Server>
+export TF_VAR_vsphere_datacenter=<vSphere Datacenter Name>
+export TF_VAR_vsphere_cluster=<vSphere Cluster Name>
+export TF_VAR_vsphere_network=<vSphere Network Name>
+export TF_VAR_vsphere_datastore=<vSphere Datastore Name>
+export TF_VAR_vsphere_vm_template=<vSphere VM Template Name>
+export TF_VAR_vsphere_user=<vSphere Admin Username>
+export TF_VAR_vsphere_password=<vSphere Admin Password>
+# Defaults:
+# export TF_VAR_vsphere_vm_linked_clone=false
+# export TF_VAR_vsphere_vm_num_cpus="2"
+# export TF_VAR_vsphere_vm_memory="2048"
+```
+
+Template VM needs to pre-configured so that root can login using SSH key.
+
 #### Using Cloudflare for DNS entries
 
 ```sh
