@@ -2,7 +2,7 @@
 
 > This is part of the Hobby Kube project. Functionality of the modules is described in the [guide](https://github.com/hobby-kube/guide).
 
-Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/), [DigitalOcean](https://www.digitalocean.com/) or [Packet](https://www.packet.com/) using [Terraform](https://www.terraform.io/).
+Deploy a secure Kubernetes cluster on [Hetzner Cloud](https://www.hetzner.com/cloud), [Scaleway](https://www.scaleway.com/), [DigitalOcean](https://www.digitalocean.com/), [Packet](https://www.packet.com/) or [Vultr](https://vultr.com/) using [Terraform](https://www.terraform.io/).
 
 ## Setup
 
@@ -109,6 +109,26 @@ export TF_VAR_vsphere_password=<vSphere Admin Password>
 ```
 
 Template VM needs to pre-configured so that root can login using SSH key.
+
+#### Using Vultr as provider
+
+```sh
+export TF_VAR_vultr_api_key=<api_key>
+export TF_VAR_vultr_region_id=<DCID>
+export TF_VAR_vultr_plan_id=<VPSPLANID>
+export TF_VAR_vultr_os_id=<OSID>
+
+# # Defaults:
+#
+# # "New Jersey"
+# export TF_VAR_vultr_region_id=1
+#
+# # $5 for "1 CPU, 1024 MB RAM,25 GB SSD,1.00 TB BW",
+# export TF_VAR_vultr_plan_id=201
+#
+# # "Ubuntu 18.04 x64"
+# export TF_VAR_vultr_os_id=270
+```
 
 #### Using Cloudflare for DNS entries
 
