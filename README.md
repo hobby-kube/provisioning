@@ -138,6 +138,17 @@ module "provider" {
 }
 ```
 
+#### Add more firewall rules
+
+Security/ufw takes an optional variable to add custom firewall rules during provisioning:
+
+```
+module "firewall" {
+  # ...
+  additional_rules = ["allow 1194/udp", "allow ftp"]
+}
+```
+
 ### Execute
 
 From the root of this project...
