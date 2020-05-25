@@ -20,6 +20,11 @@ variable "kubernetes_interface" {
   type = string
 }
 
+variable "additional_rules" {
+  type    = list(string)
+  default = []
+}
+
 resource "null_resource" "firewall" {
   count = var.node_count
 
@@ -35,19 +40,20 @@ resource "null_resource" "firewall" {
 
   provisioner "remote-exec" {
     inline = [
-      "${data.template_file.ufw.rendered}"
+      data.template_file.ufw.rendered
     ]
       
   }
 }
 
 data "template_file" "ufw" {
-  template = "${file("${path.module}/scripts/ufw.sh")}"
+  template = file("${path.module}/scripts/ufw.sh")
 
   vars = {
     private_interface    = var.private_interface
     kubernetes_interface = var.kubernetes_interface
     vpn_interface        = var.vpn_interface
     vpn_port             = var.vpn_port
+    additional_rules     = join("\nufw ", flatten(["", var.additional_rules]))
   }
 }
