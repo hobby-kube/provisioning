@@ -71,13 +71,11 @@ module "provider" {
 #
 #   api_key         = var.vultr_api_key
 #   ssh_key_ids     = var.vultr_ssh_key_ids
-#   region_id       = var.vultr_region_id
-#   plan_id         = var.vultr_plan_id
-#   os_id           = var.vultr_os_id
+#   region          = var.vultr_region
+#   plan            = var.vultr_plan
+#   os              = var.vultr_os
 #   hosts           = var.node_count
 #   hostname_format = var.hostname_format
-#
-#   rate_limit      = var.vultr_rate_limit
 # }
 
 module "swap" {

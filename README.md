@@ -114,20 +114,20 @@ Template VM needs to pre-configured so that root can login using SSH key.
 
 ```sh
 export TF_VAR_vultr_api_key=<api_key>
-export TF_VAR_vultr_region_id=<DCID>
-export TF_VAR_vultr_plan_id=<VPSPLANID>
-export TF_VAR_vultr_os_id=<OSID>
+
+# https://api.vultr.com/v1/regions/list
+export TF_VAR_vultr_region=<region.name>
+
+# https://api.vultr.com/v1/plans/list
+export TF_VAR_vultr_plan=<plan.name>
+
+# https://api.vultr.com/v1/os/list
+export TF_VAR_vultr_os=<os.name>
 
 # # Defaults:
-#
-# # "New Jersey"
-# export TF_VAR_vultr_region_id=1
-#
-# # $5 for "1 CPU, 1024 MB RAM,25 GB SSD,1.00 TB BW",
-# export TF_VAR_vultr_plan_id=201
-#
-# # "Ubuntu 18.04 x64"
-# export TF_VAR_vultr_os_id=270
+# export TF_VAR_vultr_region="New Jersey"
+# export TF_VAR_vultr_plan="1024 MB RAM,25 GB SSD,1.00 TB BW"
+# export TF_VAR_vultr_os="Ubuntu 18.04 x64"
 ```
 
 #### Using Cloudflare for DNS entries

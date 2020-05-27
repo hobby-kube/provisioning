@@ -121,28 +121,16 @@ variable "vultr_api_key" {
   default = ""
 }
 
-variable "vultr_region_id" {
-  /*
-    curl -H "API-Key: $KEY" "https://api.vultr.com/v1/regions/list" \
-      | jq '.[] | select(.name == "New Jersey")'
-  */
-  default = "1"
+variable "vultr_region" {
+  default = "New Jersey"
 }
 
-variable "vultr_plan_id" {
-  /*
-    curl -H "API-Key: $KEY" "https://api.vultr.com/v1/plans/list" \
-      | jq '.[] | select(.price_per_month == "5.00")'
-  */
-  default = "201"
+variable "vultr_plan" {
+  default = "1024 MB RAM,25 GB SSD,1.00 TB BW"
 }
 
-variable "vultr_os_id" {
-  /*
-    curl -H "API-Key: $KEY" "https://api.vultr.com/v1/os/list" \
-      | jq '.[] | select(.name == "Ubuntu 18.04 x64")'
-  */
-  default = "270"
+variable "vultr_os" {
+  default = "Ubuntu 18.04 x64"
 }
 
 variable "vultr_ssh_key_ids" {
@@ -151,27 +139,6 @@ variable "vultr_ssh_key_ids" {
       | jq '.[].SSHKEYID'
   */
   default = [""]
-}
-
-variable "vultr_rate_limit" {
-  /*
-    > https://www.terraform.io/docs/providers/vultr/index.html
-    > Vultr limits API calls to 3 calls per second. This field lets you
-    > configure how the rate limit using milliseconds. The default value
-    > if this field is omitted is 650 milliseconds per call.
-
-    If you are facing an error like this
-      ```
-      Error: Error getting private networks
-      for server  37329555 : gave up after 4 attempts, last error:
-      "Rate limit reached - please try your request again later.
-      Current rate limit: 3 requests/sec"
-      ```
-    try increasing the vultr_rate_limit value. For example, the default value
-    is not enough for a cluster of 10 nodes, but vultr_rate_limit = 4000
-    works fine for the case.
-  */
-  default = 650
 }
 
 /* aws dns */
