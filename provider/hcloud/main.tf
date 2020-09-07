@@ -67,6 +67,25 @@ resource "hcloud_server" "host" {
 #   count = var.hosts
 # }
 
+resource "hcloud_network" "kubernetes" {
+  name = "kubernetes"
+  ip_range = "192.168.0.0/16"
+}
+
+resource "hcloud_network_subnet" "kubernetes" {
+  network_id = hcloud_network.kubernetes.id
+  type = "server"
+  ip_range = "192.168.0.0/24"
+  network_zone = "eu-central"
+}
+
+resource "hcloud_server_network" "privatenetwork" {
+  count = var.hosts
+  server_id = element(hcloud_server.host.*.id,count.index)
+  subnet_id = hcloud_network_subnet.kubernetes.id
+  ip = "192.168.0.${ count.index + 2}"
+}
+
 output "hostnames" {
   value = "${hcloud_server.host.*.name}"
 }
@@ -76,7 +95,7 @@ output "public_ips" {
 }
 
 output "private_ips" {
-  value = "${hcloud_server.host.*.ipv4_address}"
+  value = "${hcloud_server_network.privatenetwork.*.ip}"
 }
 
 output "private_network_interface" {
