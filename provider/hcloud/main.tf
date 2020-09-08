@@ -99,5 +99,5 @@ output "private_ips" {
 }
 
 output "private_network_interface" {
-  value = "eth0"
+  value = "enp7s0"
 }
