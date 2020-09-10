@@ -35,7 +35,7 @@ resource "digitalocean_record" "domain" {
 }
 
 resource "digitalocean_record" "wildcard" {
-  depends_on = ["digitalocean_record.domain"]
+  depends_on = [digitalocean_record.domain]
 
   domain = var.domain
   name   = "*.${var.domain}."

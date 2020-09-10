@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    cloudflare = {
-      source = "terraform-providers/cloudflare"
-    }
-  }
-  required_version = ">= 0.13"
-}
-
 locals {
   zone_id = "${lookup(data.cloudflare_zones.domain_zones.zones[0], "id")}"
 }

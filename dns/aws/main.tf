@@ -30,7 +30,7 @@ data "aws_route53_zone" "selected_domain" {
 resource "aws_route53_record" "hosts" {
   count = var.node_count
 
-  zone_id = "${data.aws_route53_zone.selected_domain.zone_id}"
+  zone_id = data.aws_route53_zone.selected_domain.zone_id
   name    = "${element(var.hostnames, count.index)}.${data.aws_route53_zone.selected_domain.name}"
   type    = "A"
   ttl     = "300"
@@ -47,7 +47,7 @@ resource "aws_route53_record" "domain" {
 }
 
 resource "aws_route53_record" "wildcard" {
-  depends_on = ["aws_route53_record.domain"]
+  depends_on = [aws_route53_record.domain]
 
   zone_id = data.aws_route53_zone.selected_domain.zone_id
   name    = "*"

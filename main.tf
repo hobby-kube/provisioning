@@ -87,7 +87,7 @@ module "dns" {
 # module "dns" {
 #   source = "./dns/aws"
 #
-#   node_count      = var.node_count
+#   node_count = var.node_count
 #   access_key = var.aws_access_key
 #   secret_key = var.aws_secret_key
 #   region     = var.aws_region
@@ -99,7 +99,7 @@ module "dns" {
 # module "dns" {
 #   source = "./dns/google"
 #
-#   node_count        = var.node_count
+#   node_count   = var.node_count
 #   project      = var.google_project
 #   region       = var.google_region
 #   creds_file   = var.google_credentials_file
@@ -112,7 +112,7 @@ module "dns" {
 # module "dns" {
 #   source     = "./dns/digitalocean"
 #
-#   node_count      = var.node_count
+#   node_count = var.node_count
 #   token      = var.digitalocean_token
 #   domain     = var.domain
 #   public_ips = module.provider.public_ips
