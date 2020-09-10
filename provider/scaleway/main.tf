@@ -38,18 +38,18 @@ provider "scaleway" {
 }
 
 resource "scaleway_instance_server" "host" {
-  name                = format(var.hostname_format, count.index + 1)
-  type                = var.type
-  image               = data.scaleway_instance_image.image.id
-  enable_dynamic_ip   = true
+  name              = format(var.hostname_format, count.index + 1)
+  type              = var.type
+  image             = data.scaleway_instance_image.image.id
+  enable_dynamic_ip = true
 
   count = var.hosts
 
   connection {
-    user = "root"
-    type = "ssh"
+    user    = "root"
+    type    = "ssh"
     timeout = "2m"
-    host = self.public_ip
+    host    = self.public_ip
   }
 
 

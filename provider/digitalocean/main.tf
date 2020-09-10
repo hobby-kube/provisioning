@@ -45,10 +45,10 @@ resource "digitalocean_droplet" "host" {
   count = var.hosts
 
   connection {
-    user = "root"
-    type = "ssh"
+    user    = "root"
+    type    = "ssh"
     timeout = "2m"
-    host = self.ipv4_address
+    host    = self.ipv4_address
   }
 
   provisioner "remote-exec" {

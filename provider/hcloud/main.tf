@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    hcloud = {
+      source = "hetznercloud/hcloud"
+    }
+  }
+  required_version = ">= 0.13"
+}
+
 variable "token" {}
 
 variable "hosts" {
@@ -43,10 +52,10 @@ resource "hcloud_server" "host" {
   count = var.hosts
 
   connection {
-    user = "root"
-    type = "ssh"
+    user    = "root"
+    type    = "ssh"
     timeout = "2m"
-    host = self.ipv4_address
+    host    = self.ipv4_address
   }
 
   provisioner "remote-exec" {
@@ -58,14 +67,14 @@ resource "hcloud_server" "host" {
   }
 }
 
-#resource "hcloud_volume" "volume" {
-#  name = "${format(var.hostname_format, count.index + 1)}"
-#  size = 10
-#  server_id =  "${element(hcloud_server.host.*.id, count.index)}"
-#  automount = false
-#
-#  count = "${var.hosts}"
-#}
+# resource "hcloud_volume" "volume" {
+#   name = format(var.hostname_format, count.index + 1)
+#   size = 10
+#   server_id = element(hcloud_server.host.*.id, count.index)
+#   automount = false
+
+#   count = var.hosts
+# }
 
 output "hostnames" {
   value = "${hcloud_server.host.*.name}"

@@ -42,7 +42,7 @@ resource "null_resource" "firewall" {
     inline = [
       data.template_file.ufw.rendered
     ]
-      
+
   }
 }
 

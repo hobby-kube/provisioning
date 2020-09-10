@@ -31,7 +31,7 @@ variable "vpn_iprange" {
 resource "null_resource" "wireguard" {
   count = var.node_count
 
-  triggers =  {
+  triggers = {
     count = var.node_count
   }
 
