@@ -47,7 +47,7 @@ export TF_VAR_hcloud_ssh_keys='["<description-key1>", "<description-key2>"]'
 # Defaults:
 # export TF_VAR_hcloud_location="nbg1"
 # export TF_VAR_hcloud_type="cx11"
-# export TF_VAR_hcloud_image="ubuntu-18.04"
+# export TF_VAR_hcloud_image="ubuntu-20.04"
 ```
 
 SSH keys are referenced by their description. Visit the Hetzner Cloud console at
@@ -62,7 +62,7 @@ export TF_VAR_scaleway_secret_key=<secret_key>
 # Defaults:
 # export TF_VAR_scaleway_zone="nl-ams-1"
 # export TF_VAR_scaleway_type="DEV1-S"
-# export TF_VAR_scaleway_image="Ubuntu Bionic"
+# export TF_VAR_scaleway_image="Ubuntu 20.04 Focal Fossa"
 
 ```
 
@@ -75,7 +75,7 @@ export TF_VAR_digitalocean_ssh_keys='["<id-key1>", "<id-key2>"]'
 # Defaults:
 # export TF_VAR_digitalocean_region="fra1"
 # export TF_VAR_digitalocean_size="1gb"
-# export TF_VAR_digitalocean_image="ubuntu-18-04-x64"
+# export TF_VAR_digitalocean_image="ubuntu-20-04-x64"
 ```
 
 You can get SSH key IDs using [this API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
@@ -88,7 +88,7 @@ export TF_VAR_packet_project_id=<uuid>
 # Defaults:
 # export TF_VAR_packet_facility="sjc1"
 # export TF_VAR_packet_plan="c1.small.x86"
-# export TF_VAR_packet_operating_system="ubuntu_18_04"
+# export TF_VAR_packet_operating_system="ubuntu_20_04"
 ```
 
 #### Using vSphere as provider

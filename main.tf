@@ -50,7 +50,7 @@ module "provider" {
 
 # module "provider" {
 #   source = "./provider/vsphere"
-
+#
 #   hosts                   = var.node_count
 #   hostname_format         = var.hostname_format
 #   vsphere_server          = var.vsphere_server

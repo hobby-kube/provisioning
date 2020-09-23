@@ -35,7 +35,7 @@ variable "hcloud_type" {
 }
 
 variable "hcloud_image" {
-  default = "ubuntu-18.04"
+  default = "ubuntu-20.04"
 }
 
 /* scaleway */
@@ -60,7 +60,7 @@ variable "scaleway_type" {
 }
 
 variable "scaleway_image" {
-  default = "Ubuntu Bionic"
+  default = "Ubuntu 20.04 Focal Fossa"
 }
 
 /* digitalocean */
@@ -82,7 +82,7 @@ variable "digitalocean_size" {
 }
 
 variable "digitalocean_image" {
-  default = "ubuntu-18-04-x64"
+  default = "ubuntu-20-04-x64"
 }
 
 /* packet */
@@ -104,7 +104,7 @@ variable "packet_facility" {
 }
 
 variable "packet_operating_system" {
-  default = "ubuntu_18_04"
+  default = "ubuntu_20_04"
 }
 
 variable "packet_billing_cycle" {
@@ -183,7 +183,7 @@ variable "vsphere_datastore" {
 
 variable "vsphere_vm_template" {
   description = "vSphere VM Template Name"
-  default     = "tpl-ubuntu-1804"
+  default     = "tpl-ubuntu-2004"
 }
 
 variable "vsphere_vm_linked_clone" {

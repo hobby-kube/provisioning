@@ -50,19 +50,8 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
-      "apt-get install -yq software-properties-common build-essential",
-      "add-apt-repository -y ppa:wireguard/wireguard",
       "apt-get update",
-    ]
-  }
-
-  provisioner "remote-exec" {
-    script = "${path.module}/scripts/install-kernel-headers.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "DEBIAN_FRONTEND=noninteractive apt-get install -yq wireguard-dkms wireguard-tools",
+      "DEBIAN_FRONTEND=noninteractive apt-get install -yq wireguard",
     ]
   }
 
