@@ -202,10 +202,18 @@ data "template_file" "network_config" {
   }
 }
 
+output "hostnames" {
+  value = "${template_file.hostnames.*.rendered}"
+}
+
 output "public_ips" {
   value = "${data.template_file.public_ips.*.rendered}"
 }
 
 output "private_ips" {
   value = "${data.template_file.public_ips.*.rendered}"
+}
+
+output "private_network_interface" {
+  value = "ens3"
 }
