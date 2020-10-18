@@ -115,6 +115,68 @@ variable "packet_user_data" {
   default = ""
 }
 
+/* libvirt */
+variable "libvirt_disk_size_gb" {
+  default = 50
+}
+
+variable "libvirt_memory_mb" {
+  default = 1024
+}
+
+variable "libvirt_vcpus" {
+  default = 1
+}
+
+variable "libvirt_image_source" {
+  type = string
+  default = "https://cloud-images.ubuntu.com/releases/bionic/release-20200922/ubuntu-18.04-server-cloudimg-amd64.img"
+  # 2020-10-18: Lastest release 20201014 has issues with booting
+}
+
+variable "libvirt_basename" {
+  type = string
+  default = "hobbykube"
+}
+
+variable "libvirt_ssh_keys" {
+  type    = list
+  default = []
+}
+
+variable "libvirt_sh_keys_github_username" {
+  default = ""
+}
+
+variable "libvirt_do_package_upgrade" {
+  type    = string
+  default = "false"
+}
+
+variable "libvirt_connection_uri" {
+  type    = string
+  default = "qemu:///system"
+}
+
+variable "libvirt_public_gateway" {
+  type    = string
+  default = ""
+}
+
+variable "libvirt_public_nameserver" {
+  type    = string
+  default = ""
+}
+
+variable "libvirt_public_iprange" {
+  type    = string
+  default = ""
+}
+
+variable "libvirt_public_iprange_offset" {
+  default = 1
+}
+
 /* aws dns */
 variable "aws_access_key" {
   default = ""
