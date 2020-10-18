@@ -90,8 +90,7 @@ module "provider" {
 #   ssh_keys                 = var.libvirt_ssh_keys
 #   ssh_keys_github_username = var.libvirt_ssh_keys_github_username 
 #   do_package_upgrade       = var.libvirt_do_package_upgrade
-#   hostname_format          = var.libvirt_hostname_format
-#   libvirt_connection_uri   = var.libvirt_libvirt_connection_uri
+#   libvirt_connection_uri   = var.libvirt_connection_uri
 #   public_gateway           = var.libvirt_public_gateway
 #   public_nameserver        = var.libvirt_public_nameserver
 #   public_iprange           = var.libvirt_public_iprange
