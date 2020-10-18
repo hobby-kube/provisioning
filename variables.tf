@@ -144,7 +144,7 @@ variable "libvirt_ssh_keys" {
   default = []
 }
 
-variable "libvirt_sh_keys_github_username" {
+variable "libvirt_ssh_keys_github_username" {
   default = ""
 }
 
