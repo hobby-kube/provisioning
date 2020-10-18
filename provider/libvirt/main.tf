@@ -16,8 +16,7 @@ variable "vcpus" {
 
 variable "image_source" {
   type = string
-  default = "https://cloud-images.ubuntu.com/releases/bionic/release-20200922/ubuntu-18.04-server-cloudimg-amd64.img"
-  # 2020-10-18: Lastest release 20201014 has issues with booting
+  default = "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img"
 }
 
 variable "basename" {
@@ -36,7 +35,9 @@ variable "ssh_keys_github_username" {
 
 variable "apt_packages" {
   type    = list
-  default = []
+  default = [
+      "net-tools",
+  ]
 }
 
 variable "do_package_upgrade" {
@@ -117,12 +118,12 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 }
 
 resource "libvirt_domain" "node_domain" {
-  count  = var.hosts
-  name   = "${var.basename}-${element(data.template_file.hostnames.*.rendered, count.index)}"
-  memory = var.memory_mb
-  vcpu   = var.vcpus
+  count      = var.hosts
+  name       = "${var.basename}-${element(data.template_file.hostnames.*.rendered, count.index)}"
+  memory     = var.memory_mb
+  vcpu       = var.vcpus
 
-  cloudinit = element(libvirt_cloudinit_disk.commoninit.*.id, count.index)
+  cloudinit  = element(libvirt_cloudinit_disk.commoninit.*.id, count.index)
 
   network_interface {
     bridge = "br0"
@@ -203,17 +204,29 @@ data "template_file" "network_config" {
 }
 
 output "hostnames" {
-  value = "${template_file.hostnames.*.rendered}"
+  value = "${data.template_file.hostnames.*.rendered}"
+  depends_on     = [
+    libvirt_domain.node_domain,
+  ]
 }
 
 output "public_ips" {
   value = "${data.template_file.public_ips.*.rendered}"
+  depends_on     = [
+    libvirt_domain.node_domain,
+  ]
 }
 
 output "private_ips" {
   value = "${data.template_file.public_ips.*.rendered}"
+  depends_on     = [
+    libvirt_domain.node_domain,
+  ]
 }
 
 output "private_network_interface" {
   value = "ens3"
+  depends_on     = [
+    libvirt_domain.node_domain,
+  ]
 }
