@@ -130,8 +130,7 @@ variable "libvirt_vcpus" {
 
 variable "libvirt_image_source" {
   type = string
-  default = "https://cloud-images.ubuntu.com/releases/bionic/release-20200922/ubuntu-18.04-server-cloudimg-amd64.img"
-  # 2020-10-18: Lastest release 20201014 has issues with booting
+  default = "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img"
 }
 
 variable "libvirt_basename" {
