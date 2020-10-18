@@ -1,0 +1,48 @@
+# Count of nodes to provide (must be provided)
+node_count                       = 3
+
+# Range of IPs in the bridged host network to use for provisioning
+# (must be provided)
+libvirt_public_iprange           = "192.168.100.0/24"
+
+# Offset in public ip range to start with when providing node IPs (default: 1)
+libvirt_public_iprange_offset    = 120
+
+# The gateway for the node to use
+# (must be provided)
+libvirt_public_gateway           = "192.168.100.1"
+
+# The nameserver for the node to use
+# (must be provided)
+libvirt_public_nameserver        = "192.168.100.1"
+
+# Connection URL for libvirt provider (default: "qemu:///system")
+libvirt_connection_uri           = "qemu+ssh://root@kvmhost.some.net/system?socket=/var/run/libvirt/libvirt-sock"
+
+# Size of virtual disk per node in GB (default: 50)
+libvirt_disk_size_gb             = 30
+
+# Memory per node in MB (default: 1024)
+libvirt_memory_mb                = 2048
+
+# Number of CPUs per node (default: 1)
+libvirt_vcpus                   = 2
+
+# Cloud image source
+# Default: "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img"
+# An image may be downladed to the providing machine and referenced as a local file, as shown below
+libvirt_image_source             = "ubuntu-20.04-server-cloudimg-amd64.img"
+
+# The basename for storage pool and volumes (default: "hobbykube")
+libvirt_basename                 = "k8scluster"
+
+# GitHub user to import ssh keys from (default: "")
+# Will take precedence over libvirt_ssh_keys, when given
+libvirt_ssh_keys_github_username = "johndoe"
+
+# List of directly provided ssh public keys
+# Will only be picked up when no libvirt_ssh_keys_github_username is given
+# libvirt_ssh_keys                = ["ssh-dss ....",]
+
+# Should apt-get upgrade be performed? (default: "false")
+libvirt_do_package_upgrade       = "true"

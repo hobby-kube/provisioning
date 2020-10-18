@@ -5,9 +5,9 @@ This module integrates the libvirt provider with hobby-kube.
 
 ## Prerequisites
 
-First of all, a working KVM / QEMU host is needed.
-The module works both on the same host as well as on a machine with `qemu+ssh`-access to a host machine.
-Some installations have to be made on the machine that is used for Terraform provisioning:
+First of all, a working KVM / QEMU host with bridged networking is needed.
+The module works both when provisioned from the virtualization host as well as on a machine with `qemu+ssh`-access to a host machine.
+Some installations have to be made **on the machine that is used for Terraform provisioning**:
 
 * terraform-provider-libvirt
 * mkisofs
@@ -50,4 +50,39 @@ It comes with `cdrtools`, which can be installed with Homebrew:
 
 ```
 brew install cdrtools
+```
+
+## Usage and Configuration
+
+Uncomment the libvirt-provider module in the top-level `main.tf` file.
+Configure your desired setup in `terraform.tfvars`.
+
+See provided `terraform.tfvars.example` for possible options and explanations.
+
+### Network Setup
+
+For now, only bridged networking is supported.
+Bridge `br0` must be provisioned on the virtualization host.
+
+Nodes will be provisioned with static IP Addresses within the given briged network.
+Given your bridged network is `192.168.100.0/24`, a minimim viable configuration with three hosts and IP addresses counted from `192.168.100.120` looks like this:
+
+```
+# Count of nodes to provide (must be provided)
+node_count                       = 3
+
+# Range of IPs in the bridged host network to use for provisioning
+# (must be provided)
+libvirt_public_iprange           = "192.168.100.0/24"
+
+# Offset in public ip range to start with when providing node IPs (default: 1)
+libvirt_public_iprange_offset    = 120
+
+# The gateway for the node to use
+# (must be provided)
+libvirt_public_gateway           = "192.168.100.1"
+
+# The nameserver for the node to use
+# (must be provided)
+libvirt_public_nameserver        = "192.168.100.1"
 ```
