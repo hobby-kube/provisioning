@@ -1,5 +1,5 @@
 variable "hosts" {
-  default = 3
+  default = 0
 }
 
 variable "disk_size_gb" {
