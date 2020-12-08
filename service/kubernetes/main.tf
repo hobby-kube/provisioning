@@ -1,11 +1,11 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_ips" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_interface" {
@@ -13,7 +13,7 @@ variable "vpn_interface" {
 }
 
 variable "etcd_endpoints" {
-  type = list
+  type = list(any)
 }
 
 variable "overlay_interface" {
@@ -52,17 +52,19 @@ resource "null_resource" "kubernetes" {
   provisioner "remote-exec" {
     inline = [
       "apt-get install -qy jq",
-      "modprobe br_netfilter && echo br_netfilter >> /etc/modules",
+      "modprobe overlay && echo overlay >> /etc/modules-load.d/containerd.conf",
+      "modprobe br_netfilter && echo br_netfilter >> /etc/modules-load.d/containerd.conf",
+      "echo net.bridge.bridge-nf-call-iptables  = 1 >> /etc/sysctl.d/99-kubernetes-cri.conf",
+      "echo net.ipv4.ip_forward                 = 1 >> /etc/sysctl.d/99-kubernetes-cri.conf",
+      "echo net.bridge.bridge-nf-call-ip6tables = 1 >> /etc/sysctl.d/99-kubernetes-cri.conf",
+      "sysctl --system"
     ]
   }
 
   provisioner "remote-exec" {
-    inline = ["[ -d /etc/systemd/system/docker.service.d ] || mkdir -p /etc/systemd/system/docker.service.d"]
-  }
-
-  provisioner "file" {
-    content     = file("${path.module}/templates/10-docker-opts.conf")
-    destination = "/etc/systemd/system/docker.service.d/10-docker-opts.conf"
+    inline = [
+      element(data.template_file.install.*.rendered, count.index)
+    ]
   }
 
   provisioner "file" {
@@ -70,15 +72,24 @@ resource "null_resource" "kubernetes" {
     destination = "/tmp/master-configuration.yml"
   }
 
+
   provisioner "remote-exec" {
     inline = [
-      "${element(data.template_file.install.*.rendered, count.index)}"
+      element(data.template_file.install.*.rendered, count.index)
     ]
   }
 
   provisioner "remote-exec" {
     inline = [
-      "${count.index == 0 ? data.template_file.master.rendered : data.template_file.slave.rendered}"
+      "[ -d /etc/containerd ] || mkdir -p /etc/containerd",
+      "containerd config default > /etc/containerd/config.toml",
+      "systemctl restart containerd"
+    ]
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      count.index == 0 ? data.template_file.master.rendered : data.template_file.slave.rendered
     ]
   }
 }

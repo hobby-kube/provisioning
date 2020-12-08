@@ -1,11 +1,11 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "private_ips" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_interface" {
@@ -17,7 +17,7 @@ variable "vpn_port" {
 }
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "overlay_cidr" {
@@ -68,7 +68,7 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
-      "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", data.template_file.vpn_ips.*.rendered, var.hostnames))}",
+      join("\n", formatlist("echo '%s %s' >> /etc/hosts", data.template_file.vpn_ips.*.rendered, var.hostnames)),
       "systemctl is-enabled wg-quick@${var.vpn_interface} || systemctl enable wg-quick@${var.vpn_interface}",
       "systemctl daemon-reload",
       "systemctl restart wg-quick@${var.vpn_interface}",
@@ -97,7 +97,7 @@ data "template_file" "interface-conf" {
     address     = element(data.template_file.vpn_ips.*.rendered, count.index)
     port        = var.vpn_port
     private_key = element(data.external.keys.*.result.private_key, count.index)
-    peers       = "${replace(join("\n", data.template_file.peer-conf.*.rendered), element(data.template_file.peer-conf.*.rendered, count.index), "")}"
+    peers       = replace(join("\n", data.template_file.peer-conf.*.rendered), element(data.template_file.peer-conf.*.rendered, count.index), "")
   }
 }
 
@@ -140,7 +140,7 @@ data "template_file" "vpn_ips" {
 
 output "vpn_ips" {
   depends_on = [null_resource.wireguard]
-  value      = "${data.template_file.vpn_ips.*.rendered}"
+  value      = data.template_file.vpn_ips.*.rendered
 }
 
 output "vpn_unit" {
@@ -149,13 +149,13 @@ output "vpn_unit" {
 }
 
 output "vpn_interface" {
-  value = "${var.vpn_interface}"
+  value = var.vpn_interface
 }
 
 output "vpn_port" {
-  value = "${var.vpn_port}"
+  value = var.vpn_port
 }
 
 output "overlay_cidr" {
-  value = "${var.overlay_cidr}"
+  value = var.overlay_cidr
 }

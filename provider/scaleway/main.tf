@@ -25,7 +25,7 @@ variable "image" {
 }
 
 variable "apt_packages" {
-  type    = list
+  type    = list(any)
   default = []
 }
 
@@ -34,7 +34,6 @@ provider "scaleway" {
   access_key      = var.access_key
   secret_key      = var.secret_key
   zone            = var.zone
-  version         = ">= 1.14"
 }
 
 resource "scaleway_instance_server" "host" {

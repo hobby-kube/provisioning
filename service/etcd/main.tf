@@ -1,11 +1,11 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_unit" {
@@ -13,7 +13,7 @@ variable "vpn_unit" {
 }
 
 variable "vpn_ips" {
-  type = list
+  type = list(any)
 }
 
 locals {
@@ -40,7 +40,7 @@ resource "null_resource" "etcd" {
 
   provisioner "remote-exec" {
     inline = [
-      "${data.template_file.install.rendered}"
+      data.template_file.install.rendered
     ]
   }
 
@@ -64,7 +64,7 @@ data "template_file" "etcd-service" {
 
   vars = {
     hostname              = element(local.etcd_hostnames, count.index)
-    intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
+    intial_cluster        = join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))
     listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
     advertise_client_urls = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
     listen_peer_urls      = "http://${element(local.etcd_vpn_ips, count.index)}:2380"
@@ -84,10 +84,10 @@ data "null_data_source" "endpoints" {
   depends_on = [null_resource.etcd]
 
   inputs = {
-    list = "${join(",", formatlist("http://%s:2379", local.etcd_vpn_ips))}"
+    list = join(",", formatlist("http://%s:2379", local.etcd_vpn_ips))
   }
 }
 
 output "endpoints" {
-  value = "${split(",", data.null_data_source.endpoints.outputs["list"])}"
+  value = split(",", data.null_data_source.endpoints.outputs["list"])
 }

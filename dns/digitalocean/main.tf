@@ -5,11 +5,11 @@ variable "token" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "public_ips" {
-  type = list
+  type = list(any)
 }
 
 provider "digitalocean" {
@@ -45,5 +45,5 @@ resource "digitalocean_record" "wildcard" {
 }
 
 output "domains" {
-  value = "${digitalocean_record.hosts.*.fqdn}"
+  value = digitalocean_record.hosts.*.fqdn
 }

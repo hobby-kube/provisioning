@@ -143,6 +143,8 @@ module "firewall" {
 module "etcd" {
   source = "./service/etcd"
 
+  depends_on = [module.wireguard] # workaround because dependency tree is broken with 0.14.0
+
   node_count  = var.etcd_node_count
   connections = module.provider.public_ips
   hostnames   = module.provider.hostnames

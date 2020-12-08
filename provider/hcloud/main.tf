@@ -21,7 +21,7 @@ variable "image" {
 }
 
 variable "ssh_keys" {
-  type = list
+  type = list(any)
 }
 
 provider "hcloud" {
@@ -29,7 +29,7 @@ provider "hcloud" {
 }
 
 variable "apt_packages" {
-  type    = list
+  type    = list(any)
   default = []
 }
 
@@ -58,25 +58,25 @@ resource "hcloud_server" "host" {
   }
 }
 
-# resource "hcloud_volume" "volume" {
-#   name      = format(var.hostname_format, count.index + 1)
-#   size      = 10
-#   server_id = element(hcloud_server.host.*.id, count.index)
-#   automount = false
+resource "hcloud_volume" "volume" {
+  name      = format(var.hostname_format, count.index + 1)
+  size      = 10
+  server_id = element(hcloud_server.host.*.id, count.index)
+  automount = false
 
-#   count = var.hosts
-# }
+  count = var.hosts
+}
 
 output "hostnames" {
-  value = "${hcloud_server.host.*.name}"
+  value = hcloud_server.host.*.name
 }
 
 output "public_ips" {
-  value = "${hcloud_server.host.*.ipv4_address}"
+  value = hcloud_server.host.*.ipv4_address
 }
 
 output "private_ips" {
-  value = "${hcloud_server.host.*.ipv4_address}"
+  value = hcloud_server.host.*.ipv4_address
 }
 
 output "private_network_interface" {
