@@ -210,3 +210,29 @@ variable "vsphere_password" {
   description = "vSphere Admin Password"
   default     = "YourSecretPassword"
 }
+
+/* upcloud */
+variable "upcloud_zone" {
+  default = "de-fra1"
+}
+
+variable "upcloud_plan" {
+  default = "1xCPU-1GB"
+}
+
+variable "upcloud_disk_template" {
+  default = "Ubuntu Server 20.04 LTS (Focal Fossa)"
+}
+
+variable "upcloud_ssh_keys" {
+  type    = list(string)
+  default = [""]
+}
+
+variable "upcloud_username" {
+  default = ""
+}
+
+variable "upcloud_password" {
+  default = ""
+}
