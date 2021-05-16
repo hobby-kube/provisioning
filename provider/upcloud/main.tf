@@ -56,14 +56,22 @@ resource "upcloud_server" "host" {
     type = "public"
   }
 
-  network_interface {
-    type = "private"
-  }
+  # network_interface {
+  #   type = "private"
+  #   network = upcloud_network.cluster_network.id
+  # }
 
   login {
     user            = "root"
     keys            = var.ssh_keys
     create_password = false
+  }
+
+  connection {
+    user    = "root"
+    type    = "ssh"
+    timeout = "2m"
+    host    = self.network_interface[0].ip_address
   }
 
   provisioner "remote-exec" {
@@ -97,6 +105,19 @@ variable "storage_sizes" {
 #   }
 # }
 
+# resource "upcloud_network" "cluster_network" {
+#   name = "cluster_network"
+#   zone = "nl-ams1"
+# 
+#   ip_network {
+#     address            = "10.0.0.0/24"
+#     dhcp               = true
+#     dhcp_default_route = false
+#     family  = "IPv4"
+#     gateway = "10.0.0.1"
+#   }
+# }
+
 output "hostnames" {
   value = upcloud_server.host[*].hostname
 }
@@ -106,7 +127,8 @@ output "public_ips" {
 }
 
 output "private_ips" {
-  value = upcloud_server.host[*].network_interface[1].ip_address
+  # [0] should be [1] if you have an actual private interface
+  value = upcloud_server.host[*].network_interface[0].ip_address
 }
 
 output "private_network_interface" {
