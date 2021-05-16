@@ -1,13 +1,13 @@
 variable "username" {
-  default = ""
+  type = string
 }
 
 variable "password" {
-  default = ""
+  type = string
 }
 
 variable "hosts" {
-  default = 3
+  type = number
 }
 
 variable "hostname_format" {
@@ -19,11 +19,11 @@ variable "zone" {
 }
 
 variable "plan" {
-  default = "1xCPU-1GB"
+  type = string
 }
 
 variable "disk_template" {
-  default = "Ubuntu Server 20.04 LTS (Focal Fossa)"
+  type = string
 }
 
 variable "ssh_keys" {
