@@ -217,7 +217,7 @@ variable "upcloud_zone" {
 }
 
 variable "upcloud_plan" {
-  default = "1xCPU-1GB"
+  default = "1xCPU-2GB"
 }
 
 variable "upcloud_disk_template" {

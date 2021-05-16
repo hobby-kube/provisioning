@@ -118,7 +118,7 @@ export TF_VAR_upcloud_password=<UpCloud API account password>
 export TF_VAR_upcloud_ssh_keys='["<PUBLIC KEY HERE>"]'
 # Defaults:
 # export TF_VAR_upcloud_zone="de-fra1"
-# export TF_VAR_upcloud_plan="1xCPU-1GB"
+# export TF_VAR_upcloud_plan="1xCPU-2GB"
 # export TF_VAR_upcloud_disk_template="Ubuntu Server 20.04 LTS (Focal Fossa)"
 ```
 
