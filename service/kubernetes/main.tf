@@ -1,11 +1,11 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_ips" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_interface" {
@@ -13,7 +13,7 @@ variable "vpn_interface" {
 }
 
 variable "etcd_endpoints" {
-  type = list
+  type = list(any)
 }
 
 variable "overlay_interface" {
@@ -22,6 +22,10 @@ variable "overlay_interface" {
 
 variable "overlay_cidr" {
   default = "10.96.0.0/16"
+}
+
+variable "kubelet_extra_args" {
+  type = string
 }
 
 resource "random_string" "token1" {
@@ -63,6 +67,23 @@ resource "null_resource" "kubernetes" {
   provisioner "file" {
     content     = file("${path.module}/templates/10-docker-opts.conf")
     destination = "/etc/systemd/system/docker.service.d/10-docker-opts.conf"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p /etc/systemd/system/kubelet.service.d",
+    ]
+  }
+
+  provisioner "file" {
+    content     = element(data.template_file.kubelet-extras.*.rendered, count.index)
+    destination = "/etc/systemd/system/kubelet.service.d/90-kubelet-extras.conf"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "systemctl daemon-reload",
+    ]
   }
 
   provisioner "file" {
@@ -117,6 +138,17 @@ data "template_file" "install" {
   vars = {
     vpn_interface = var.vpn_interface
     overlay_cidr  = var.overlay_cidr
+  }
+}
+
+data "template_file" "kubelet-extras" {
+  count = var.node_count
+
+  template = file("${path.module}/templates/90-kubelet-extras.conf")
+
+  vars = {
+    node_ip    = element(var.vpn_ips, count.index)
+    extra_args = var.kubelet_extra_args
   }
 }
 

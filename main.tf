@@ -153,10 +153,11 @@ module "etcd" {
 module "kubernetes" {
   source = "./service/kubernetes"
 
-  node_count     = var.node_count
-  connections    = module.provider.public_ips
-  cluster_name   = var.domain
-  vpn_interface  = module.wireguard.vpn_interface
-  vpn_ips        = module.wireguard.vpn_ips
-  etcd_endpoints = module.etcd.endpoints
+  node_count         = var.node_count
+  connections        = module.provider.public_ips
+  cluster_name       = var.domain
+  vpn_interface      = module.wireguard.vpn_interface
+  vpn_ips            = module.wireguard.vpn_ips
+  etcd_endpoints     = module.etcd.endpoints
+  kubelet_extra_args = module.swap.kubelet_extra_args
 }
