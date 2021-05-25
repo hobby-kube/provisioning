@@ -110,6 +110,20 @@ export TF_VAR_vsphere_password=<vSphere Admin Password>
 
 Template VM needs to pre-configured so that root can login using SSH key.
 
+#### Using UpCloud as provider
+
+```sh
+export TF_VAR_upcloud_username=<UpCloud API account username>
+export TF_VAR_upcloud_password=<UpCloud API account password>
+export TF_VAR_upcloud_ssh_keys='["<PUBLIC KEY HERE>"]'
+# Defaults:
+# export TF_VAR_upcloud_zone="de-fra1"
+# export TF_VAR_upcloud_plan="1xCPU-2GB"
+# export TF_VAR_upcloud_disk_template="Ubuntu Server 20.04 LTS (Focal Fossa)"
+```
+
+You will need API credentials to use the UpCloud terraform provider, see https://upcloud.com/community/tutorials/getting-started-upcloud-api/ for more info.
+
 #### Using Cloudflare for DNS entries
 
 ```sh

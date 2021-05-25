@@ -66,6 +66,19 @@ module "provider" {
 #   vsphere_password        = var.vsphere_password
 # }
 
+# module "provider" {
+#   source = "./provider/upcloud"
+# 
+#   username        = var.upcloud_username
+#   password        = var.upcloud_password
+#   hosts           = var.node_count
+#   hostname_format = var.hostname_format
+#   zone            = var.upcloud_zone
+#   plan            = var.upcloud_plan
+#   disk_template   = var.upcloud_disk_template
+#   ssh_keys        = var.upcloud_ssh_keys
+# }
+
 module "swap" {
   source = "./service/swap"
 
