@@ -64,7 +64,7 @@ data "template_file" "etcd-service" {
 
   vars = {
     hostname              = element(local.etcd_hostnames, count.index)
-    intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
+    initial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
     listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
     advertise_client_urls = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
     listen_peer_urls      = "http://${element(local.etcd_vpn_ips, count.index)}:2380"
