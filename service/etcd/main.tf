@@ -80,14 +80,6 @@ data "template_file" "install" {
   }
 }
 
-data "null_data_source" "endpoints" {
-  depends_on = [null_resource.etcd]
-
-  inputs = {
-    list = "${join(",", formatlist("http://%s:2379", local.etcd_vpn_ips))}"
-  }
-}
-
 output "endpoints" {
-  value = "${split(",", data.null_data_source.endpoints.outputs["list"])}"
+  value = formatlist("http://%s:2379", local.etcd_vpn_ips)
 }
