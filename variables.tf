@@ -78,7 +78,7 @@ variable "digitalocean_region" {
 }
 
 variable "digitalocean_size" {
-  default = "1gb"
+  default = "s-1vcpu-1gb"
 }
 
 variable "digitalocean_image" {
