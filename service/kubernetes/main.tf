@@ -57,12 +57,12 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "remote-exec" {
-    inline = ["[ -d /etc/systemd/system/docker.service.d ] || mkdir -p /etc/systemd/system/docker.service.d"]
+    inline = ["[ -d /etc/docker ] || mkdir -p /etc/docker"]
   }
 
   provisioner "file" {
-    content     = file("${path.module}/templates/10-docker-opts.conf")
-    destination = "/etc/systemd/system/docker.service.d/10-docker-opts.conf"
+    content     = file("${path.module}/templates/daemon.json")
+    destination = "/etc/docker/daemon.json"
   }
 
   provisioner "file" {
