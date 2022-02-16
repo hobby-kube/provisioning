@@ -185,6 +185,9 @@ Modules in this repository can be used independently:
 ```hcl
 module "kubernetes" {
   source = "github.com/hobby-kube/provisioning/service/kubernetes"
+
+  # Or to pin a certain commit
+  # source = "git::https://github.com/hobby-kube/provisioning.git//service/kubernetes?ref=800d5d5031245cf31a803a147eaa40a0de0573f1"
 }
 ```
 
