@@ -1,3 +1,19 @@
+variable "apiserver_extra_args" {
+  type = map
+
+  default = {}
+}
+
+variable "apiserver_extra_volumes" {
+  # Not specifying a `type` here since otherwise, Terraform may turn boolean values into strings
+  # and the server will not start (e.g., `"readOnly" = true` becomes stringified by `yamlencode`).
+  #
+  # This is a list of volume definitions.
+  # See https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/#kubeadm-k8s-io-v1beta3-ControlPlaneComponent
+
+  default = []
+}
+
 variable "node_count" {}
 
 variable "connections" {
@@ -88,6 +104,8 @@ data "template_file" "master-configuration" {
 
   vars = {
     api_advertise_addresses = element(var.vpn_ips, 0)
+    apiserver_extra_args    = yamlencode(var.apiserver_extra_args)
+    apiserver_extra_volumes = yamlencode(var.apiserver_extra_volumes)
     etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
     cert_sans               = "- ${element(var.connections, 0)}"
   }

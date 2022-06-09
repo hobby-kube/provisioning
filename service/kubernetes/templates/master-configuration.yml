@@ -10,6 +10,10 @@ certificatesDir: /etc/kubernetes/pki
 apiServer:
   certSANs:
   ${cert_sans}
+  extraArgs:
+    ${indent(4, apiserver_extra_args)}
+  extraVolumes:
+    ${indent(4, apiserver_extra_volumes)}
 etcd:
   external:
     endpoints:
