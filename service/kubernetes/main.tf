@@ -40,6 +40,11 @@ variable "overlay_cidr" {
   default = "10.96.0.0/16"
 }
 
+variable "weave_net_version" {
+  type = string
+  default = "v2.8.1"
+}
+
 resource "random_string" "token1" {
   length  = 6
   upper   = false
@@ -116,6 +121,7 @@ data "template_file" "master" {
 
   vars = {
     token = local.cluster_token
+    weave_net_version = var.weave_net_version
   }
 }
 
