@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -eux
 
 kubeadm init --config /tmp/master-configuration.yml \
   --ignore-preflight-errors=Swap,NumCPU
@@ -14,7 +14,7 @@ until nc -z localhost 6443; do
   sleep 5
 done
 
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl apply -f "https://github.com/weaveworks/weave/releases/download/${weave_net_version}/weave-daemonset-k8s.yaml"
 
 # See: https://kubernetes.io/docs/admin/authorization/rbac/
 kubectl create clusterrolebinding permissive-binding \
