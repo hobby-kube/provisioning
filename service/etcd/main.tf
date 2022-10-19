@@ -53,7 +53,11 @@ resource "null_resource" "etcd" {
     inline = [
       "systemctl is-enabled etcd.service || systemctl enable etcd.service",
       "systemctl daemon-reload",
-      "systemctl restart etcd.service",
+      # etcd needs connectivity between nodes (e.g. via wireguard private IPs: `vpn_ips`) or else we
+      # get startup errors like `listen tcp 10.0.1.2:2380: bind: cannot assign requested address`.
+      # Therefore let systemd restart the service a few more times if necessary, and wait until it is running.
+      "systemctl restart etcd.service || true",
+      "for n in $(seq 1 20); do if systemctl is-active etcd.service; then exit 0; fi; sleep 5; done; echo 'etcd failed to start, latest status:'; systemctl --no-pager status etcd.service; echo; exit 1",
     ]
   }
 }
