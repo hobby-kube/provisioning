@@ -1,11 +1,11 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_unit" {
@@ -13,7 +13,7 @@ variable "vpn_unit" {
 }
 
 variable "vpn_ips" {
-  type = list
+  type = list(any)
 }
 
 locals {
@@ -22,14 +22,14 @@ locals {
 }
 
 variable "etcd_version" {
-  default = "v3.4.13"
+  default = "v3.5.6"
 }
 
 resource "null_resource" "etcd" {
   count = var.node_count
 
   triggers = {
-    template = join("", data.template_file.etcd-service.*.rendered)
+    template = join("", data.null_data_source.etcd-service.*.outputs.content)
   }
 
   connection {
@@ -40,12 +40,14 @@ resource "null_resource" "etcd" {
 
   provisioner "remote-exec" {
     inline = [
-      "${data.template_file.install.rendered}"
+      templatefile("${path.module}/scripts/install.sh", {
+        version = var.etcd_version
+      })
     ]
   }
 
   provisioner "file" {
-    content     = element(data.template_file.etcd-service.*.rendered, count.index)
+    content     = element(data.null_data_source.etcd-service.*.outputs.content, count.index)
     destination = "/etc/systemd/system/etcd.service"
   }
 
@@ -62,25 +64,18 @@ resource "null_resource" "etcd" {
   }
 }
 
-data "template_file" "etcd-service" {
-  count    = var.node_count
-  template = file("${path.module}/templates/etcd.service")
+data "null_data_source" "etcd-service" {
+  count = var.node_count
 
-  vars = {
-    hostname              = element(local.etcd_hostnames, count.index)
-    intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
-    listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
-    advertise_client_urls = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
-    listen_peer_urls      = "http://${element(local.etcd_vpn_ips, count.index)}:2380"
-    vpn_unit              = var.vpn_unit
-  }
-}
-
-data "template_file" "install" {
-  template = file("${path.module}/scripts/install.sh")
-
-  vars = {
-    version = var.etcd_version
+  inputs = {
+    content = templatefile("${path.module}/templates/etcd.service", {
+      hostname              = element(local.etcd_hostnames, count.index)
+      intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
+      listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
+      advertise_client_urls = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
+      listen_peer_urls      = "http://${element(local.etcd_vpn_ips, count.index)}:2380"
+      vpn_unit              = var.vpn_unit
+    })
   }
 }
 
@@ -93,5 +88,5 @@ data "null_data_source" "endpoints" {
 }
 
 output "endpoints" {
-  value = "${split(",", data.null_data_source.endpoints.outputs["list"])}"
+  value = split(",", data.null_data_source.endpoints.outputs["list"])
 }

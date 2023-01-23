@@ -21,7 +21,7 @@ variable "image" {
 }
 
 variable "ssh_keys" {
-  type = list
+  type = list(string)
 }
 
 provider "hcloud" {
@@ -29,7 +29,7 @@ provider "hcloud" {
 }
 
 variable "apt_packages" {
-  type    = list
+  type    = list(string)
   default = []
 }
 
@@ -68,15 +68,15 @@ resource "hcloud_server" "host" {
 # }
 
 output "hostnames" {
-  value = "${hcloud_server.host.*.name}"
+  value = hcloud_server.host.*.name
 }
 
 output "public_ips" {
-  value = "${hcloud_server.host.*.ipv4_address}"
+  value = hcloud_server.host.*.ipv4_address
 }
 
 output "private_ips" {
-  value = "${hcloud_server.host.*.ipv4_address}"
+  value = hcloud_server.host.*.ipv4_address
 }
 
 output "private_network_interface" {
