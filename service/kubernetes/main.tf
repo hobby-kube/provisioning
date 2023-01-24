@@ -41,7 +41,7 @@ variable "overlay_cidr" {
 }
 
 variable "weave_net_version" {
-  type = string
+  type    = string
   default = "v2.8.1"
 }
 
@@ -112,7 +112,7 @@ resource "null_resource" "kubernetes" {
       count.index == 0
       ? templatefile("${path.module}/scripts/master.sh",
         {
-          token = local.cluster_token
+          token             = local.cluster_token
           weave_net_version = var.weave_net_version
       })
       : templatefile("${path.module}/scripts/slave.sh",

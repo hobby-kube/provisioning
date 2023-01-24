@@ -9,11 +9,11 @@ variable "region" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "public_ips" {
-  type = list
+  type = list(any)
 }
 
 # Configure the AWS Provider
@@ -57,5 +57,5 @@ resource "aws_route53_record" "wildcard" {
 }
 
 output "domains" {
-  value = "${aws_route53_record.hosts.*.name}"
+  value = aws_route53_record.hosts.*.name
 }
