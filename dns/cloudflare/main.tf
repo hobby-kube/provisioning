@@ -1,5 +1,5 @@
 locals {
-  zone_id = "${lookup(data.cloudflare_zones.domain_zones.zones[0], "id")}"
+  zone_id = lookup(data.cloudflare_zones.domain_zones.zones[0], "id")
 }
 
 variable "node_count" {}
@@ -11,11 +11,11 @@ variable "api_token" {}
 variable "domain" {}
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "public_ips" {
-  type = list
+  type = list(any)
 }
 
 provider "cloudflare" {
@@ -60,5 +60,5 @@ resource "cloudflare_record" "wildcard" {
 }
 
 output "domains" {
-  value = "${cloudflare_record.hosts.*.hostname}"
+  value = cloudflare_record.hosts.*.hostname
 }

@@ -70,7 +70,7 @@ resource "null_resource" "wireguard" {
         endpoints     = var.private_ips
         port          = var.vpn_port
         public_keys   = data.external.keys.*.result.public_key
-        allowed_ips = local.vpn_ips
+        allowed_ips   = local.vpn_ips
       })
     })
     destination = "/etc/wireguard/${var.vpn_interface}.conf"

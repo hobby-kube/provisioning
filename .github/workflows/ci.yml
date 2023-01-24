@@ -1,0 +1,16 @@
+name: Terraform
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  ci:
+    name: "Terraform fmt"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - name: Check fmt
+        run: terraform fmt -recursive -check

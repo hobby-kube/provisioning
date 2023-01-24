@@ -7,7 +7,7 @@ variable "hostname_format" {
 }
 
 variable "apt_packages" {
-  type    = list
+  type    = list(any)
   default = []
 }
 
@@ -133,15 +133,15 @@ resource "vsphere_virtual_machine" "host" {
 
 
 output "hostnames" {
-  value = "${vsphere_virtual_machine.host.*.name}"
+  value = vsphere_virtual_machine.host.*.name
 }
 
 output "public_ips" {
-  value = "${vsphere_virtual_machine.host.*.default_ip_address}"
+  value = vsphere_virtual_machine.host.*.default_ip_address
 }
 
 output "private_ips" {
-  value = "${vsphere_virtual_machine.host.*.default_ip_address}"
+  value = vsphere_virtual_machine.host.*.default_ip_address
 }
 
 output "private_network_interface" {
