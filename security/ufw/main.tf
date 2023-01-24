@@ -1,7 +1,7 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "private_interface" {
@@ -29,7 +29,7 @@ resource "null_resource" "firewall" {
   count = var.node_count
 
   triggers = {
-    template = data.template_file.ufw.rendered
+    template = data.null_data_source.ufw.outputs.content
   }
 
   connection {
@@ -40,20 +40,19 @@ resource "null_resource" "firewall" {
 
   provisioner "remote-exec" {
     inline = [
-      data.template_file.ufw.rendered
+      data.null_data_source.ufw.outputs.content
     ]
-
   }
 }
 
-data "template_file" "ufw" {
-  template = file("${path.module}/scripts/ufw.sh")
-
-  vars = {
-    private_interface    = var.private_interface
-    kubernetes_interface = var.kubernetes_interface
-    vpn_interface        = var.vpn_interface
-    vpn_port             = var.vpn_port
-    additional_rules     = join("\nufw ", flatten(["", var.additional_rules]))
+data "null_data_source" "ufw" {
+  inputs = {
+    content = templatefile("${path.module}/scripts/ufw.sh", {
+      private_interface    = var.private_interface
+      kubernetes_interface = var.kubernetes_interface
+      vpn_interface        = var.vpn_interface
+      vpn_port             = var.vpn_port
+      additional_rules     = join("\nufw ", flatten(["", var.additional_rules]))
+    })
   }
 }

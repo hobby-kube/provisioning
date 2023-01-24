@@ -1,7 +1,7 @@
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: ${api_advertise_addresses}
+  advertiseAddress: ${api_advertise_address}
   bindPort: 6443
 ---
 apiVersion: kubeadm.k8s.io/v1beta3

@@ -35,7 +35,7 @@ variable "hcloud_type" {
 }
 
 variable "hcloud_image" {
-  default = "ubuntu-20.04"
+  default = "ubuntu-22.04"
 }
 
 /* scaleway */
@@ -60,7 +60,7 @@ variable "scaleway_type" {
 }
 
 variable "scaleway_image" {
-  default = "Ubuntu 20.04 Focal Fossa"
+  default = "Ubuntu 22.04 Jammy Jellyfish"
 }
 
 /* digitalocean */
@@ -82,7 +82,7 @@ variable "digitalocean_size" {
 }
 
 variable "digitalocean_image" {
-  default = "ubuntu-20-04-x64"
+  default = "ubuntu-22-04-x64"
 }
 
 /* packet */
@@ -104,7 +104,7 @@ variable "packet_facility" {
 }
 
 variable "packet_operating_system" {
-  default = "ubuntu_20_04"
+  default = "ubuntu_22_04"
 }
 
 variable "packet_billing_cycle" {
@@ -221,7 +221,7 @@ variable "upcloud_plan" {
 }
 
 variable "upcloud_disk_template" {
-  default = "Ubuntu Server 20.04 LTS (Focal Fossa)"
+  default = "Ubuntu Server 22.04 LTS (Jammy Jellyfish)"
 }
 
 variable "upcloud_ssh_keys" {

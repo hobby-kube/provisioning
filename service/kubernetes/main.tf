@@ -1,5 +1,5 @@
 variable "apiserver_extra_args" {
-  type = map
+  type = map(any)
 
   default = {}
 }
@@ -17,11 +17,11 @@ variable "apiserver_extra_volumes" {
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_ips" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_interface" {
@@ -29,7 +29,7 @@ variable "vpn_interface" {
 }
 
 variable "etcd_endpoints" {
-  type = list
+  type = list(any)
 }
 
 variable "overlay_interface" {
@@ -87,60 +87,40 @@ resource "null_resource" "kubernetes" {
   }
 
   provisioner "file" {
-    content     = data.template_file.master-configuration.rendered
+    content = templatefile("${path.module}/templates/master-configuration.yml", {
+      api_advertise_address   = element(var.vpn_ips, 0)
+      apiserver_extra_args    = yamlencode(var.apiserver_extra_args)
+      apiserver_extra_volumes = yamlencode(var.apiserver_extra_volumes)
+      etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
+      cert_sans               = "- ${element(var.connections, 0)}"
+    })
     destination = "/tmp/master-configuration.yml"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "${element(data.template_file.install.*.rendered, count.index)}"
+      templatefile("${path.module}/scripts/install.sh", {
+        vpn_interface = var.vpn_interface
+        overlay_cidr  = var.overlay_cidr
+        }
+      )
     ]
   }
 
   provisioner "remote-exec" {
     inline = [
-      "${count.index == 0 ? data.template_file.master.rendered : data.template_file.slave.rendered}"
+      count.index == 0
+      ? templatefile("${path.module}/scripts/master.sh",
+        {
+          token = local.cluster_token
+          weave_net_version = var.weave_net_version
+      })
+      : templatefile("${path.module}/scripts/slave.sh",
+        {
+          master_ip = element(var.vpn_ips, 0)
+          token     = local.cluster_token
+      })
     ]
-  }
-}
-
-data "template_file" "master-configuration" {
-  template = file("${path.module}/templates/master-configuration.yml")
-
-  vars = {
-    api_advertise_addresses = element(var.vpn_ips, 0)
-    apiserver_extra_args    = yamlencode(var.apiserver_extra_args)
-    apiserver_extra_volumes = yamlencode(var.apiserver_extra_volumes)
-    etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
-    cert_sans               = "- ${element(var.connections, 0)}"
-  }
-}
-
-data "template_file" "master" {
-  template = file("${path.module}/scripts/master.sh")
-
-  vars = {
-    token = local.cluster_token
-    weave_net_version = var.weave_net_version
-  }
-}
-
-data "template_file" "slave" {
-  template = file("${path.module}/scripts/slave.sh")
-
-  vars = {
-    master_ip = element(var.vpn_ips, 0)
-    token     = local.cluster_token
-  }
-}
-
-data "template_file" "install" {
-  count    = var.node_count
-  template = file("${path.module}/scripts/install.sh")
-
-  vars = {
-    vpn_interface = var.vpn_interface
-    overlay_cidr  = var.overlay_cidr
   }
 }
 

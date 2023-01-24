@@ -1,11 +1,11 @@
 variable "node_count" {}
 
 variable "connections" {
-  type = list
+  type = list(any)
 }
 
 variable "private_ips" {
-  type = list
+  type = list(any)
 }
 
 variable "vpn_interface" {
@@ -17,7 +17,7 @@ variable "vpn_port" {
 }
 
 variable "hostnames" {
-  type = list
+  type = list(any)
 }
 
 variable "overlay_cidr" {
@@ -44,6 +44,11 @@ resource "null_resource" "wireguard" {
   provisioner "remote-exec" {
     inline = [
       "echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf",
+
+      "echo br_netfilter > /etc/modules-load.d/kubernetes.conf",
+      "modprobe br_netfilter",
+      "echo net.bridge.bridge-nf-call-iptables=1 >> /etc/sysctl.conf",
+
       "sysctl -p",
     ]
   }
@@ -56,7 +61,18 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "file" {
-    content     = element(data.template_file.interface-conf.*.rendered, count.index)
+    content = templatefile("${path.module}/templates/interface.conf", {
+      address     = element(local.vpn_ips, count.index)
+      port        = var.vpn_port
+      private_key = element(data.external.keys.*.result.private_key, count.index)
+      peers = templatefile("${path.module}/templates/peer.conf", {
+        exclude_index = count.index
+        endpoints     = var.private_ips
+        port          = var.vpn_port
+        public_keys   = data.external.keys.*.result.public_key
+        allowed_ips = local.vpn_ips
+      })
+    })
     destination = "/etc/wireguard/${var.vpn_interface}.conf"
   }
 
@@ -68,7 +84,7 @@ resource "null_resource" "wireguard" {
 
   provisioner "remote-exec" {
     inline = [
-      "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", data.template_file.vpn_ips.*.rendered, var.hostnames))}",
+      "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", local.vpn_ips, var.hostnames))}",
       "systemctl is-enabled wg-quick@${var.vpn_interface} || systemctl enable wg-quick@${var.vpn_interface}",
       "systemctl daemon-reload",
       "systemctl restart wg-quick@${var.vpn_interface}",
@@ -76,7 +92,10 @@ resource "null_resource" "wireguard" {
   }
 
   provisioner "file" {
-    content     = element(data.template_file.overlay-route-service.*.rendered, count.index)
+    content = templatefile("${path.module}/templates/overlay-route.service", {
+      address      = element(local.vpn_ips, count.index)
+      overlay_cidr = var.overlay_cidr
+    })
     destination = "/etc/systemd/system/overlay-route.service"
   }
 
@@ -89,58 +108,22 @@ resource "null_resource" "wireguard" {
   }
 }
 
-data "template_file" "interface-conf" {
-  count    = var.node_count
-  template = file("${path.module}/templates/interface.conf")
-
-  vars = {
-    address     = element(data.template_file.vpn_ips.*.rendered, count.index)
-    port        = var.vpn_port
-    private_key = element(data.external.keys.*.result.private_key, count.index)
-    peers       = "${replace(join("\n", data.template_file.peer-conf.*.rendered), element(data.template_file.peer-conf.*.rendered, count.index), "")}"
-  }
-}
-
-data "template_file" "peer-conf" {
-  count    = var.node_count
-  template = file("${path.module}/templates/peer.conf")
-
-  vars = {
-    endpoint    = element(var.private_ips, count.index)
-    port        = var.vpn_port
-    public_key  = element(data.external.keys.*.result.public_key, count.index)
-    allowed_ips = "${element(data.template_file.vpn_ips.*.rendered, count.index)}/32"
-  }
-}
-
-data "template_file" "overlay-route-service" {
-  count    = var.node_count
-  template = file("${path.module}/templates/overlay-route.service")
-
-  vars = {
-    address      = element(data.template_file.vpn_ips.*.rendered, count.index)
-    overlay_cidr = var.overlay_cidr
-  }
-}
-
 data "external" "keys" {
   count = var.node_count
 
   program = ["sh", "${path.module}/scripts/gen_keys.sh"]
 }
 
-data "template_file" "vpn_ips" {
-  count    = var.node_count
-  template = "$${ip}"
-
-  vars = {
-    ip = cidrhost(var.vpn_iprange, count.index + 1)
-  }
+locals {
+  vpn_ips = [
+    for n in range(var.node_count) :
+    cidrhost(var.vpn_iprange, n + 1)
+  ]
 }
 
 output "vpn_ips" {
   depends_on = [null_resource.wireguard]
-  value      = "${data.template_file.vpn_ips.*.rendered}"
+  value      = local.vpn_ips
 }
 
 output "vpn_unit" {
@@ -149,13 +132,13 @@ output "vpn_unit" {
 }
 
 output "vpn_interface" {
-  value = "${var.vpn_interface}"
+  value = var.vpn_interface
 }
 
 output "vpn_port" {
-  value = "${var.vpn_port}"
+  value = var.vpn_port
 }
 
 output "overlay_cidr" {
-  value = "${var.overlay_cidr}"
+  value = var.overlay_cidr
 }
