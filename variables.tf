@@ -129,10 +129,6 @@ variable "aws_region" {
 }
 
 /* cloudflare dns */
-variable "cloudflare_email" {
-  default = ""
-}
-
 variable "cloudflare_api_token" {
   default = ""
 }

@@ -128,7 +128,6 @@ You will need API credentials to use the UpCloud terraform provider, see https:/
 
 ```sh
 export TF_VAR_domain=<domain> # e.g. example.org
-export TF_VAR_cloudflare_email=<email>
 export TF_VAR_cloudflare_api_token=<token>
 ```
 
