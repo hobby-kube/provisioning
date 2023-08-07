@@ -4,8 +4,6 @@ locals {
 
 variable "node_count" {}
 
-variable "email" {}
-
 variable "api_token" {}
 
 variable "domain" {}
