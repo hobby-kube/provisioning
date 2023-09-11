@@ -38,11 +38,15 @@ resource "null_resource" "etcd" {
     agent = true
   }
 
+  provisioner "file" {
+    source      = "${path.module}/scripts/install.sh"
+    destination = "/tmp/install-etcd.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      templatefile("${path.module}/scripts/install.sh", {
-        version = var.etcd_version
-      })
+      "chmod +x /tmp/install-etcd.sh",
+      "/tmp/install-etcd.sh '${var.etcd_version}'"
     ]
   }
 
