@@ -14,6 +14,15 @@ variable "apiserver_extra_volumes" {
   default = []
 }
 
+variable "kubelet_extra_config" {
+  # `map(any)` together with `yamlencode` might turn boolean values into strings, making the YAML
+  # invalid, so we instead support verbatim YAML input
+  type = string
+
+  description = "Extra config appended to KubeletConfiguration. Only applies at cluster creation."
+  default     = ""
+}
+
 variable "node_count" {}
 
 variable "connections" {
@@ -93,6 +102,7 @@ resource "null_resource" "kubernetes" {
       apiserver_extra_volumes = yamlencode(var.apiserver_extra_volumes)
       etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
       cert_sans               = "- ${element(var.connections, 0)}"
+      kubelet_extra_config    = var.kubelet_extra_config
     })
     destination = "/tmp/master-configuration.yml"
   }

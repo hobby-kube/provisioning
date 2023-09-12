@@ -29,7 +29,7 @@ resource "null_resource" "etcd" {
   count = var.node_count
 
   triggers = {
-    template = join("", data.null_data_source.etcd-service.*.outputs.content)
+    template = join("", local.etcd_service)
   }
 
   connection {
@@ -47,7 +47,7 @@ resource "null_resource" "etcd" {
   }
 
   provisioner "file" {
-    content     = element(data.null_data_source.etcd-service.*.outputs.content, count.index)
+    content     = element(local.etcd_service, count.index)
     destination = "/etc/systemd/system/etcd.service"
   }
 
@@ -64,29 +64,20 @@ resource "null_resource" "etcd" {
   }
 }
 
-data "null_data_source" "etcd-service" {
-  count = var.node_count
-
-  inputs = {
-    content = templatefile("${path.module}/templates/etcd.service", {
-      hostname              = element(local.etcd_hostnames, count.index)
+locals {
+  etcd_service = [
+    for n in range(var.node_count) :
+    templatefile("${path.module}/templates/etcd.service", {
+      hostname              = element(local.etcd_hostnames, n)
       intial_cluster        = "${join(",", formatlist("%s=http://%s:2380", local.etcd_hostnames, local.etcd_vpn_ips))}"
-      listen_client_urls    = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
-      advertise_client_urls = "http://${element(local.etcd_vpn_ips, count.index)}:2379"
-      listen_peer_urls      = "http://${element(local.etcd_vpn_ips, count.index)}:2380"
+      listen_client_urls    = "http://${element(local.etcd_vpn_ips, n)}:2379"
+      advertise_client_urls = "http://${element(local.etcd_vpn_ips, n)}:2379"
+      listen_peer_urls      = "http://${element(local.etcd_vpn_ips, n)}:2380"
       vpn_unit              = var.vpn_unit
     })
-  }
-}
-
-data "null_data_source" "endpoints" {
-  depends_on = [null_resource.etcd]
-
-  inputs = {
-    list = "${join(",", formatlist("http://%s:2379", local.etcd_vpn_ips))}"
-  }
+  ]
 }
 
 output "endpoints" {
-  value = split(",", data.null_data_source.endpoints.outputs["list"])
+  value = formatlist("http://%s:2379", local.etcd_vpn_ips)
 }

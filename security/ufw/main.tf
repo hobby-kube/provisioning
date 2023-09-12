@@ -25,11 +25,21 @@ variable "additional_rules" {
   default = []
 }
 
+locals {
+  ufw_config = templatefile("${path.module}/scripts/ufw.sh", {
+    private_interface    = var.private_interface
+    kubernetes_interface = var.kubernetes_interface
+    vpn_interface        = var.vpn_interface
+    vpn_port             = var.vpn_port
+    additional_rules     = join("\nufw ", flatten(["", var.additional_rules]))
+  })
+}
+
 resource "null_resource" "firewall" {
   count = var.node_count
 
   triggers = {
-    template = data.null_data_source.ufw.outputs.content
+    template = local.ufw_config
   }
 
   connection {
@@ -39,20 +49,6 @@ resource "null_resource" "firewall" {
   }
 
   provisioner "remote-exec" {
-    inline = [
-      data.null_data_source.ufw.outputs.content
-    ]
-  }
-}
-
-data "null_data_source" "ufw" {
-  inputs = {
-    content = templatefile("${path.module}/scripts/ufw.sh", {
-      private_interface    = var.private_interface
-      kubernetes_interface = var.kubernetes_interface
-      vpn_interface        = var.vpn_interface
-      vpn_port             = var.vpn_port
-      additional_rules     = join("\nufw ", flatten(["", var.additional_rules]))
-    })
+    inline = [local.ufw_config]
   }
 }
