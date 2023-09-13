@@ -42,16 +42,16 @@ variable "etcd_endpoints" {
 }
 
 variable "overlay_interface" {
-  default = "weave"
+  default = "cilium_vxlan"
 }
 
 variable "overlay_cidr" {
   default = "10.96.0.0/16"
 }
 
-variable "weave_net_version" {
+variable "cilium_version" {
   type    = string
-  default = "v2.8.1"
+  default = "1.14.1"
 }
 
 resource "random_string" "token1" {
@@ -109,11 +109,7 @@ resource "null_resource" "kubernetes" {
 
   provisioner "remote-exec" {
     inline = [
-      templatefile("${path.module}/scripts/install.sh", {
-        vpn_interface = var.vpn_interface
-        overlay_cidr  = var.overlay_cidr
-        }
-      )
+      file("${path.module}/scripts/install.sh")
     ]
   }
 
@@ -122,8 +118,9 @@ resource "null_resource" "kubernetes" {
       count.index == 0
       ? templatefile("${path.module}/scripts/master.sh",
         {
-          token             = local.cluster_token
-          weave_net_version = var.weave_net_version
+          token          = local.cluster_token
+          cilium_version = var.cilium_version
+          overlay_cidr   = var.overlay_cidr
       })
       : templatefile("${path.module}/scripts/slave.sh",
         {

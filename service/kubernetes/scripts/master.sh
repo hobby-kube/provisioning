@@ -17,7 +17,15 @@ until nc -z localhost 6443; do
 done
 
 echo "Install CNI"
-kubectl apply -f "https://github.com/weaveworks/weave/releases/download/${weave_net_version}/weave-daemonset-k8s.yaml"
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH="$(arch | sed 's/x86_64/amd64/; s/aarch64/arm64/')"
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/$${CILIUM_CLI_VERSION}/cilium-linux-$${CLI_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-$${CLI_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-$${CLI_ARCH}.tar.gz /usr/local/bin
+rm cilium-linux-$${CLI_ARCH}.tar.gz*
+
+cilium install --version ${cilium_version} --set ipam.mode=cluster-pool --set ipam.operator.clusterPoolIPv4PodCIDRList=${overlay_cidr}
+cilium status --wait
 
 echo "Add cluster role binding"
 # See: https://kubernetes.io/docs/admin/authorization/rbac/
