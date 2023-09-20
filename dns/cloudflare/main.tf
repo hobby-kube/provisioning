@@ -1,5 +1,6 @@
 locals {
-  zone_id = lookup(data.cloudflare_zones.domain_zones.zones[0], "id")
+  zone_id   = data.cloudflare_zone.domain_zone.id
+  zone_name = regex("[a-z]*.[a-z]*$", var.domain)
 }
 
 variable "node_count" {}
@@ -20,20 +21,16 @@ provider "cloudflare" {
   api_token = var.api_token
 }
 
-data "cloudflare_zones" "domain_zones" {
-  filter {
-    name   = var.domain
-    status = "active"
-    paused = false
-  }
+data "cloudflare_zone" "domain_zone" {
+  name = local.zone_name
 }
 
 resource "cloudflare_record" "hosts" {
   count = var.node_count
 
   zone_id = local.zone_id
-  name    = element(var.hostnames, count.index)
-  value   = element(var.public_ips, count.index)
+  name    = "${var.hostnames[count.index]}.${var.domain}"
+  value   = var.public_ips[count.index]
   type    = "A"
   proxied = false
 }
@@ -50,7 +47,7 @@ resource "cloudflare_record" "wildcard" {
   depends_on = [cloudflare_record.domain]
 
   zone_id = local.zone_id
-  name    = "*"
+  name    = "*.${var.domain}"
   value   = var.domain
   type    = "CNAME"
   proxied = false
