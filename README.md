@@ -63,7 +63,7 @@ export TF_VAR_scaleway_secret_key=<secret_key>
 # export TF_VAR_scaleway_zone="nl-ams-1"
 # export TF_VAR_scaleway_type="DEV1-S"
 # export TF_VAR_scaleway_image="Ubuntu 22.04 Jammy Jellyfish"
-
+# export TF_VAR_scaleway_image_architecture="x86_64"
 ```
 
 #### Using DigitalOcean as provider

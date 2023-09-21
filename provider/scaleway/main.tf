@@ -24,6 +24,10 @@ variable "image" {
   type = string
 }
 
+variable "image_architecture" {
+  type = string
+}
+
 variable "apt_packages" {
   type    = list(any)
   default = []
@@ -64,7 +68,7 @@ resource "scaleway_instance_server" "host" {
 }
 
 data "scaleway_instance_image" "image" {
-  architecture = "x86_64"
+  architecture = var.image_architecture
   name         = var.image
 }
 

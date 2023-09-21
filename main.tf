@@ -13,14 +13,15 @@ module "provider" {
 # module "provider" {
 #   source = "./provider/scaleway"
 #
-#   organization_id = var.scaleway_organization_id
-#   access_key      = var.scaleway_access_key
-#   secret_key      = var.scaleway_secret_key
-#   zone            = var.scaleway_zone
-#   type            = var.scaleway_type
-#   image           = var.scaleway_image
-#   hosts           = var.node_count
-#   hostname_format = var.hostname_format
+#   organization_id    = var.scaleway_organization_id
+#   access_key         = var.scaleway_access_key
+#   secret_key         = var.scaleway_secret_key
+#   zone               = var.scaleway_zone
+#   type               = var.scaleway_type
+#   image              = var.scaleway_image
+#   image_architecture = var.scaleway_image_architecture
+#   hosts              = var.node_count
+#   hostname_format    = var.hostname_format
 # }
 
 # module "provider" {
@@ -68,7 +69,7 @@ module "provider" {
 
 # module "provider" {
 #   source = "./provider/upcloud"
-# 
+#
 #   username        = var.upcloud_username
 #   password        = var.upcloud_password
 #   hosts           = var.node_count

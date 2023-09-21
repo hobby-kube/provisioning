@@ -63,6 +63,10 @@ variable "scaleway_image" {
   default = "Ubuntu 22.04 Jammy Jellyfish"
 }
 
+variable "scaleway_image_architecture" {
+  default = "x86_64"
+}
+
 /* digitalocean */
 variable "digitalocean_token" {
   default = ""
