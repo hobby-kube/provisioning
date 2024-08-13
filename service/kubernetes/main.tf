@@ -51,7 +51,7 @@ variable "overlay_cidr" {
 
 variable "cilium_version" {
   type    = string
-  default = "1.14.1"
+  default = "1.16.0"
 }
 
 resource "random_string" "token1" {
