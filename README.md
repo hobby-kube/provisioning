@@ -46,7 +46,7 @@ export TF_VAR_hcloud_ssh_keys=<keys>
 export TF_VAR_hcloud_ssh_keys='["<description-key1>", "<description-key2>"]'
 # Defaults:
 # export TF_VAR_hcloud_location="nbg1"
-# export TF_VAR_hcloud_type="cx11"
+# export TF_VAR_hcloud_type="cx22"
 # export TF_VAR_hcloud_image="ubuntu-24.04"
 ```
 
