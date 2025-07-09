@@ -9,11 +9,27 @@ variable "hostname_format" {
 }
 
 variable "location" {
-  type = string
+  type        = string
+  description = "Default datacenter location. Mutually exclusive with `locations` variable."
+  default     = ""
+}
+
+variable "locations" {
+  type        = list(string)
+  description = "Per-host datacenter location. Mutually exclusive with `location` variable. Use this to provide mixed locations. The list must contain as many entries as specified by the `hosts` variable."
+  default     = []
 }
 
 variable "type" {
-  type = string
+  type        = string
+  description = "Default server type. Mutually exclusive with `types` variable."
+  default     = ""
+}
+
+variable "types" {
+  type        = list(string)
+  description = "Per-host server type. Mutually exclusive with `type` variable. Use this to provide mixed types. The list must contain as many entries as specified by the `hosts` variable."
+  default     = []
 }
 
 variable "image" {
@@ -35,9 +51,9 @@ variable "apt_packages" {
 
 resource "hcloud_server" "host" {
   name        = format(var.hostname_format, count.index + 1)
-  location    = var.location
+  location    = var.locations != [] ? element(var.locations, count.index) : var.location
   image       = var.image
-  server_type = var.type
+  server_type = var.types != [] ? element(var.types, count.index) : var.type
   ssh_keys    = var.ssh_keys
 
   count = var.hosts
