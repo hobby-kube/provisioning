@@ -1,6 +1,11 @@
 #!/bin/sh
 set -eu
 
+# Required by kubeadm preflight checks
+echo "sysctl settings"
+grep -q net.ipv4.ip_forward=1 /etc/sysctl.conf || echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
+sysctl -p
+
 echo "kubeadm init"
 kubeadm init --config /tmp/master-configuration.yml \
   --ignore-preflight-errors=Swap,NumCPU
