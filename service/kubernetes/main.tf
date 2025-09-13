@@ -54,6 +54,11 @@ variable "cilium_version" {
   default = "1.16.0"
 }
 
+variable "cilium_install_extra_args" {
+  type    = list(string)
+  default = []
+}
+
 resource "random_string" "token1" {
   length  = 6
   upper   = false
@@ -118,9 +123,10 @@ resource "null_resource" "kubernetes" {
       count.index == 0
       ? templatefile("${path.module}/scripts/master.sh",
         {
-          token          = local.cluster_token
-          cilium_version = var.cilium_version
-          overlay_cidr   = var.overlay_cidr
+          token                     = local.cluster_token
+          cilium_version            = var.cilium_version
+          cilium_install_extra_args = var.cilium_install_extra_args
+          overlay_cidr              = var.overlay_cidr
       })
       : templatefile("${path.module}/scripts/slave.sh",
         {

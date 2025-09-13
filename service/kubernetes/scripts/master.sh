@@ -24,7 +24,7 @@ sha256sum --check cilium-linux-$${CLI_ARCH}.tar.gz.sha256sum
 sudo tar xzvfC cilium-linux-$${CLI_ARCH}.tar.gz /usr/local/bin
 rm cilium-linux-$${CLI_ARCH}.tar.gz*
 
-cilium install --version ${cilium_version} --set ipam.mode=cluster-pool --set ipam.operator.clusterPoolIPv4PodCIDRList=${overlay_cidr}
+cilium install --version ${cilium_version} --set ipam.mode=cluster-pool --set ipam.operator.clusterPoolIPv4PodCIDRList=${overlay_cidr} %{ for arg in cilium_install_extra_args ~} ${arg} %{ endfor ~}
 cilium status --wait
 
 echo "Add cluster role binding"
