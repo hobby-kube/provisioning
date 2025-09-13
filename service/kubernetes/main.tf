@@ -14,6 +14,15 @@ variable "apiserver_extra_volumes" {
   default = []
 }
 
+variable "kubeadm_extra_cluster_config" {
+  # `map(any)` together with `yamlencode` might turn boolean values into strings, making the YAML
+  # invalid, so we instead support verbatim YAML input
+  type = string
+
+  description = "Extra config appended to ClusterConfiguration. Only applies at cluster creation."
+  default     = ""
+}
+
 variable "kubelet_extra_config" {
   # `map(any)` together with `yamlencode` might turn boolean values into strings, making the YAML
   # invalid, so we instead support verbatim YAML input
@@ -102,12 +111,13 @@ resource "null_resource" "kubernetes" {
 
   provisioner "file" {
     content = templatefile("${path.module}/templates/master-configuration.yml", {
-      api_advertise_address   = element(var.vpn_ips, 0)
-      apiserver_extra_args    = yamlencode(var.apiserver_extra_args)
-      apiserver_extra_volumes = yamlencode(var.apiserver_extra_volumes)
-      etcd_endpoints          = "- ${join("\n    - ", var.etcd_endpoints)}"
-      cert_sans               = "- ${element(var.connections, 0)}"
-      kubelet_extra_config    = var.kubelet_extra_config
+      api_advertise_address        = element(var.vpn_ips, 0)
+      apiserver_extra_args         = yamlencode(var.apiserver_extra_args)
+      apiserver_extra_volumes      = yamlencode(var.apiserver_extra_volumes)
+      etcd_endpoints               = "- ${join("\n    - ", var.etcd_endpoints)}"
+      cert_sans                    = "- ${element(var.connections, 0)}"
+      kubelet_extra_config         = var.kubelet_extra_config
+      kubeadm_extra_cluster_config = var.kubeadm_extra_cluster_config
     })
     destination = "/tmp/master-configuration.yml"
   }
