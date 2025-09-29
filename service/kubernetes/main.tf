@@ -1,7 +1,7 @@
 variable "apiserver_extra_args" {
-  type = map(any)
+  type = list(any) # example item: `{ name: "myarg", value: "myvalue" }`
 
-  default = {}
+  default = []
 }
 
 variable "apiserver_extra_volumes" {
@@ -9,7 +9,7 @@ variable "apiserver_extra_volumes" {
   # and the server will not start (e.g., `"readOnly" = true` becomes stringified by `yamlencode`).
   #
   # This is a list of volume definitions.
-  # See https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/#kubeadm-k8s-io-v1beta3-ControlPlaneComponent
+  # See https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-ControlPlaneComponent
 
   default = []
 }
