@@ -51,7 +51,9 @@ export TF_VAR_hcloud_ssh_keys='["<description-key1>", "<description-key2>"]'
 ```
 
 SSH keys are referenced by their description. Visit the Hetzner Cloud console at
-`https://console.hetzner.cloud/projects/<project-id>/access/sshkeys`
+`https://console.hetzner.cloud/projects/<project-id>/security/sshkeys`
+
+> NB: as of Now (july 2021), the value of the column name in the url above (`../security/ssh/keys`), has been used in `export TF_VAR_hcloud_ssh_keys='["tunknown@unknown-hackintosh-Pro.local"]'` to get it working
 
 #### Using Scaleway as provider
 
