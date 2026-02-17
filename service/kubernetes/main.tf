@@ -60,7 +60,7 @@ variable "overlay_cidr" {
 
 variable "cilium_version" {
   type    = string
-  default = "1.18.2"
+  default = "1.19.1"
 }
 
 variable "cilium_install_extra_args" {

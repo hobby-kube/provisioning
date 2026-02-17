@@ -22,7 +22,7 @@ locals {
 }
 
 variable "etcd_version" {
-  default = "v3.5.21"
+  default = "v3.6.8"
 }
 
 resource "null_resource" "etcd" {
