@@ -80,6 +80,26 @@ module "provider" {
 #   ssh_keys        = var.upcloud_ssh_keys
 # }
 
+# module "provider" {
+#   source = "./provider/libvirt"
+# 
+#   disk_size_gb             = var.libvirt_disk_size_gb
+#   memory_mb                = var.libvirt_memory_mb
+#   vcpus                    = var.libvirt_vcpus
+#   image_source             = var.libvirt_image_source
+#   basename                 = var.libvirt_basename
+#   ssh_keys                 = var.libvirt_ssh_keys
+#   ssh_keys_github_username = var.libvirt_ssh_keys_github_username 
+#   do_package_upgrade       = var.libvirt_do_package_upgrade
+#   libvirt_connection_uri   = var.libvirt_connection_uri
+#   public_gateway           = var.libvirt_public_gateway
+#   public_nameserver        = var.libvirt_public_nameserver
+#   public_iprange           = var.libvirt_public_iprange
+#   public_iprange_offset    = var.libvirt_public_iprange_offset
+#   hosts                    = var.node_count
+#   hostname_format          = var.hostname_format
+# }
+
 module "swap" {
   source = "./service/swap"
 
