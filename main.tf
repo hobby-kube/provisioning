@@ -135,11 +135,12 @@ module "dns" {
 module "wireguard" {
   source = "./security/wireguard"
 
-  node_count   = var.node_count
-  connections  = module.provider.public_ips
-  private_ips  = module.provider.private_ips
-  hostnames    = module.provider.hostnames
-  overlay_cidr = module.kubernetes.overlay_cidr
+  node_count        = var.node_count
+  connections       = module.provider.public_ips
+  private_ips       = module.provider.private_ips
+  hostnames         = module.provider.hostnames
+  overlay_cidr      = module.kubernetes.overlay_cidr
+  overlay_cidr_ipv6 = module.kubernetes.overlay_cidr_ipv6
 }
 
 module "firewall" {
@@ -171,5 +172,6 @@ module "kubernetes" {
   cluster_name   = var.domain
   vpn_interface  = module.wireguard.vpn_interface
   vpn_ips        = module.wireguard.vpn_ips
+  vpn_ips_ipv6   = module.wireguard.vpn_ips_ipv6
   etcd_endpoints = module.etcd.endpoints
 }

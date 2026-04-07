@@ -24,8 +24,19 @@ variable "overlay_cidr" {
   type = string
 }
 
+variable "overlay_cidr_ipv6" {
+  type    = string
+  default = "" # empty means IPv6 is disabled
+}
+
 variable "vpn_iprange" {
   default = "10.0.1.0/24"
+}
+
+variable "vpn_iprange_ipv6" {
+  # Default is empty, meaning dual-stack support is disabled.
+  # Set to a ULA range like "fd00:10:0:1::/64" to enable dual-stack support.
+  default = ""
 }
 
 resource "null_resource" "wireguard" {
@@ -44,6 +55,7 @@ resource "null_resource" "wireguard" {
   provisioner "remote-exec" {
     inline = [
       "echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf",
+      "%{if length(local.vpn_ips_ipv6) > 0}echo net.ipv6.conf.all.forwarding=1 >> /etc/sysctl.conf%{else}echo No IPv6%{endif}",
 
       "echo br_netfilter > /etc/modules-load.d/kubernetes.conf",
       "modprobe br_netfilter",
@@ -62,15 +74,17 @@ resource "null_resource" "wireguard" {
 
   provisioner "file" {
     content = templatefile("${path.module}/templates/interface.conf", {
-      address     = element(local.vpn_ips, count.index)
-      port        = var.vpn_port
-      private_key = element(data.external.keys.*.result.private_key, count.index)
+      address      = element(local.vpn_ips, count.index)
+      address_ipv6 = length(local.vpn_ips_ipv6) == 0 ? "" : element(local.vpn_ips_ipv6, count.index)
+      port         = var.vpn_port
+      private_key  = element(data.external.keys.*.result.private_key, count.index)
       peers = templatefile("${path.module}/templates/peer.conf", {
-        exclude_index = count.index
-        endpoints     = var.private_ips
-        port          = var.vpn_port
-        public_keys   = data.external.keys.*.result.public_key
-        allowed_ips   = local.vpn_ips
+        exclude_index    = count.index
+        endpoints        = var.private_ips
+        port             = var.vpn_port
+        public_keys      = data.external.keys.*.result.public_key
+        allowed_ips      = local.vpn_ips
+        allowed_ips_ipv6 = local.vpn_ips_ipv6
       })
     })
     destination = "/etc/wireguard/${var.vpn_interface}.conf"
@@ -85,6 +99,7 @@ resource "null_resource" "wireguard" {
   provisioner "remote-exec" {
     inline = [
       "${join("\n", formatlist("echo '%s %s' >> /etc/hosts", local.vpn_ips, var.hostnames))}",
+      "%{if length(local.vpn_ips_ipv6) > 0}${join("\n", formatlist("echo '%s %s' >> /etc/hosts", local.vpn_ips_ipv6, var.hostnames))}%{else}echo No IPv6%{endif}",
       "systemctl is-enabled wg-quick@${var.vpn_interface} || systemctl enable wg-quick@${var.vpn_interface}",
       "systemctl daemon-reload",
       "systemctl restart wg-quick@${var.vpn_interface}",
@@ -93,8 +108,10 @@ resource "null_resource" "wireguard" {
 
   provisioner "file" {
     content = templatefile("${path.module}/templates/overlay-route.service", {
-      address      = element(local.vpn_ips, count.index)
-      overlay_cidr = var.overlay_cidr
+      address           = element(local.vpn_ips, count.index)
+      address_ipv6      = length(local.vpn_ips_ipv6) > 0 ? element(local.vpn_ips_ipv6, count.index) : ""
+      overlay_cidr      = var.overlay_cidr
+      overlay_cidr_ipv6 = var.overlay_cidr_ipv6
     })
     destination = "/etc/systemd/system/overlay-route.service"
   }
@@ -119,11 +136,20 @@ locals {
     for n in range(var.node_count) :
     cidrhost(var.vpn_iprange, n + 1)
   ]
+  vpn_ips_ipv6 = length(var.vpn_iprange_ipv6) == 0 ? [] : [
+    for n in range(var.node_count) :
+    cidrhost(var.vpn_iprange_ipv6, n + 1)
+  ]
 }
 
 output "vpn_ips" {
   depends_on = [null_resource.wireguard]
   value      = local.vpn_ips
+}
+
+output "vpn_ips_ipv6" {
+  depends_on = [null_resource.wireguard]
+  value      = local.vpn_ips_ipv6
 }
 
 output "vpn_unit" {

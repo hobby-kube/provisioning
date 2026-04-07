@@ -8,6 +8,11 @@ nodeRegistration:
   ignorePreflightErrors:
     - NumCPU
     - Swap
+%{ if node_ip != "" }
+  kubeletExtraArgs:
+    - name: node-ip
+      value: "${node_ip}"
+%{ endif }
 ---
 apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration
@@ -23,6 +28,10 @@ etcd:
   external:
     endpoints:
     ${etcd_endpoints}
+%{ if service_cidr_ipv6 != "" }
+networking:
+  serviceSubnet: ${service_cidr},${service_cidr_ipv6}
+%{ endif }
 ${kubeadm_extra_cluster_config}
 ---
 apiVersion: kubelet.config.k8s.io/v1beta1

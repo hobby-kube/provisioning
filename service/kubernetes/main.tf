@@ -42,6 +42,13 @@ variable "vpn_ips" {
   type = list(any)
 }
 
+variable "vpn_ips_ipv6" {
+  # Empty means dual-stack is disabled, in which case no `--node-ip` is set and kubelet keeps
+  # auto-detecting the single (IPv4) node IP.
+  type    = list(any)
+  default = []
+}
+
 variable "vpn_interface" {
   type = string
 }
@@ -58,9 +65,28 @@ variable "overlay_cidr" {
   default = "10.96.0.0/16"
 }
 
+variable "overlay_cidr_ipv6" {
+  # Default is empty, meaning dual-stack support is disabled.
+  # Set to a ULA range like "fd00:10:244::/104" to enable dual-stack support.
+  default = ""
+}
+
+variable "service_cidr" {
+  # Matches kubeadm's default service subnet, used verbatim in the ClusterConfiguration
+  # only when dual-stack is enabled via `service_cidr_ipv6`.
+  default = "10.96.0.0/12"
+}
+
+variable "service_cidr_ipv6" {
+  # IPv6 range for cluster services. Empty disables dual-stack services, keeping kubeadm's
+  # single-stack default. When set, the kube-apiserver serves dual-stack services; the mask
+  # must be /108 or smaller (fewer addresses), e.g. "fd00:10:96::/108".
+  default = ""
+}
+
 variable "cilium_version" {
   type    = string
-  default = "1.19.1"
+  default = "1.19.5"
 }
 
 variable "cilium_install_extra_args" {
@@ -118,6 +144,9 @@ resource "null_resource" "kubernetes" {
       cert_sans                    = "- ${element(var.connections, 0)}"
       kubelet_extra_config         = var.kubelet_extra_config
       kubeadm_extra_cluster_config = var.kubeadm_extra_cluster_config
+      service_cidr                 = var.service_cidr
+      service_cidr_ipv6            = var.service_cidr_ipv6
+      node_ip                      = length(var.vpn_ips_ipv6) > 0 ? "${element(var.vpn_ips, 0)},${element(var.vpn_ips_ipv6, 0)}" : ""
     })
     destination = "/tmp/master-configuration.yml"
   }
@@ -126,6 +155,7 @@ resource "null_resource" "kubernetes" {
     content = templatefile("${path.module}/templates/worker-kubeadm-configuration.yml", {
       control_plane_ip = element(var.vpn_ips, 0)
       token            = local.cluster_token
+      node_ip          = length(var.vpn_ips_ipv6) > 0 ? "${element(var.vpn_ips, count.index)},${element(var.vpn_ips_ipv6, count.index)}" : ""
     })
     destination = "/tmp/worker-kubeadm-configuration.yml"
   }
@@ -145,6 +175,7 @@ resource "null_resource" "kubernetes" {
           cilium_version            = var.cilium_version
           cilium_install_extra_args = var.cilium_install_extra_args
           overlay_cidr              = var.overlay_cidr
+          overlay_cidr_ipv6         = var.overlay_cidr_ipv6
       })
       : templatefile("${path.module}/scripts/slave.sh",
         {
@@ -166,4 +197,8 @@ output "overlay_interface" {
 
 output "overlay_cidr" {
   value = var.overlay_cidr
+}
+
+output "overlay_cidr_ipv6" {
+  value = var.overlay_cidr_ipv6
 }
