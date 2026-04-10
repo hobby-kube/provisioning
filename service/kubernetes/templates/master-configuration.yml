@@ -4,6 +4,10 @@ kind: InitConfiguration
 localAPIEndpoint:
   advertiseAddress: ${api_advertise_address}
   bindPort: 6443
+nodeRegistration:
+  ignorePreflightErrors:
+    - NumCPU
+    - Swap
 ---
 apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration
