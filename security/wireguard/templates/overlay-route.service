@@ -6,6 +6,9 @@ After=wg-quick@wg0.service
 Type=oneshot
 User=root
 ExecStart=/sbin/ip route add ${overlay_cidr} dev wg0 src ${address}
+%{ if length(address_ipv6) > 0 }
+ExecStart=/sbin/ip -6 route add ${overlay_cidr_ipv6} dev wg0 src ${address_ipv6}
+%{ endif }
 
 [Install]
 WantedBy=multi-user.target

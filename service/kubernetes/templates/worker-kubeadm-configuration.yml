@@ -9,3 +9,8 @@ discovery:
 nodeRegistration:
   ignorePreflightErrors:
     - Swap
+%{ if node_ip != "" }
+  kubeletExtraArgs:
+    - name: node-ip
+      value: "${node_ip}"
+%{ endif }
