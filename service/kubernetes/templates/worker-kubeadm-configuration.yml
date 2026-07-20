@@ -1,0 +1,11 @@
+# https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta4/#kubeadm-k8s-io-v1beta4-JoinConfiguration
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: JoinConfiguration
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: "${control_plane_ip}:6443"
+    token: "${token}"
+    unsafeSkipCAVerification: true
+nodeRegistration:
+  ignorePreflightErrors:
+    - Swap

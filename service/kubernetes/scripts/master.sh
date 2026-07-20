@@ -7,8 +7,7 @@ grep -q net.ipv4.ip_forward=1 /etc/sysctl.conf || echo net.ipv4.ip_forward=1 >> 
 sysctl -p
 
 echo "kubeadm init"
-kubeadm init --config /tmp/master-configuration.yml \
-  --ignore-preflight-errors=Swap,NumCPU
+kubeadm init --config /tmp/master-configuration.yml
 
 kubeadm token create "${token}"
 

@@ -122,6 +122,14 @@ resource "null_resource" "kubernetes" {
     destination = "/tmp/master-configuration.yml"
   }
 
+  provisioner "file" {
+    content = templatefile("${path.module}/templates/worker-kubeadm-configuration.yml", {
+      control_plane_ip = element(var.vpn_ips, 0)
+      token            = local.cluster_token
+    })
+    destination = "/tmp/worker-kubeadm-configuration.yml"
+  }
+
   provisioner "remote-exec" {
     inline = [
       file("${path.module}/scripts/install.sh")
@@ -141,9 +149,14 @@ resource "null_resource" "kubernetes" {
       : templatefile("${path.module}/scripts/slave.sh",
         {
           master_ip = element(var.vpn_ips, 0)
-          token     = local.cluster_token
       })
     ]
+  }
+
+  provisioner "file" {
+    # Remove sensitive token from disk
+    content     = ""
+    destination = "/tmp/worker-kubeadm-configuration.yml"
   }
 }
 
