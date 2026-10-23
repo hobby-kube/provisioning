@@ -46,8 +46,8 @@ export TF_VAR_hcloud_ssh_keys=<keys>
 export TF_VAR_hcloud_ssh_keys='["<description-key1>", "<description-key2>"]'
 # Defaults:
 # export TF_VAR_hcloud_location="nbg1"
-# export TF_VAR_hcloud_type="cx22"
-# export TF_VAR_hcloud_image="ubuntu-24.04"
+# export TF_VAR_hcloud_type="cx23"
+# export TF_VAR_hcloud_image="ubuntu-26.04"
 ```
 
 SSH keys are referenced by their description. Visit the Hetzner Cloud console at
@@ -62,7 +62,7 @@ export TF_VAR_scaleway_secret_key=<secret_key>
 # Defaults:
 # export TF_VAR_scaleway_zone="nl-ams-1"
 # export TF_VAR_scaleway_type="DEV1-S"
-# export TF_VAR_scaleway_image="Ubuntu 24.04 Noble Numbat"
+# export TF_VAR_scaleway_image="Ubuntu 26.04 Resolute Raccoon"
 # export TF_VAR_scaleway_image_architecture="x86_64"
 ```
 
@@ -75,7 +75,7 @@ export TF_VAR_digitalocean_ssh_keys='["<id-key1>", "<id-key2>"]'
 # Defaults:
 # export TF_VAR_digitalocean_region="fra1"
 # export TF_VAR_digitalocean_size="1gb"
-# export TF_VAR_digitalocean_image="ubuntu-24-04-x64"
+# export TF_VAR_digitalocean_image="ubuntu-26-04-x64"
 ```
 
 You can get SSH key IDs using [this API](https://developers.digitalocean.com/documentation/v2/#list-all-keys).
@@ -119,7 +119,7 @@ export TF_VAR_upcloud_ssh_keys='["<PUBLIC KEY HERE>"]'
 # Defaults:
 # export TF_VAR_upcloud_zone="de-fra1"
 # export TF_VAR_upcloud_plan="1xCPU-2GB"
-# export TF_VAR_upcloud_disk_template="Ubuntu Server 24.04 LTS (Noble Numbat)"
+# export TF_VAR_upcloud_disk_template="Ubuntu Server 26.04 LTS (Resolute Raccoon)"
 ```
 
 You will need API credentials to use the UpCloud terraform provider, see https://upcloud.com/community/tutorials/getting-started-upcloud-api/ for more info.
