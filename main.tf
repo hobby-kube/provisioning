@@ -37,19 +37,6 @@ module "provider" {
 # }
 
 # module "provider" {
-#   source = "./provider/packet"
-#
-#   auth_token       = var.packet_auth_token
-#   project_id       = var.packet_project_id
-#   billing_cycle    = var.packet_billing_cycle
-#   facility         = [var.packet_facility]
-#   plan             = var.packet_plan
-#   operating_system = var.packet_operating_system
-#   hosts            = var.node_count
-#   hostname_format  = var.hostname_format
-# }
-
-# module "provider" {
 #   source = "./provider/vsphere"
 #
 #   hosts                   = var.node_count
