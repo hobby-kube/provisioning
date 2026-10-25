@@ -31,11 +31,11 @@ variable "hcloud_location" {
 }
 
 variable "hcloud_type" {
-  default = "cx22"
+  default = "cx23"
 }
 
 variable "hcloud_image" {
-  default = "ubuntu-24.04"
+  default = "ubuntu-26.04"
 }
 
 /* scaleway */
@@ -60,7 +60,7 @@ variable "scaleway_type" {
 }
 
 variable "scaleway_image" {
-  default = "Ubuntu 24.04 Noble Numbat"
+  default = "Ubuntu 26.04 Resolute Raccoon"
 }
 
 variable "scaleway_image_architecture" {
@@ -86,7 +86,7 @@ variable "digitalocean_size" {
 }
 
 variable "digitalocean_image" {
-  default = "ubuntu-24-04-x64"
+  default = "ubuntu-26-04-x64"
 }
 
 /* aws dns */
@@ -191,7 +191,7 @@ variable "upcloud_plan" {
 }
 
 variable "upcloud_disk_template" {
-  default = "Ubuntu Server 24.04 LTS (Noble Numbat)"
+  default = "Ubuntu Server 26.04 LTS (Resolute Raccoon)"
 }
 
 variable "upcloud_ssh_keys" {

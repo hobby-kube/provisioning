@@ -86,7 +86,7 @@ variable "service_cidr_ipv6" {
 
 variable "cilium_version" {
   type    = string
-  default = "1.19.5"
+  default = "1.20.3"
 }
 
 variable "cilium_install_extra_args" {
